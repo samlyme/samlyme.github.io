@@ -31,4 +31,4 @@ i also like writing [blogs](/blogs/index.html) about stuff i find interesting.
 
 ---
 
-[home](/index.html) | [contact](contact.html) | [projects](projects/index.html) | [blogs](/blogs/index.html)
+[home](/index.html) | [contact](/contact.html) | [projects](/projects/index.html) | [blogs](/blogs/index.html)

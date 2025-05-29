@@ -1,4 +1,11 @@
-# These are my blogs
+# these are my blogs
 
-[blog1](./blog1.html)
-[Complicated name](./Complicated%20name.html)
+- [imperative vs. declarative code](./blog1.html)
+
+wip:
+- [shiny object syndrome](./blog2.html)
+- [learning haskell changed the way i thnk](./blog3.html)
+
+---
+
+[home](/index.html) | [contact](/contact.html) | [projects](/projects/index.html) | [blogs](/blogs/index.html)
