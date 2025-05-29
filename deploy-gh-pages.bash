@@ -1,49 +1,24 @@
-#!/bin/bash
+#!/usr/bin/env sh
 
-# Exit immediately if a command fails
+# abort on errors
 set -e
 
-BUILD_DIR="build"
-DEPLOY_BRANCH="gh-pages"
-TMP_DIR=$(mktemp -d)
+# build
+runhaskell main.hs
 
-echo "▶️  Starting deployment..."
+# navigate into the build output directory
+cd build
 
-# Ensure build directory exists
-if [ ! -d "$BUILD_DIR" ]; then
-  echo "❌ Build directory '$BUILD_DIR' not found. Aborting."
-  exit 1
-fi
+# if you are deploying to a custom domain
+#echo 'myapp.com' > CNAME
 
-# Stash any uncommitted changes
-git stash --include-untracked
+# creating a git repo in the build folder
+git init
+git add -A
+git commit -m 'deploy'
 
-# Fetch latest
-git fetch origin
+# if you are deploying to https://<USERNAME>.github.io
+git push -f git@github.com:samlyme/samlyme.github.io.git gh-pages
 
-# Switch to gh-pages branch, or create it if it doesn't exist
-if git show-ref --quiet refs/heads/$DEPLOY_BRANCH; then
-  git switch $DEPLOY_BRANCH
-else
-  git switch --orphan $DEPLOY_BRANCH
-fi
+cd -
 
-# Remove all tracked files
-git rm -rf . > /dev/null 2>&1 || true
-
-# Copy build output to repo root
-cp -r $BUILD_DIR/* .
-
-# Add and commit
-git add .
-COMMIT_MSG="Deploy to GitHub Pages: $(date +'%Y-%m-%d %H:%M:%S')"
-git commit -m "$COMMIT_MSG"
-
-# Push to gh-pages branch
-git push -u origin $DEPLOY_BRANCH --force
-
-# Return to previous branch and apply stash
-git switch -
-git stash pop || true
-
-echo "✅ Deployed to GitHub Pages on branch '$DEPLOY_BRANCH'."
