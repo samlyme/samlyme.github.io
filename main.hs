@@ -8,7 +8,7 @@ import System.FilePath
 
 -- Replace this with your real Markdown parser
 markdownToHtml :: String -> String
-markdownToHtml = show . html_ "my title" . render . parse
+markdownToHtml = show . html_ "Sam Ly" . render . parse
 
 -- Ensure that the output directory exists
 ensureDirForFile :: FilePath -> IO ()
