@@ -55,3 +55,5 @@ Cons of Haskell:
 ***[Duck Duck Go](https://duckduckgo.com)***
 
 lmaoo ![The San Juan Mountains are beautiful!](https://external-preview.redd.it/vC0o6qZu4OlzXFzwQoTRltJ85JT0of4o2Zq5DUAa8wA.jpg?auto=webp&s=15b395e11d37dc36733eccd8f40a5530b502852b) ayy
+
+![](https://i.imgur.com/V6xypFv.png)
