@@ -1,5 +1,7 @@
 # My website
 
+[www.samly.me](https://www.samly.me)
+
 Why did I build this in Haskell again? Because I wanted to generate my website from Markdown.
 
 Doesn't software like Hugo already exist? Yes.
