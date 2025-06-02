@@ -33,4 +33,4 @@ better support for templates.
 
 ---
 
-[home](/index.html) | [contact](/contact.html) | [projects](/projects/index.html) | [blogs](/blogs/index.html)
+[home](/index.html) | [contact](/contact.html) | [blogs](/blogs/index.html)
