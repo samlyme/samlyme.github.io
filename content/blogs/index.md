@@ -5,6 +5,7 @@
 
 # random writings
 
+- [Basic Probability](./blog5.html)
 - [Union Find Algorithm](./blog4.html)
 - [Imperative vs. Declarative code](./blog1.html)
 
