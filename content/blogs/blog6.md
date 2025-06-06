@@ -44,3 +44,81 @@ Assumptions about the system:
 ### trust me bro type theorem
 
 > "A Gaussian mixture model is a **universal approximator** of densities, in the sense that any smooth density can be approximated with any specific nonzero amount of error by a Gaussian mixture model with enough components."
+
+## Expectation-maximization
+
+Some python code to solve for the latent variable:
+```python
+import numpy as np
+
+"""
+P(x = red | c = Factory 1) = 0.8 -> Bernoulli Distribution
+P(x = red | c = Factory 2) = 0.3 -> Bernoulli Distribution
+"""
+p_red_given_f1 = 0.8
+p_red_given_f2 = 0.3
+
+"""
+True proportion from Factory 1
+P(c = 1) = 0.6
+"""
+p_f1 = 0.6
+
+print("Ground truth")
+print(f"P(c = Factory 1) = {p_f1:.2f}")
+print(f"P(c = Factory 2) = {1 - p_f1:.2f}")
+print(f"P(x = red | c = Factory 1) = {p_red_given_f1:.2f}")
+print(f"P(x = red | c = Factory 2) = {p_red_given_f2:.2f}")
+
+K = 1000
+
+C = np.random.binomial(1, p_f1, size=K)
+
+# 1 = red, 0 = blue
+X = np.where(C  == 1, 
+             np.random.binomial(1, p_red_given_f1, size=K), 
+             np.random.binomial(1, p_red_given_f2, size=K))
+
+print(f"Generate {K} samples:")
+x = np.sum(X)
+print("Red: ", x)
+print("Blue:", K-x)
+print(f"Observed P(x = red): {x/K}")
+
+# Initial random guess of P(c = 1) = 0.5
+p_hat_f1 = 0.5
+
+max_iterations = 100
+tolerance = 10e-9
+
+for iteration in range(max_iterations):
+    p_x_c1 = np.where(X == 1, 
+                             p_red_given_f1, 
+                             (1 - p_red_given_f1)) * p_hat_f1
+    p_x_c2 = np.where(X == 1, 
+                             p_red_given_f2, 
+                             (1 - p_red_given_f2)) * (1-p_hat_f1)
+    # probability of x, with our assumptions of p_hat_f1
+    p_x = p_x_c1 + p_x_c2
+
+    # Gamma, the responsibilities ??
+    gamma_c1 = p_x_c1 / p_x
+    gamma_c2 = p_x_c2 / p_x
+
+    p_hat_f1p = np.sum(gamma_c1) / K
+
+    if np.abs(p_hat_f1p - p_hat_f1) < tolerance:
+        print(f"Converged at iteration {iteration}")
+        break
+
+    p_hat_f1 = p_hat_f1p
+    
+    # show progress
+    if iteration % 10 == 0:
+        print(f"{iteration}: P(c = Factory 1) = {p_hat_f1}")
+        
+print(f"Final solution: P(c = Factory 1) = {p_hat_f1:.2f}")
+    
+```
+
+*Note:* This can be generalized to *n* arbitrary component distributions. This is left as an exercise for the reader.
