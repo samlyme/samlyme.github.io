@@ -142,8 +142,6 @@ Some python code to solve for the latent variable:
 </p>
 <pre><code class="language-python">import numpy as np
 
-# set up constants
-
 &quot;&quot;&quot;
 P(x = red | c = Factory 1) = 0.8 -&gt; Bernoulli Distribution
 P(x = red | c = Factory 2) = 0.3 -&gt; Bernoulli Distribution
@@ -157,7 +155,6 @@ P(c = 1) = 0.6
 &quot;&quot;&quot;
 p_f1 = 0.6
 
-# Ground truth
 print(&quot;Ground truth&quot;)
 print(f&quot;P(c = Factory 1) = {p_f1:.2f}&quot;)
 print(f&quot;P(c = Factory 2) = {1 - p_f1:.2f}&quot;)
@@ -179,7 +176,7 @@ print(&quot;Red: &quot;, x)
 print(&quot;Blue:&quot;, K-x)
 print(f&quot;Observed P(x = red): {x/K}&quot;)
 
-# Initial random guess of P(c = 1)
+# Initial random guess of P(c = 1) = 0.5
 p_hat_f1 = 0.5
 
 max_iterations = 100
@@ -201,7 +198,7 @@ for iteration in range(max_iterations):
 
     p_hat_f1p = np.sum(gamma_c1) / K
 
-    if np.abs(p_hat_f1p -p_hat_f1) &lt; tolerance:
+    if np.abs(p_hat_f1p - p_hat_f1) &lt; tolerance:
         print(f&quot;Converged at iteration {iteration}&quot;)
         break
 

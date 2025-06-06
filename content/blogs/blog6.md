@@ -122,3 +122,7 @@ print(f"Final solution: P(c = Factory 1) = {p_hat_f1:.2f}")
 ```
 
 *Note:* This can be generalized to *n* arbitrary component distributions. This is left as an exercise for the reader.
+
+---
+
+[home](/index.html) | [contact](/contact.html) | [blogs](/blogs/index.html)
