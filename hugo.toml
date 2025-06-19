@@ -1,0 +1,51 @@
+baseURL = 'https://samly.me'
+languageCode = 'en-us'
+title = 'Sam Ly'
+
+theme = 'nostyleplease'
+
+[params]
+homeIntroTitle = 'Welcome to my website!'
+
+homeIntroContent = """
+I am a CS student, minoring in data science and math. I enjoy solving interesting problems.
+I've worked on a variety of projects and hackathons, and am comfortable in the following languages:
+- Python
+- JavaScript/TypeScript
+- Java
+- Haskell
+- MIPS assembly
+
+I am comfortable in the following technologies:
+- PyTorch, pandas, numpy
+- FastAPI
+- ExpressJS
+- React
+- SQL databases - PostgreSQL, SQLite
+- Railway VPS
+
+I am currently working as an undergraduate researcher. My work is focused on evaluating physics-aware neural nets for UAV trajectory prediction.
+
+I also like writing blogs about my projects and whatever topics I find interesting.
+"""
+
+homeCollectionTitle = 'Posts'
+homeCollection = 'posts'
+
+
+[[params.social]]
+name = "linkedin"
+url = "https://www.linkedin.com/in/samly-me/"
+
+[[params.social]]
+name = "twitter"
+url = "https://x.com/can0fspam_"
+
+
+[[params.menu]]
+name = "home"
+url = "/"
+
+[[params.menu]]
+name = "posts"
+url = "/posts"
