@@ -5,6 +5,7 @@
 
 # random writings
 
+- [Basics of Information Theory](./blog7.html)
 - [Mixtures of Distributions and Latent Variables](./blog6.html)
 - [Basic Probability](./blog5.html)
 - [Union Find Algorithm](./blog4.html)
