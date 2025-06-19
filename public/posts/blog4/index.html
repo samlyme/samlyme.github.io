@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en-us"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <meta name="description" content="Union Find Algoritm
+Credits: Princeton&rsquo;s Algorithms, Part I
+Union Find is a classic problem in computer science, which entails forming groups of nodes and determining if two nodes are in the same group.
+Formally stated, you have n nodes (or sites). union(n1, n2) creates a connection between nodes n1 and n2.  connected(n1, n2) determines whether the two nodes have any path between them. For example, running union(n1, n2) and union(n2, n3 causes connected(n1, n3) to return true.">  
+
+  <title>
+    
+      Union Find Algorithm
+    
+  </title>
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/" />
+  
+  
+  
+  <link rel="stylesheet" href="/css/main.900100e9dbee2d56c58fac8bb717037cae7e26a9c36c29d2ff587bdd65f0cbbe510b41d81a3bb234919cdfdc7550d786b2fab70c8fc507772d732fe097106d12.css" integrity="sha512-kAEA6dvuLVbFj6yLtxcDfK5&#43;JqnDbCnS/1h73WXwy75RC0HYGjuyNJGc39x1UNeGsvq3DI/FB3ctcy/glxBtEg==" />
+  
+</head>
+<body a="auto">
+        <main class="page-content" aria-label="Content">
+            <div class="w">
+                <div class="post-meta">
+                    <a href="/">..</a>
+
+                    <p>
+                        <time datetime="2025-06-18 20:41:12 -0700 PDT">
+                            2025-06-18
+                        </time>
+                    </p>
+                </div>
+
+<article>
+    <h1>Union Find Algorithm</h1>
+
+    
+
+    <h1 id="union-find-algoritm">Union Find Algoritm</h1>
+<p><em>Credits: Princeton&rsquo;s Algorithms, Part I</em></p>
+<p>Union Find is a classic problem in computer science, which entails forming groups of nodes and determining if two nodes are in the same group.</p>
+<p>Formally stated, you have <em>n</em> nodes (or sites). <code>union(n1, n2)</code> creates a connection between nodes <code>n1</code> and <code>n2</code>.  <code>connected(n1, n2)</code> determines whether the two nodes have any path between them. For example, running <code>union(n1, n2)</code> and <code>union(n2, n3</code> causes <code>connected(n1, n3)</code> to return <code>true</code>.</p>
+<p>This means that the relationship of being &ldquo;connected&rdquo; is actually an <strong>equivalence relation</strong> and has the following properties:</p>
+<ul>
+<li>Reflexivity: any node <em>p</em> is connected to <em>p</em>.</li>
+<li>Symmetry: if node <em>p</em> is connected to node <em>q</em>, then node <em>q</em> is connected to node <em>p</em>.</li>
+<li>Transitivity:</li>
+</ul>
+<p>We also observe that this insight allows us to simplify our problem. Instead of thinking of specific connections between nodes, we instead just need to pay attention to <strong>connected components of nodes</strong>.
+Any <code>union(n1, n2)</code> operation simply joins the that connected components <code>n1</code> and <code>n2</code> are members of into a larger connected component. <code>connected(n1, n2)</code> just checks if <code>n1</code> and <code>n2</code> are in the same connected component. Our problem description never specified that we need to find the actual path between two nodes! Just that we need to know if such a path exists.</p>
+<blockquote>
+<p>As a heuristic, simplifying the problem and discarding unnecessary information leads to better algorithmic results.</p></blockquote>
+<p>A more general term for this problem is the <strong>dynamic connectivity problem</strong>.</p>
+<h2 id="implementation">Implementation</h2>
+<p>For convenience, we will label our <em>n</em> nodes <em>0</em> to <em>n-1</em>. This is so their key can be used as an index to a basic array. For other key data types, hash maps or whatever else can be used instead.</p>
+<h3 id="quick-find">Quick-find</h3>
+<p>This approach is considered to be an <strong>eager</strong> approach for reasons we will see later.</p>
+<p>We first initialize an array <code>id[]</code> of size <em>n</em>, such that each value is its own index.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> id <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">[</span>n<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0; i <span style="color:#f92672">&lt;</span> n; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    id<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> i;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>When we call <code>union(n1, n2)</code> find all the indexes with the same value as <code>n2</code> and set them to the value at <code>n1</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">union</span>(<span style="color:#66d9ef">int</span> p, <span style="color:#66d9ef">int</span> q) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> pid <span style="color:#f92672">=</span> id<span style="color:#f92672">[</span>p<span style="color:#f92672">]</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> qid <span style="color:#f92672">=</span> id<span style="color:#f92672">[</span>q<span style="color:#f92672">]</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0; i <span style="color:#f92672">&lt;</span> id.<span style="color:#a6e22e">length</span>; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (id<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> pid) id<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> qid;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">connected</span>(<span style="color:#66d9ef">int</span> p, <span style="color:#66d9ef">int</span> q) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> id<span style="color:#f92672">[</span>p<span style="color:#f92672">]</span> <span style="color:#f92672">==</span> id<span style="color:#f92672">[</span>q<span style="color:#f92672">]</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h4 id="why-is-this-approach-considered-eager">Why is this approach considered eager?</h4>
+<p>This approach is considered eager because it does the work <strong>upfront</strong> when <code>union</code> is executed. <code>connected</code>, which is an operation that typically happens <em>after</em> <code>union</code> performs far less &ldquo;work&rdquo; comparatively.</p>
+<p>However, we don&rsquo;t actually know when/if a <code>connected</code> operation will be performed ahead of time, so the extra work that <code>union</code> is doing could be going to waste.</p>
+<p><strong>For raw algorithmic performance, lazy approaches tend to outperform eager approaches.</strong></p>
+<p>Also, this implementation has a worst case runtime of <em>O(n)</em> for the <code>union</code> operation, which is <strong>not efficient enough</strong> to scale.</p>
+<blockquote>
+<p>Big-Oh isn&rsquo;t everything, emperical testing, yada yada. Point is, we can make this faster.</p></blockquote>
+<p>With this insight, let&rsquo;s try to shift some of the work over to the <code>connected</code> operation to create a lazy approach.</p>
+<h3 id="quick-union">Quick-union</h3>
+<p>We initialize our <code>id[]</code> array in the same way we did for Quick-find.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> id <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">[</span>n<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0; i <span style="color:#f92672">&lt;</span> n; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    id<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> i;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>However, rather than the <code>id[n]</code> denoting the connected component that <code>n</code> belongs to, <code>id[n]</code> now points to the <strong>parent</strong> of <code>n</code>.  If <code>id[n] == n</code>, <code>n</code> is considered to be the root of that connected component. <strong>All members of a connected component share a root</strong>. Now, to join two connected components, we only need to modify the value of one of the root.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">root</span>(<span style="color:#66d9ef">int</span> i) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> (i <span style="color:#f92672">!=</span> id<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span>) i <span style="color:#f92672">=</span> id<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> i;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">union</span>(<span style="color:#66d9ef">int</span> p, <span style="color:#66d9ef">int</span> q) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> root(p);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> root(q);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// set the root of i to j. implicitly sets the connected component to be &#34;under&#34; j.</span>
+</span></span><span style="display:flex;"><span>    id<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> j
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">connected</span>(<span style="color:#66d9ef">int</span> p, <span style="color:#66d9ef">int</span> q) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> root(p) <span style="color:#f92672">==</span> root(q);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>This is better, but still not good enough. In most cases, the <code>root</code> operation runs in <em>O(log n)</em> time. But in the worst case, the tree can become &ldquo;tall and skinny&rdquo;, so the real worst case runtime is <em>O(n)</em>.</p>
+<p>This runtime is actually worse overall than the Quick-find implementation as both the <code>union</code> and <code>connected</code> methods make use of the <code>root</code> method, so now both of those operations have a worst case runtime of <em>O(n)</em>.</p>
+<p><strong>BUT</strong>, this approach leaves more room for improvement.</p>
+<h3 id="improvements-to-quick-union">Improvements to Quick-Union</h3>
+<h4 id="weighted-trees">Weighted trees</h4>
+<p>Before, we arbitrary set the the new of the connected component. We can instead keep track of the size of each subtree and make sure that the larger subtree becomes the new root. This actually <strong>forces</strong> the worst case run time of <code>root</code> down to <em>O(log n)</em>. The proof and implementation is left as an exercise for the reader.</p>
+<h4 id="path-compression">Path compression</h4>
+<p>When we traverse up the tree via the <code>root</code> method, we might as well compress the path of each node for future use. A simple way to do this is set the parent of each node we touch to it&rsquo;s grandparent. This halves the length of the path from each node to it&rsquo;s root.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">root</span>(<span style="color:#66d9ef">int</span> i) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> (i <span style="color:#f92672">!=</span> id<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span>) {
+</span></span><span style="display:flex;"><span>    id<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> id<span style="color:#f92672">[</span>id<span style="color:#f92672">[</span>i<span style="color:#f92672">]]</span>;
+</span></span><span style="display:flex;"><span>    i <span style="color:#f92672">=</span> id<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> i;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>An even more powerful path compression technique is to directly set the parent each node we traverse to the root of its connected component. However, in practice, this optimization doesn&rsquo;t actually do much better compared to the basic path compression.</p>
+<blockquote>
+<p>Side note: the more powerful path compression is actually a form of dynamic programming!</p></blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">root</span>(<span style="color:#66d9ef">int</span> p) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (id<span style="color:#f92672">[</span>p<span style="color:#f92672">]</span> <span style="color:#f92672">==</span> p) <span style="color:#66d9ef">return</span> p;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> r <span style="color:#f92672">=</span> root(id<span style="color:#f92672">[</span>p<span style="color:#f92672">]</span>);
+</span></span><span style="display:flex;"><span>    id<span style="color:#f92672">[</span>p<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> r;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> r;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<p><a href="/index.html">home</a> | <a href="/contact.html">contact</a> | <a href="/blogs/index.html">blogs</a></p>
+
+</article>
+
+            </div>
+        </main>
+    </body></html>

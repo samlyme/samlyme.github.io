@@ -1,0 +1,8 @@
+[[entries]]
+title = "Writings"
+
+[entries.post_list]
+limit = 5
+show_more = true
+show_more_text = "See see more..."
+show_more_url = "posts"
