@@ -37,16 +37,31 @@ find "$SRC" \
   rel="${md#$SRC/}"
   out="$DST/${rel%.md}.html"
   mkdir -p "$(dirname "$out")"
-
-  pandoc \
-    --from markdown \
-    --to html \
-    --mathml \
-    --highlight-style pygments \
-    --embed-resources \
-    --standalone \
-    --lua-filter="$LUA" \
-    --css="$CSS" \
-    "$md" \
-    -o "$out"
+  if [[ "$rel" == "blogs/"*  && "$(basename "$md" .md)" != "index" ]]; then
+    pandoc \
+      --from markdown \
+      --to html \
+      --mathml \
+      --highlight-style pygments \
+      --embed-resources \
+      --standalone \
+      --lua-filter="$LUA" \
+      --css="$CSS" \
+      --metadata title="$(basename "$md" .md)" \
+      --metadata author="Sam Ly" \
+      "$md" \
+      -o "$out"
+  else
+    pandoc \
+      --from markdown \
+      --to html \
+      --mathml \
+      --highlight-style pygments \
+      --embed-resources \
+      --standalone \
+      --lua-filter="$LUA" \
+      --css="$CSS" \
+      "$md" \
+      -o "$out"
+  fi
 done
