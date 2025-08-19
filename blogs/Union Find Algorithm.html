@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Sam Ly" />
+  <title>Union Find Algorithm</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+  <style type="text/css">
+:root {
+--bg-color: #ffffff;
+--text-color: #222222;
+--accent-color: #5a32c2;
+--link-color: #005f99;
+--heading-color: #000000;
+--code-bg: #d8d8d880;
+--code-text: #2d5b00;
+--border-color: #dddddd;
+--font-main: 'Georgia', serif;
+--font-code: 'Fira Code', monospace;
+}
+
+body.dark-mode {
+--bg-color: #121212;
+--text-color: #dddddd;
+--accent-color: #8f6eff;
+--link-color: #4fa3ff;
+--heading-color: #ffffff;
+--code-bg: #2a2a2a;
+--code-text: #c5f78b;
+--border-color: #444444;
+}
+* {
+box-sizing: border-box;
+}
+body {
+background-color: var(--bg-color);
+color: var(--text-color);
+font-family: var(--font-main);
+line-height: 1.6;
+max-width: 75ch;
+margin: auto;
+padding: 2rem;
+}
+a {
+color: var(--link-color);
+text-decoration: none;
+}
+a:hover {
+text-decoration: underline;
+}
+header, nav, footer {
+background: #f2f2f2;
+padding: 1rem 2rem;
+border-bottom: 1px solid var(--border-color);
+font-family: var(--font-main);
+}
+h1, h2, h3, h4, h5, h6 {
+color: var(--heading-color);
+font-family: var(--font-main);
+margin-top: 2rem;
+margin-bottom: 1rem;
+}
+p {
+margin-bottom: 1.5rem;
+}
+pre {
+background-color: var(--code-bg);
+padding: 0.5em;
+border-radius: 4px;
+}
+code {
+font-size: 0.9rem;
+}
+
+blockquote {
+border-left: 4px solid var(--accent-color);
+background-color: var(--code-bg);
+padding: 0.2em 1em;
+margin: 1.5rem 0;
+border-radius: 4px;
+}
+ul, ol {
+padding-left: 2rem;
+}
+img {
+display: block;
+margin-left: auto;
+margin-right: auto;
+width: 80%;
+}
+table {
+width: 100%;
+border-collapse: collapse;
+margin-bottom: 1.5rem;
+}
+th, td {
+border: 1px solid var(--border-color);
+padding: 0.75rem;
+text-align: left;
+}
+hr {
+border: none;
+border-top: 1px solid var(--border-color);
+margin: 2rem 0;
+}
+footer {
+border-top: 1px solid var(--border-color);
+text-align: center;
+font-size: 0.9rem;
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Union Find Algorithm</h1>
+<p class="author">Sam Ly</p>
+</header>
+<p><em>Credits: Princeton’s Algorithms, Part I</em></p>
+<p>Union Find is a classic problem in computer science, which entails
+forming groups of nodes and determining if two nodes are in the same
+group.</p>
+<p>Formally stated, you have <em>n</em> nodes (or sites).
+<code>union(n1, n2)</code> creates a connection between nodes
+<code>n1</code> and <code>n2</code>. <code>connected(n1, n2)</code>
+determines whether the two nodes have any path between them. For
+example, running <code>union(n1, n2)</code> and
+<code>union(n2, n3</code> causes <code>connected(n1, n3)</code> to
+return <code>true</code>.</p>
+<p>This means that the relationship of being “connected” is actually an
+<strong>equivalence relation</strong> and has the following
+properties:</p>
+<ul>
+<li>Reflexivity: any node <em>p</em> is connected to <em>p</em>.</li>
+<li>Symmetry: if node <em>p</em> is connected to node <em>q</em>, then
+node <em>q</em> is connected to node <em>p</em>.</li>
+<li>Transitivity:</li>
+</ul>
+<p>We also observe that this insight allows us to simplify our problem.
+Instead of thinking of specific connections between nodes, we instead
+just need to pay attention to <strong>connected components of
+nodes</strong>. Any <code>union(n1, n2)</code> operation simply joins
+the that connected components <code>n1</code> and <code>n2</code> are
+members of into a larger connected component.
+<code>connected(n1, n2)</code> just checks if <code>n1</code> and
+<code>n2</code> are in the same connected component. Our problem
+description never specified that we need to find the actual path between
+two nodes! Just that we need to know if such a path exists.</p>
+<blockquote>
+<p>As a heuristic, simplifying the problem and discarding unnecessary
+information leads to better algorithmic results.</p>
+</blockquote>
+<p>A more general term for this problem is the <strong>dynamic
+connectivity problem</strong>.</p>
+<h2 id="implementation">Implementation</h2>
+<p>For convenience, we will label our <em>n</em> nodes <em>0</em> to
+<em>n-1</em>. This is so their key can be used as an index to a basic
+array. For other key data types, hash maps or whatever else can be used
+instead.</p>
+<h3 id="quick-find">Quick-find</h3>
+<p>This approach is considered to be an <strong>eager</strong> approach
+for reasons we will see later.</p>
+<p>We first initialize an array <code>id[]</code> of size <em>n</em>,
+such that each value is its own index.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span><span class="op">[]</span> id <span class="op">=</span> <span class="kw">new</span> <span class="dt">int</span><span class="op">[</span>n<span class="op">];</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    id<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> i<span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>When we call <code>union(n1, n2)</code> find all the indexes with the
+same value as <code>n2</code> and set them to the value at
+<code>n1</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">void</span> <span class="fu">union</span><span class="op">(</span><span class="dt">int</span> p<span class="op">,</span> <span class="dt">int</span> q<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> pid <span class="op">=</span> id<span class="op">[</span>p<span class="op">];</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> qid <span class="op">=</span> id<span class="op">[</span>q<span class="op">];</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> id<span class="op">.</span><span class="fu">length</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>id<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> pid<span class="op">)</span> id<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> qid<span class="op">;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">boolean</span> <span class="fu">connected</span><span class="op">(</span><span class="dt">int</span> p<span class="op">,</span> <span class="dt">int</span> q<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> id<span class="op">[</span>p<span class="op">]</span> <span class="op">==</span> id<span class="op">[</span>q<span class="op">];</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h4 id="why-is-this-approach-considered-eager">Why is this approach
+considered eager?</h4>
+<p>This approach is considered eager because it does the work
+<strong>upfront</strong> when <code>union</code> is executed.
+<code>connected</code>, which is an operation that typically happens
+<em>after</em> <code>union</code> performs far less “work”
+comparatively.</p>
+<p>However, we don’t actually know when/if a <code>connected</code>
+operation will be performed ahead of time, so the extra work that
+<code>union</code> is doing could be going to waste.</p>
+<p><strong>For raw algorithmic performance, lazy approaches tend to
+outperform eager approaches.</strong></p>
+<p>Also, this implementation has a worst case runtime of <em>O(n)</em>
+for the <code>union</code> operation, which is <strong>not efficient
+enough</strong> to scale.</p>
+<blockquote>
+<p>Big-Oh isn’t everything, emperical testing, yada yada. Point is, we
+can make this faster.</p>
+</blockquote>
+<p>With this insight, let’s try to shift some of the work over to the
+<code>connected</code> operation to create a lazy approach.</p>
+<h3 id="quick-union">Quick-union</h3>
+<p>We initialize our <code>id[]</code> array in the same way we did for
+Quick-find.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span><span class="op">[]</span> id <span class="op">=</span> <span class="kw">new</span> <span class="dt">int</span><span class="op">[</span>n<span class="op">]</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    id<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> i<span class="op">;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>However, rather than the <code>id[n]</code> denoting the connected
+component that <code>n</code> belongs to, <code>id[n]</code> now points
+to the <strong>parent</strong> of <code>n</code>. If
+<code>id[n] == n</code>, <code>n</code> is considered to be the root of
+that connected component. <strong>All members of a connected component
+share a root</strong>. Now, to join two connected components, we only
+need to modify the value of one of the root.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="dt">int</span> <span class="fu">root</span><span class="op">(</span><span class="dt">int</span> i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(</span>i <span class="op">!=</span> id<span class="op">[</span>i<span class="op">])</span> i <span class="op">=</span> id<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> i<span class="op">;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">void</span> <span class="fu">union</span><span class="op">(</span><span class="dt">int</span> p<span class="op">,</span> <span class="dt">int</span> q<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> i <span class="op">=</span> <span class="fu">root</span><span class="op">(</span>p<span class="op">);</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> j <span class="op">=</span> <span class="fu">root</span><span class="op">(</span>q<span class="op">);</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// set the root of i to j. implicitly sets the connected component to be &quot;under&quot; j.</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    id<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> j</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">boolean</span> <span class="fu">connected</span><span class="op">(</span><span class="dt">int</span> p<span class="op">,</span> <span class="dt">int</span> q<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fu">root</span><span class="op">(</span>p<span class="op">)</span> <span class="op">==</span> <span class="fu">root</span><span class="op">(</span>q<span class="op">);</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>This is better, but still not good enough. In most cases, the
+<code>root</code> operation runs in <em>O(log n)</em> time. But in the
+worst case, the tree can become “tall and skinny”, so the real worst
+case runtime is <em>O(n)</em>.</p>
+<p>This runtime is actually worse overall than the Quick-find
+implementation as both the <code>union</code> and <code>connected</code>
+methods make use of the <code>root</code> method, so now both of those
+operations have a worst case runtime of <em>O(n)</em>.</p>
+<p><strong>BUT</strong>, this approach leaves more room for
+improvement.</p>
+<h3 id="improvements-to-quick-union">Improvements to Quick-Union</h3>
+<h4 id="weighted-trees">Weighted trees</h4>
+<p>Before, we arbitrary set the the new of the connected component. We
+can instead keep track of the size of each subtree and make sure that
+the larger subtree becomes the new root. This actually
+<strong>forces</strong> the worst case run time of <code>root</code>
+down to <em>O(log n)</em>. The proof and implementation is left as an
+exercise for the reader.</p>
+<h4 id="path-compression">Path compression</h4>
+<p>When we traverse up the tree via the <code>root</code> method, we
+might as well compress the path of each node for future use. A simple
+way to do this is set the parent of each node we touch to it’s
+grandparent. This halves the length of the path from each node to it’s
+root.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="dt">int</span> <span class="fu">root</span><span class="op">(</span><span class="dt">int</span> i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(</span>i <span class="op">!=</span> id<span class="op">[</span>i<span class="op">])</span> <span class="op">{</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        id<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> id<span class="op">[</span>id<span class="op">[</span>i<span class="op">]];</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        i <span class="op">=</span> id<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> i<span class="op">;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>An even more powerful path compression technique is to directly set
+the parent each node we traverse to the root of its connected component.
+However, in practice, this optimization doesn’t actually do much better
+compared to the basic path compression.</p>
+<blockquote>
+<p>Side note: the more powerful path compression is actually a form of
+dynamic programming!</p>
+</blockquote>
+<div class="sourceCode" id="cb6"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="dt">int</span> <span class="fu">root</span><span class="op">(</span><span class="dt">int</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>id<span class="op">[</span>p<span class="op">]</span> <span class="op">==</span> p<span class="op">)</span> <span class="cf">return</span> p<span class="op">;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> r <span class="op">=</span> <span class="fu">root</span><span class="op">(</span>id<span class="op">[</span>p<span class="op">]);</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    id<span class="op">[</span>p<span class="op">]</span> <span class="op">=</span> r<span class="op">;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> r<span class="op">;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr>
+
+<p>
+    <a href="/index.html">home</a> | <a href="/contact.html">contact</a> | <a href="/blogs/index.html">blogs and projects</a>
+</p>
+</body>
+</html>

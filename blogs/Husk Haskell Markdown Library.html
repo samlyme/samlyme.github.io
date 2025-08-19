@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Sam Ly" />
+  <title>Husk Haskell Markdown Library</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+</style>
+  <style type="text/css">
+:root {
+--bg-color: #ffffff;
+--text-color: #222222;
+--accent-color: #5a32c2;
+--link-color: #005f99;
+--heading-color: #000000;
+--code-bg: #d8d8d880;
+--code-text: #2d5b00;
+--border-color: #dddddd;
+--font-main: 'Georgia', serif;
+--font-code: 'Fira Code', monospace;
+}
+
+body.dark-mode {
+--bg-color: #121212;
+--text-color: #dddddd;
+--accent-color: #8f6eff;
+--link-color: #4fa3ff;
+--heading-color: #ffffff;
+--code-bg: #2a2a2a;
+--code-text: #c5f78b;
+--border-color: #444444;
+}
+* {
+box-sizing: border-box;
+}
+body {
+background-color: var(--bg-color);
+color: var(--text-color);
+font-family: var(--font-main);
+line-height: 1.6;
+max-width: 75ch;
+margin: auto;
+padding: 2rem;
+}
+a {
+color: var(--link-color);
+text-decoration: none;
+}
+a:hover {
+text-decoration: underline;
+}
+header, nav, footer {
+background: #f2f2f2;
+padding: 1rem 2rem;
+border-bottom: 1px solid var(--border-color);
+font-family: var(--font-main);
+}
+h1, h2, h3, h4, h5, h6 {
+color: var(--heading-color);
+font-family: var(--font-main);
+margin-top: 2rem;
+margin-bottom: 1rem;
+}
+p {
+margin-bottom: 1.5rem;
+}
+pre {
+background-color: var(--code-bg);
+padding: 0.5em;
+border-radius: 4px;
+}
+code {
+font-size: 0.9rem;
+}
+
+blockquote {
+border-left: 4px solid var(--accent-color);
+background-color: var(--code-bg);
+padding: 0.2em 1em;
+margin: 1.5rem 0;
+border-radius: 4px;
+}
+ul, ol {
+padding-left: 2rem;
+}
+img {
+display: block;
+margin-left: auto;
+margin-right: auto;
+width: 80%;
+}
+table {
+width: 100%;
+border-collapse: collapse;
+margin-bottom: 1.5rem;
+}
+th, td {
+border: 1px solid var(--border-color);
+padding: 0.75rem;
+text-align: left;
+}
+hr {
+border: none;
+border-top: 1px solid var(--border-color);
+margin: 2rem 0;
+}
+footer {
+border-top: 1px solid var(--border-color);
+text-align: center;
+font-size: 0.9rem;
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Husk Haskell Markdown Library</h1>
+<p class="author">Sam Ly</p>
+</header>
+<p><a href="https://github.com/samlyme/husk">github</a></p>
+<p>This is my own markdown to html converter that I wrote.</p>
+<p>I used to actually use this library, but I have since switched to <a href="https://pandoc.org/">pandoc</a></p>
+<h1 id="why">Why?</h1>
+<ol type="1">
+<li>I wanted to learn haskell.</li>
+<li>Interesting problem for me to solve.</li>
+</ol>
+<h2 id="implementation">implementation</h2>
+<p>I used Haskell for this, because the functional and pure nature lends
+itself nicely to creating deterministic mappings from one domain into
+another. In this case, from MarkDown to HTML.</p>
+<h3 id="representing-html-in-haskell">representing html in haskell</h3>
+<h3 id="parsing-markdown">parsing markdown</h3>
+<hr>
+
+<p>
+    <a href="/index.html">home</a> | <a href="/contact.html">contact</a> | <a href="/blogs/index.html">blogs and projects</a>
+</p>
+</body>
+</html>
