@@ -1,12 +1,3 @@
-# Imperative vs Declarative code
-
-Since we are performing this task in 3D space, each point ($x_i$ and
-$\hat{y_i}$) is actually a vector in $R^3$. Thus,
-$$ X = \{x_1, x_2, ..., x_n\}, \hat{Y} = \{\hat{y}_1, \hat{y}_2, ..., \hat{y}_m\} $$
-$$ x_i \in R^3 \text{, for } i \in [1, n]$$
-$$\hat{y}_j \in R^3 \text{, for } j \in [1, m]$$
-and,
-$$ \hat{Y} = F(X) $$
 
 The most fundamental difference between imperative and declarative code is that imperative code tells the computer *how* to achieve a certain goal, while declarative code tells the computer *what* a certain goal is, and the computer will achieve that goal for you. Another way to conceptualize this is that with declarative code, the computer "knows" what the goal is, while with imperative code, the computer doesn't know what the end goal is, and is simply following your instructions.
 
@@ -169,4 +160,4 @@ Low level languages place more trust in the developer, similar to how imperative
 
 ---
 
-[home](/index.html) | [contact](/contact.html) | [blogs](/blogs/index.html)
+[home](/index.md) | [contact](/contact.md) | [blogs](/blogs/index.md)

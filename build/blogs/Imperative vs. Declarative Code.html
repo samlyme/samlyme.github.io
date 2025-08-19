@@ -4,7 +4,8 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>blog1</title>
+  <meta name="author" content="Sam Ly" />
+  <title>Imperative vs. Declarative Code</title>
   <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -191,20 +192,10 @@ font-size: 0.9rem;
 </style>
 </head>
 <body>
-<h1 id="imperative-vs-declarative-code">Imperative vs Declarative
-code</h1>
-<p>Since we are performing this task in 3D space, each point
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>x</mi><mi>i</mi></msub><annotation encoding="application/x-tex">x_i</annotation></semantics></math>
-and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><msub><mi>y</mi><mi>i</mi></msub><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\hat{y_i}</annotation></semantics></math>)
-is actually a vector in
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>R</mi><mn>3</mn></msup><annotation encoding="application/x-tex">R^3</annotation></semantics></math>.
-Thus,
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><mo stretchy="false" form="prefix">{</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mi>x</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">}</mo><mo>,</mo><mover><mi>Y</mi><mo accent="true">̂</mo></mover><mo>=</mo><mo stretchy="false" form="prefix">{</mo><msub><mover><mi>y</mi><mo accent="true">̂</mo></mover><mn>1</mn></msub><mo>,</mo><msub><mover><mi>y</mi><mo accent="true">̂</mo></mover><mn>2</mn></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mover><mi>y</mi><mo accent="true">̂</mo></mover><mi>m</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex"> X = \{x_1, x_2, ..., x_n\}, \hat{Y} = \{\hat{y}_1, \hat{y}_2, ..., \hat{y}_m\} </annotation></semantics></math>
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mi>i</mi></msub><mo>∈</mo><msup><mi>R</mi><mn>3</mn></msup><mrow><mtext mathvariant="normal">, for </mtext><mspace width="0.333em"></mspace></mrow><mi>i</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mn>1</mn><mo>,</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex"> x_i \in R^3 \text{, for } i \in [1, n]</annotation></semantics></math>
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>y</mi><mo accent="true">̂</mo></mover><mi>j</mi></msub><mo>∈</mo><msup><mi>R</mi><mn>3</mn></msup><mrow><mtext mathvariant="normal">, for </mtext><mspace width="0.333em"></mspace></mrow><mi>j</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mn>1</mn><mo>,</mo><mi>m</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\hat{y}_j \in R^3 \text{, for } j \in [1, m]</annotation></semantics></math>
-and,
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>Y</mi><mo accent="true">̂</mo></mover><mo>=</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex"> \hat{Y} = F(X) </annotation></semantics></math></p>
+<header id="title-block-header">
+<h1 class="title">Imperative vs. Declarative Code</h1>
+<p class="author">Sam Ly</p>
+</header>
 <p>The most fundamental difference between imperative and declarative
 code is that imperative code tells the computer <em>how</em> to achieve
 a certain goal, while declarative code tells the computer <em>what</em>
@@ -387,5 +378,10 @@ code places less trust in the developer.</p>
 <hr />
 <p><a href="/index.html">home</a> | <a href="/contact.html">contact</a>
 | <a href="/blogs/index.html">blogs</a></p>
+---
+
+wooooo
+
+[home](/index.md) | [contact](/contact.md) | [blogs](/blogs/index.md)
 </body>
 </html>

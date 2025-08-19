@@ -1,5 +1,3 @@
-# Union Find Algoritm
-
 *Credits: Princeton's Algorithms, Part I*
 
 Union Find is a classic problem in computer science, which entails forming groups of nodes and determining if two nodes are in the same group.

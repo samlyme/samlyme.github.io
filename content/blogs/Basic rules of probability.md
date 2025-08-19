@@ -2,8 +2,6 @@
 
 These are just my notes. I like writing.
 
-# Basic rules of probability
-
 ## 3.1 Why Probability?
 
 I'de thought I had a pretty decent understanding of the applications of probability, but this book gave me some non-obvious insights about *why* probability is so important to the study of machine learning and deep learning.

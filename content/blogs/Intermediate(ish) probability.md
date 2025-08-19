@@ -1,5 +1,3 @@
-# Intermediate(ish) probability
-
 *Credits: Deep Learning, Ian Goodfellow*
 
 ## 3.9.6 Mixtures of Distributions

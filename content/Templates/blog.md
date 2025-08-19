@@ -1,9 +1,4 @@
----
-title:  blog
-author: Sam Ly
----
 
-# title
 
 ---
 
