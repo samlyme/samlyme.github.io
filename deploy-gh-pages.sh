@@ -1,11 +1,6 @@
 #!/bin/bash
 set -e
 
-# build the site
-runhaskell main.hs
-
-cp ./static/* ./build
-
 # Customize these
 SOURCE_DIR="build"
 REMOTE_REPO="git@github.com:samlyme/samlyme.github.io.git"
