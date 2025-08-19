@@ -4,7 +4,7 @@ set -euo pipefail
 STA=static
 SRC=content
 DST=build
-CSS=static/style.css
+CSS=components/style.css
 LUA=link-fix.lua
 
 # Nav component
@@ -27,7 +27,7 @@ cp -r "$ATC" "$DST/attachments"
 
 echo "Copying static files to the build directory..."
 # copy the static files to build directory
-cp -r "$STA" "$DST"
+cp -r "$STA"/* "$DST"
 
 echo "Generating HTML files from Markdown..."
 # walk the tree, pruning $IGN, convert .md → .html
