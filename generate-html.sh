@@ -7,6 +7,9 @@ DST=build
 CSS=static/style.css
 LUA=link-fix.lua
 
+# Nav component
+NAV=components/nav.html
+
 # Directorty containing attachments
 ATC="$SRC/attachments"
 
@@ -47,7 +50,7 @@ find "$SRC" \
       --standalone \
       --lua-filter="$LUA" \
       --css="$CSS" \
-      --include-after-body nav.html \
+      --include-after-body "$NAV" \
       --metadata title="$(basename "$md" .md)" \
       --metadata author="Sam Ly" \
       "$md" \
@@ -62,7 +65,7 @@ find "$SRC" \
       --standalone \
       --lua-filter="$LUA" \
       --css="$CSS" \
-      --include-after-body nav.html \
+      --include-after-body "$NAV" \
       "$md" \
       -o "$out"
   fi
