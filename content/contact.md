@@ -5,7 +5,3 @@
 - school email: nghialy@cpp.edu
 - [LinkedIn](https://www.linkedin.com/in/samly-me/)
 - [GitHub](https://github.com/samlyme)
-
----
-
-[home](/index.html) | [contact](/contact.html) | [blogs](/blogs/index.html)

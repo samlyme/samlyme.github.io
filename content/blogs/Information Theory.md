@@ -25,7 +25,3 @@ $$ D_{KL}(P||Q) = E_{x ~ P}[\text{log} P(X) - \text{log} Q(x)$$
 ![](https://i.imgur.com/cpYL0Jc.png)
 
 The KL divergence is not a true distance measure as D (P || Q) != D (Q || P).
-
----
-
-[home](/index.html) | [contact](/contact.html) | [blogs](/blogs/index.html)

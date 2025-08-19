@@ -133,7 +133,3 @@ private int root(int p) {
     return r;
 }
 ```
-
----
-
-[home](/index.md) | [contact](/contact.md) | [blogs](/blogs/index.md)

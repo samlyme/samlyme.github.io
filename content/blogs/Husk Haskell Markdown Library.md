@@ -19,8 +19,3 @@ I used Haskell for this, because the functional and pure nature lends itself nic
 
 ### parsing markdown
 
-
-
----
-
-[home](/index.html) | [contact](/contact.html) | [blogs](/blogs/index.html)

@@ -157,7 +157,3 @@ This process is *abstracted* away from the developer. The developer places trust
 The more abstractions, the "higher level" the language. A "high level" language is filled with these abstractions, while a "low level" has less of these abstractions.
 
 Low level languages place more trust in the developer, similar to how imperative code places more trust in the developer, while high level languages place less trust in the developer, similar to how declarative code places less trust in the developer.
-
----
-
-[home](/index.md) | [contact](/contact.md) | [blogs](/blogs/index.md)

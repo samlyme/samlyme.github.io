@@ -47,6 +47,7 @@ find "$SRC" \
       --standalone \
       --lua-filter="$LUA" \
       --css="$CSS" \
+      --include-after-body nav.html \
       --metadata title="$(basename "$md" .md)" \
       --metadata author="Sam Ly" \
       "$md" \
@@ -61,6 +62,7 @@ find "$SRC" \
       --standalone \
       --lua-filter="$LUA" \
       --css="$CSS" \
+      --include-after-body nav.html \
       "$md" \
       -o "$out"
   fi

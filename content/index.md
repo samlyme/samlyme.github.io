@@ -23,7 +23,3 @@ I am comfortable in the following technologies:
 Currently, I am working as an undergraduate research assistant. I am working on developing a novel **decentralized task allocation algoritmh** utilizing **physics informed reinforcement learning** to efficiently generate collision-free task execution plans.
 
 I also like writing [blogs](/blogs/index.html) about my projects and whatever stuff I find interesting.
-
----
-
-[home](/index.html) | [contact](/contact.html) | [blogs](/blogs/index.html)

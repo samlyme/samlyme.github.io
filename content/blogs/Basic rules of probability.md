@@ -151,7 +151,3 @@ Cov(***x***)*i, j* = Cov(*xi, xj*)
 
 Notice that the diagonal of this matrix is:
 Cov(***x***)*i, i* = Cov(*xi, xi*) = Var(*xi*)
-
----
-
-[home](/index.html) | [contact](/contact.html) | [blogs](/blogs/index.html)
