@@ -7,6 +7,9 @@ DST=build
 CSS=static/style.css
 LUA=link-fix.lua
 
+# Directorty containing attachments
+ATC="$SRC/attachments"
+
 # Directory to ignore (relative to SRC)
 IGN="$SRC/Templates"
 
@@ -17,12 +20,17 @@ if [[ -d "$DST" ]]; then
 fi
 mkdir -p "$DST"
 
+cp -r "$ATC" "$DST/attachments"
+
+echo "Copying static files to the build directory..."
 # copy the static files to build directory
 cp -r "$STA" "$DST"
 
+echo "Generating HTML files from Markdown..."
 # walk the tree, pruning $IGN, convert .md → .html
 find "$SRC" \
   -path "$IGN" -prune -o \
+  -path "$ATC" -prune -o \
   -type f -name '*.md' -print | while IFS= read -r md; do
 
   # compute output path
