@@ -1,69 +1,156 @@
-
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
 <head>
-<title>Sam Ly</title>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
-<link rel="stylesheet" href="/style.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script><script src="/index.js"></script></head><body><main>
-<h1>
-husk
-</h1>
-<p>
-<a href="https://github.com/samlyme/husk">github</a>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>husk</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 
-</p>
-<p>
-this is my own markdown to html converter that i wrote. it is bad, but good enough for what i use it for. 
-</p>
-<p>
-the idea is to write everything in markdown, then have husk generate html files for you. 
-</p>
-<h1>
-why?
-</h1>
-<ol><li>
-i wanted to learn haskell.
-</li><li>
-interesting problem for me to solve.
-</li></ol>
-<h2>
-implementation
-</h2>
-<p>
-i used haskell (btw) for this, because the functional and pure nature lends itself nicely to creating deterministic mappings from one domain into another. in this case, from markdown to html.  
-</p>
-<h3>
-representing html in haskell
-</h3>
-<p>
-blah blah
-</p>
-<h3>
-parsing markdown
-</h3>
-<p>
-blah blah
-</p>
-<h2>
-improvements and todos
-</h2>
-<p>
-better handling of malformed markdown.
-</p>
-<p>
-better support for links, email, and embeds.
-</p>
-<p>
-better support for templates.
-</p>
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+</style>
+  <style type="text/css">
+:root {
+--bg-color: #ffffff;
+--text-color: #222222;
+--accent-color: #5a32c2;
+--link-color: #005f99;
+--heading-color: #000000;
+--code-bg: #d8d8d880;
+--code-text: #2d5b00;
+--border-color: #dddddd;
+--font-main: 'Georgia', serif;
+--font-code: 'Fira Code', monospace;
+}
+
+body.dark-mode {
+--bg-color: #121212;
+--text-color: #dddddd;
+--accent-color: #8f6eff;
+--link-color: #4fa3ff;
+--heading-color: #ffffff;
+--code-bg: #2a2a2a;
+--code-text: #c5f78b;
+--border-color: #444444;
+}
+* {
+box-sizing: border-box;
+}
+body {
+background-color: var(--bg-color);
+color: var(--text-color);
+font-family: var(--font-main);
+line-height: 1.6;
+max-width: 75ch;
+margin: auto;
+padding: 2rem;
+}
+a {
+color: var(--link-color);
+text-decoration: none;
+}
+a:hover {
+text-decoration: underline;
+}
+header, nav, footer {
+background: #f2f2f2;
+padding: 1rem 2rem;
+border-bottom: 1px solid var(--border-color);
+font-family: var(--font-main);
+}
+h1, h2, h3, h4, h5, h6 {
+color: var(--heading-color);
+font-family: var(--font-main);
+margin-top: 2rem;
+margin-bottom: 1rem;
+}
+p {
+margin-bottom: 1.5rem;
+}
+pre {
+background-color: var(--code-bg);
+padding: 0.5em;
+border-radius: 4px;
+}
+code {
+font-size: 0.9rem;
+}
+
+blockquote {
+border-left: 4px solid var(--accent-color);
+background-color: var(--code-bg);
+padding: 0.2em 1em;
+margin: 1.5rem 0;
+border-radius: 4px;
+}
+ul, ol {
+padding-left: 2rem;
+}
+img {
+display: block;
+margin-left: auto;
+margin-right: auto;
+width: 80%;
+}
+table {
+width: 100%;
+border-collapse: collapse;
+margin-bottom: 1.5rem;
+}
+th, td {
+border: 1px solid var(--border-color);
+padding: 0.75rem;
+text-align: left;
+}
+hr {
+border: none;
+border-top: 1px solid var(--border-color);
+margin: 2rem 0;
+}
+footer {
+border-top: 1px solid var(--border-color);
+text-align: center;
+font-size: 0.9rem;
+}
+</style>
+</head>
+<body>
+<h1 id="husk">husk</h1>
+<p><a href="https://github.com/samlyme/husk">github</a></p>
+<p>this is my own markdown to html converter that i wrote. it is bad,
+but good enough for what i use it for.</p>
+<p>the idea is to write everything in markdown, then have husk generate
+html files for you.</p>
+<h1 id="why">why?</h1>
+<ol type="1">
+<li>i wanted to learn haskell.</li>
+<li>interesting problem for me to solve.</li>
+</ol>
+<h2 id="implementation">implementation</h2>
+<p>i used haskell (btw) for this, because the functional and pure nature
+lends itself nicely to creating deterministic mappings from one domain
+into another. in this case, from markdown to html.</p>
+<h3 id="representing-html-in-haskell">representing html in haskell</h3>
+<p>blah blah</p>
+<h3 id="parsing-markdown">parsing markdown</h3>
+<p>blah blah</p>
+<h2 id="improvements-and-todos">improvements and todos</h2>
+<p>better handling of malformed markdown.</p>
+<p>better support for links, email, and embeds.</p>
+<p>better support for templates.</p>
 <hr />
-<p>
-<a href="/index.html">home</a>
- | 
-<a href="/contact.html">contact</a>
- | 
-<a href="/blogs/index.html">blogs</a>
-
-</p></main></body></html>
+<p><a href="/index.html">home</a> | <a href="/contact.html">contact</a>
+| <a href="/blogs/index.html">blogs</a></p>
+</body>
+</html>

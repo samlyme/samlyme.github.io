@@ -7,6 +7,7 @@ Union Find is a classic problem in computer science, which entails forming group
 Formally stated, you have *n* nodes (or sites). `union(n1, n2)` creates a connection between nodes `n1` and `n2`.  `connected(n1, n2)` determines whether the two nodes have any path between them. For example, running `union(n1, n2)` and `union(n2, n3` causes `connected(n1, n3)` to return `true`. 
 
 This means that the relationship of being "connected" is actually an **equivalence relation** and has the following properties:
+
 - Reflexivity: any node *p* is connected to *p*.
 - Symmetry: if node *p* is connected to node *q*, then node *q* is connected to node *p*.
 - Transitivity: 
@@ -29,7 +30,7 @@ This approach is considered to be an **eager** approach for reasons we will see 
 We first initialize an array `id[]` of size *n*, such that each value is its own index.
 
 ```java
-int[] id = new int[n]
+int[] id = new int[n];
 for (int i = 0; i < n; i++) {
     id[i] = i;
 }
@@ -115,8 +116,8 @@ When we traverse up the tree via the `root` method, we might as well compress th
 ```java
 private int root(int i) {
     while (i != id[i]) {
-    id[i] = id[id[i]];
-    i = id[i];
+        id[i] = id[id[i]];
+        i = id[i];
     }
     return i;
 }
@@ -137,4 +138,4 @@ private int root(int p) {
 
 ---
 
-[home](/index.html) | [contact](/contact.html) | [blogs](/blogs/index.html)
+[home](/index.md) | [contact](/contact.md) | [blogs](/blogs/index.md)

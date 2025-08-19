@@ -33,8 +33,9 @@ body {
   color: var(--text-color);
   font-family: var(--font-main);
   line-height: 1.6;
-  margin: 0;
-  padding: 0;
+  max-width: 75ch;
+  margin: auto;
+  padding: 2rem;
 }
 
 a {
@@ -53,11 +54,6 @@ header, nav, footer {
   font-family: var(--font-main);
 }
 
-main {
-  max-width: 75ch;
-  margin: auto;
-  padding: 2rem;
-}
 
 h1, h2, h3, h4, h5, h6 {
   color: var(--heading-color);
@@ -70,10 +66,20 @@ p {
   margin-bottom: 1.5rem;
 }
 
-code, pre {
+pre {
+  background-color: var(--code-bg);
+  padding: 0.5em;
+  border-radius: 4px;
+}
+
+code {
+  font-size: 0.9rem;
+}
+
+/* code, pre {
   font-family: var(--font-code);
-  /* background-color: var(--code-bg); */
-  /* color: var(--code-text); */
+  background-color: var(--code-bg);
+  color: var(--code-text);
   padding: 0.2em 0.4em;
   border-radius: 4px;
 }
@@ -82,14 +88,14 @@ pre {
   padding: 1em;
   overflow-x: auto;
   margin-bottom: 1.5rem;
-}
+} */
 
 blockquote {
   border-left: 4px solid var(--accent-color);
   background-color: var(--code-bg);
   padding: 0.2em 1em;
-  /* color: #555; */
   margin: 1.5rem 0;
+  border-radius: 4px;
 }
 
 ul, ol {

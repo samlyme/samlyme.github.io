@@ -1,543 +1,317 @@
-
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
 <head>
-<title>Sam Ly</title>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
-<link rel="stylesheet" href="/style.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script><script src="/index.js"></script></head><body><main>
-<p>
-<em>Credits: Deep Learning, Ian Goodfellow</em>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>blog5</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 
-</p>
-<p>
-These are just my notes. I like writing.
-</p>
-<h1>
-Basic rules of probability
-</h1>
-<h2>
-3.1 Why Probability?
-</h2>
-<p>
-I&#39;de thought I had a pretty decent understanding of the applications of probability, but this book gave me some non-obvious insights about 
-<em>why</em>
- probability is so important to the study of machine learning and deep learning.
-</p>
-<p>
-<strong>Probability gives us the ability to quantify and reason about uncertainty.</strong>
- But 
-<em>where</em>
- does this uncertainty come from? 
-</p>
-<ol><li>
-Inherent 
-<strong>stochasticity</strong>
-: Sometimes the system we are study is just random by nature.
-</li><li>
-Incomplete 
-<strong>observability</strong>
-: Sometimes we just don&#39;t have access to all the information needed to determine the outcome of system. 
-</li><li>
-Incomplete 
-<strong>modeling</strong>
-: Some models may need to be simplified for various reasons. Simplifying models usually mean discarding some information. This loss of information leads to uncertainty in the model&#39;s predictions. 
-</li></ol>
-<p>
-One virtue of uncertain rules and models is what I call the &quot;effort to result ratio&quot; (not a real term, but it helps me reason about this topic). The rule &quot;Most birds fly&quot; is pretty much true. The rule &quot;Birds fly, except for very young birds that have not yet learned to fly, sick or injured birds that have lost the ability to fly, flightless species...&quot; is absolutely true, but it takes a lot more &quot;effort&quot; to define. 
-</p>
-<blockquote><p>
-&quot;[This rule is] expensive to develop, maintain and communicate and, after all this effort, is still brittle and prone to failure.&quot;
-</p></blockquote>
-<p>
-For this reason, developing models isn&#39;t always only about the fidelity. Making a good choice often comes down to experience, intuition, and taste.
-</p>
-<h3>
-Views of probability
-</h3>
-<h4>
-Frequentist probability
-</h4>
-<p>
-Under the 
-<strong>frequentist</strong>
- view of probability, events and their outcomes are assumed to be reproducible. For example, the result of a given poker hand can be repeated, and the probability of winning that hand can be calculated as the proportion of wins. 
-</p>
-<h4>
-Bayesian probability
-</h4>
-<p>
-Under the 
-<strong>Bayesian</strong>
- view of probability, events and their outcomes are 
-<strong><em>not</em></strong>
- assumed to be repeatable. Instead, the probability represents a 
-<strong>degree of belief</strong>
- of the outcome. Ie. a probability of 1 represents an absolute certain belief in a certain outcome. 
-</p>
-<p>
-Although we can define these two 
-<em>types</em>
- of probability, as it turns out, the rules to reason about both types of probability are exactly the same (trust me bro). These definitions are just useful for 
-<em>interpreting</em>
- the probability value.
-</p>
-<h2>
-3.2 Random Variables
-</h2>
-<p>
-A variable that is random. The &quot;value&quot; of a random variable can be discrete or continuous.
-</p>
-<h2>
-3.3 Probability Distributions
-</h2>
-<h3>
-Discrete RV
-</h3>
-<p>
-A description of how probable each outcome of a random variable is. The probability distribution of a discrete RV is typically called the 
-<strong>probability mass function</strong>
- (PMF), which takes in a value (outcome of the RV) and returns a value between 0 and 1, the probability of that outcome happening. The
-</p>
-<p>
-Notation: 
-<em>P</em>
-(
-<code>x</code>
- = 
-<em>x</em>
-) is interpreted as the probability of the random variable x takes on the specific value 
-<em>x</em>
-. (weird ik). 
-</p>
-<p>
-Notation: 
-<code>x</code>
- ~ 
-<em>P</em>
-(x) is interpreted as &quot;x follows the distribution 
-<em>P</em>
-(x)&quot;.
-</p>
-<p>
-It is not useful to get too caught up in the notation of these functions. 
-</p>
-<p>
-For a function 
-<em>P</em>
- to be considered a PMF of the RV 
-<code>x</code>
-, it must have the following properties:
-</p>
-<ul><li>
-The domain of of 
-<em>P</em>
- must be 
-<strong>exactly</strong>
- all the possible states of the 
-<code>x</code>
-.
-</li><li>
-For any 
-<em>x</em>
- in 
-<code>x</code>
-, 
-<em>P(x)</em>
- is between 0 and 1.
-</li><li>
-The sum of all values of 
-<em>P(x)</em>
- = 1. aka 
-<em>P</em>
- is 
-<strong>normalized</strong>
-.
-</li></ul>
-<h3>
-Continuous RV
-</h3>
-<p>
-A similar function for a continuous RV is known as the 
-<strong>probability density function</strong>
- (PDF). 
-</p>
-<p>
-For a function 
-<em>p</em>
- to be considered a PDF of the RV 
-<code>x</code>
-, it must have the following properties:
-</p>
-<ul><li>
-The domain of 
-<em>p</em>
- must be the set of all possible states of 
-<code>x</code>
-.
-</li><li>
-For any 
-<em>x</em>
- in 
-<code>x</code>
-, 
-<em>p(x)</em>
- is greater than or equal to 0. 
-<em>Note:</em>
- we do not require that 
-<em>p(x)</em>
- be less than or equal to 1.
-</li><li>
-The integral of 
-<em>p(x)</em>
- across its entire domain is 1.
-</li></ul>
-<h2>
-3.4 Marginal Probability
-</h2>
-<h4>
-Joint Probability
-</h4>
-<p>
-A PDF or PMF can be also be a function of multiple RV&#39;s. For example, 
-<em>p(x, y)</em>
- is the probability of the specific combination occurring 
-<em>(x, y)</em>
-. The double integral of this function should be 1.
-</p>
-<p>
-Now that we have a joint probability distribution 
-<em>p(x, y)</em>
-, we can 
-<em>integrate out</em>
- one of the variables to get the 
-<strong>marginal probability</strong>
- of one of the variables.
-</p>
-<p>
-For example, 
-<em>p(x)</em>
- = integral (
-<em>p(x, y) dy</em>
-)
-</p>
-<h2>
-3.5 Conditional Probability
-</h2>
-<p>
-<em>P(y | x)</em>
- is interpreted as &quot;the probability of 
-<em>y</em>
- given a specific value of 
-<em>x</em>
-&quot;.
-</p>
-<p>
-<em>P(y | x)</em>
- = 
-<em>P(y, x) / P(x)</em>
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+</style>
+  <style type="text/css">
+:root {
+--bg-color: #ffffff;
+--text-color: #222222;
+--accent-color: #5a32c2;
+--link-color: #005f99;
+--heading-color: #000000;
+--code-bg: #d8d8d880;
+--code-text: #2d5b00;
+--border-color: #dddddd;
+--font-main: 'Georgia', serif;
+--font-code: 'Fira Code', monospace;
+}
 
-</p>
-<p>
-Note: the conditional probability is not defined when 
-<em>P(x)</em>
- = 0. 
-</p>
-<h2>
-3.6 The Chain Rule of Conditional Probabilities
-</h2>
-<p>
-Using some algebra, we notice that:
-</p>
-<p>
-<em>P(y, x)</em>
- = 
-<em>P(y | x) * P(x)</em>
+body.dark-mode {
+--bg-color: #121212;
+--text-color: #dddddd;
+--accent-color: #8f6eff;
+--link-color: #4fa3ff;
+--heading-color: #ffffff;
+--code-bg: #2a2a2a;
+--code-text: #c5f78b;
+--border-color: #444444;
+}
+* {
+box-sizing: border-box;
+}
+body {
+background-color: var(--bg-color);
+color: var(--text-color);
+font-family: var(--font-main);
+line-height: 1.6;
+max-width: 75ch;
+margin: auto;
+padding: 2rem;
+}
+a {
+color: var(--link-color);
+text-decoration: none;
+}
+a:hover {
+text-decoration: underline;
+}
+header, nav, footer {
+background: #f2f2f2;
+padding: 1rem 2rem;
+border-bottom: 1px solid var(--border-color);
+font-family: var(--font-main);
+}
+h1, h2, h3, h4, h5, h6 {
+color: var(--heading-color);
+font-family: var(--font-main);
+margin-top: 2rem;
+margin-bottom: 1rem;
+}
+p {
+margin-bottom: 1.5rem;
+}
+pre {
+background-color: var(--code-bg);
+padding: 0.5em;
+border-radius: 4px;
+}
+code {
+font-size: 0.9rem;
+}
 
-</p>
-<p>
-Furthermore, we can generalize, and treat 
-<em>P(y, x)</em>
- as one variable. Thus,
-</p>
-<p>
-<em>P(z, y, x)</em>
- = 
-<em>P(z | y, x) * P(y | x) * P(x)</em>
-
-</p>
-<p>
-This is useful because in many cases, the conditional probability of a variable is much easier to find than the &quot;raw&quot; joint probability. For example in language models, the next predicted word is found by taking the word with the highest probability of occurring given the current phrase. This is easier than finding the entire sentence at once, which is analogous to finding the entire joint probability of all its constituent words.
-</p>
-<h2>
-3.7 Independence and Conditional Independence
-</h2>
-<p>
-Two RV&#39;s are 
-<strong>independent</strong>
- if they have no effect on each other. Thus,
-</p>
-<p>
-<em>P(x, y) = P(x) * P(y)</em>
-. Notated as 
-<em>x</em>
- ⟂ 
-<em>y</em>
-
-</p>
-<p>
-In some cases, 
-<em>x</em>
- and 
-<em>y</em>
- may be 
-<strong>dependent</strong>
-, but given a third variable 
-<em>z</em>
-, they &quot;become independent&quot;. This means that 
-<em>x</em>
- and 
-<em>y</em>
- are 
-<strong>conditionally independent</strong>
- given 
-<em>z</em>
-. 
-</p>
-<p>
-<em>P(x, y | z) = P(x | z) * P(y | z)</em>
-. Notated as 
-<em>x</em>
- ⟂ 
-<em>y</em>
- | 
-<em>z</em>
-
-</p>
-<h2>
-3.8 Expectation, Variance and Covariance
-</h2>
-<h3>
-Expected Value
-</h3>
-<p>
-Let 
-<em>x</em>
- ~ 
-<em>p(x)</em>
-, and 
-<em>f(x)</em>
-.
-<br />
-The 
-<strong>expected value</strong>
- of 
-<em>f</em>
- is: EV [
-<em>f</em>
-] = integral (
-<em>p(x)f(x) dx</em>
-)
-</p>
-<p>
-Treating &quot;EV&quot; as a function, we can say it is a &quot;linear transformation&quot; of 
-<em>f</em>
-:
-<br />
-EV [ a 
-<em>f(x)</em>
- + b 
-<em>g(x)</em>
- ] = a EV [
-<em>f(x)</em>
-] + b EV [
-<em>g(x)</em>
-]
-</p>
-<h3>
-Variance
-</h3>
-<p>
-The 
-<strong>variance</strong>
- gives a measure of how &quot;spread apart&quot; the values of a function of a RV is. 
-</p>
-<p>
-Let 
-<em>x</em>
- ~ 
-<em>p(x)</em>
-, and 
-<em>f(x)</em>
-.
-<br />
-Var(
-<em>f(x)</em>
-) = EV [ (
-<em>f(x)</em>
- - EV [
-<em>f(x)</em>
-]) ^ 2]. 
-</p>
-<blockquote><p>
-The intuition behind this is that we are taking the expected value of the difference between the value of 
-<em>f</em>
- and the 
-<strong>expected value</strong>
- of 
-<em>f</em>
-. Thus, if the 
-<strong>expected distance</strong>
- between 
-<em>f</em>
- and EV 
-<em>f</em>
- is high, the values of 
-<em>f</em>
- are highly &quot;spread apart&quot;.
-</p><p>
-
-</p><p>
-The reason we square the difference between 
-<em>f</em>
- and EV 
-<em>f</em>
- is because we need all the values to be positive, 
-<strong>BUT</strong>
- taking the absolute value has some weird mathematical consequences.
-</p></blockquote>
-<p>
-Now, taking the square root of the variance gives the 
-<strong>standard deviation</strong>
- σ. We have a distinct name of this value because it is used a lot.
-</p>
-<h3>
-Covariance
-</h3>
-<p>
-The 
-<strong>covariance</strong>
- of two values measures how the difference of one variable 
-<em>x</em>
- from EV 
-<em>x</em>
- affects the difference of another variable 
-<em>y</em>
- from EV 
-<em>y</em>
-. (idc if this definition is &quot;wrong&quot;, it makes sense to me).
-</p>
-<p>
-Cov(
-<em>f(x)</em>
-, 
-<em>g(x)</em>
-) = EV [(
-<em>f(x)</em>
- - EV [
-<em>f(x)</em>
-])(
-<em>g(x)</em>
- - EV [
-<em>g(x)</em>
-])]
-</p>
-<p>
-This measure is affected by the 
-<em>scale</em>
- of 
-<em>f</em>
- and 
-<em>g</em>
-. We can &quot;normalize&quot; out this affect by dividing by the standard deviations of 
-<em>f</em>
- and 
-<em>g</em>
- and get the 
-<strong>correlation</strong>
- of 
-<em>f</em>
- and 
-<em>g</em>
-. 
-</p>
-<p>
-Corr(f, g) = Cov(f, g) / (σf * σg)
-</p>
-<p>
-This gives a &quot;pure&quot; measure of the correlation (lol) of two variables.
-</p>
-<h3>
-Relationship between Covariance/Correlation and Independence
-</h3>
-<p>
-Covariance and independence are related because two independent variables 
-<strong>must</strong>
- have a covariance of 0, but a covariance of 0 
-<strong>does not mean</strong>
- that the two variables are independent.
-</p>
-<p>
-This is because covariance is a 
-<strong>purely linear</strong>
- measurement, and variables can still be dependent via a 
-<strong>nonlinear relation</strong>
-.
-</p>
-<p>
-This notion can also be applied to correlation and independence.
-</p>
-<h3>
-Covariance Matrix
-</h3>
-<p>
-Let 
-<strong><em>x</em></strong>
- be a random 
-<strong>vector</strong>
- with 
-<em>n</em>
- entries, such that each entry is a random variable 
-<em>xi</em>
-.
-</p>
-<p>
-An 
-<em>n</em>
- x 
-<em>n</em>
- 
-<strong>covariance matrix</strong>
- can be defined as:
-<br />
-Cov(
-<strong><em>x</em></strong>
-)
-<em>i, j</em>
- = Cov(
-<em>xi, xj</em>
-)
-</p>
-<p>
-Notice that the diagonal of this matrix is:
-<br />
-Cov(
-<strong><em>x</em></strong>
-)
-<em>i, i</em>
- = Cov(
-<em>xi, xi</em>
-) = Var(
-<em>xi</em>
-)
-</p>
+blockquote {
+border-left: 4px solid var(--accent-color);
+background-color: var(--code-bg);
+padding: 0.2em 1em;
+margin: 1.5rem 0;
+border-radius: 4px;
+}
+ul, ol {
+padding-left: 2rem;
+}
+img {
+display: block;
+margin-left: auto;
+margin-right: auto;
+width: 80%;
+}
+table {
+width: 100%;
+border-collapse: collapse;
+margin-bottom: 1.5rem;
+}
+th, td {
+border: 1px solid var(--border-color);
+padding: 0.75rem;
+text-align: left;
+}
+hr {
+border: none;
+border-top: 1px solid var(--border-color);
+margin: 2rem 0;
+}
+footer {
+border-top: 1px solid var(--border-color);
+text-align: center;
+font-size: 0.9rem;
+}
+</style>
+</head>
+<body>
+<p><em>Credits: Deep Learning, Ian Goodfellow</em></p>
+<p>These are just my notes. I like writing.</p>
+<h1 id="basic-rules-of-probability">Basic rules of probability</h1>
+<h2 id="why-probability">3.1 Why Probability?</h2>
+<p>I’de thought I had a pretty decent understanding of the applications
+of probability, but this book gave me some non-obvious insights about
+<em>why</em> probability is so important to the study of machine
+learning and deep learning.</p>
+<p><strong>Probability gives us the ability to quantify and reason about
+uncertainty.</strong> But <em>where</em> does this uncertainty come
+from? 1. Inherent <strong>stochasticity</strong>: Sometimes the system
+we are study is just random by nature. 2. Incomplete
+<strong>observability</strong>: Sometimes we just don’t have access to
+all the information needed to determine the outcome of system. 3.
+Incomplete <strong>modeling</strong>: Some models may need to be
+simplified for various reasons. Simplifying models usually mean
+discarding some information. This loss of information leads to
+uncertainty in the model’s predictions.</p>
+<p>One virtue of uncertain rules and models is what I call the “effort
+to result ratio” (not a real term, but it helps me reason about this
+topic). The rule “Most birds fly” is pretty much true. The rule “Birds
+fly, except for very young birds that have not yet learned to fly, sick
+or injured birds that have lost the ability to fly, flightless species…”
+is absolutely true, but it takes a lot more “effort” to define.</p>
+<blockquote>
+<p>“[This rule is] expensive to develop, maintain and communicate and,
+after all this effort, is still brittle and prone to failure.”</p>
+</blockquote>
+<p>For this reason, developing models isn’t always only about the
+fidelity. Making a good choice often comes down to experience,
+intuition, and taste.</p>
+<h3 id="views-of-probability">Views of probability</h3>
+<h4 id="frequentist-probability">Frequentist probability</h4>
+<p>Under the <strong>frequentist</strong> view of probability, events
+and their outcomes are assumed to be reproducible. For example, the
+result of a given poker hand can be repeated, and the probability of
+winning that hand can be calculated as the proportion of wins.</p>
+<h4 id="bayesian-probability">Bayesian probability</h4>
+<p>Under the <strong>Bayesian</strong> view of probability, events and
+their outcomes are <strong><em>not</em></strong> assumed to be
+repeatable. Instead, the probability represents a <strong>degree of
+belief</strong> of the outcome. Ie. a probability of 1 represents an
+absolute certain belief in a certain outcome.</p>
+<p>Although we can define these two <em>types</em> of probability, as it
+turns out, the rules to reason about both types of probability are
+exactly the same (trust me bro). These definitions are just useful for
+<em>interpreting</em> the probability value.</p>
+<h2 id="random-variables">3.2 Random Variables</h2>
+<p>A variable that is random. The “value” of a random variable can be
+discrete or continuous.</p>
+<h2 id="probability-distributions">3.3 Probability Distributions</h2>
+<h3 id="discrete-rv">Discrete RV</h3>
+<p>A description of how probable each outcome of a random variable is.
+The probability distribution of a discrete RV is typically called the
+<strong>probability mass function</strong> (PMF), which takes in a value
+(outcome of the RV) and returns a value between 0 and 1, the probability
+of that outcome happening. The</p>
+<p>Notation: <em>P</em>(<code>x</code> = <em>x</em>) is interpreted as
+the probability of the random variable x takes on the specific value
+<em>x</em>. (weird ik).</p>
+<p>Notation: <code>x</code> ~ <em>P</em>(x) is interpreted as “x follows
+the distribution <em>P</em>(x)”.</p>
+<p>It is not useful to get too caught up in the notation of these
+functions.</p>
+<p>For a function <em>P</em> to be considered a PMF of the RV
+<code>x</code>, it must have the following properties: - The domain of
+of <em>P</em> must be <strong>exactly</strong> all the possible states
+of the <code>x</code>. - For any <em>x</em> in <code>x</code>,
+<em>P(x)</em> is between 0 and 1. - The sum of all values of
+<em>P(x)</em> = 1. aka <em>P</em> is <strong>normalized</strong>.</p>
+<h3 id="continuous-rv">Continuous RV</h3>
+<p>A similar function for a continuous RV is known as the
+<strong>probability density function</strong> (PDF).</p>
+<p>For a function <em>p</em> to be considered a PDF of the RV
+<code>x</code>, it must have the following properties: - The domain of
+<em>p</em> must be the set of all possible states of <code>x</code>. -
+For any <em>x</em> in <code>x</code>, <em>p(x)</em> is greater than or
+equal to 0. <em>Note:</em> we do not require that <em>p(x)</em> be less
+than or equal to 1. - The integral of <em>p(x)</em> across its entire
+domain is 1.</p>
+<h2 id="marginal-probability">3.4 Marginal Probability</h2>
+<h4 id="joint-probability">Joint Probability</h4>
+<p>A PDF or PMF can be also be a function of multiple RV’s. For example,
+<em>p(x, y)</em> is the probability of the specific combination
+occurring <em>(x, y)</em>. The double integral of this function should
+be 1.</p>
+<p>Now that we have a joint probability distribution <em>p(x, y)</em>,
+we can <em>integrate out</em> one of the variables to get the
+<strong>marginal probability</strong> of one of the variables.</p>
+<p>For example, <em>p(x)</em> = integral (<em>p(x, y) dy</em>)</p>
+<h2 id="conditional-probability">3.5 Conditional Probability</h2>
+<p><em>P(y | x)</em> is interpreted as “the probability of <em>y</em>
+given a specific value of <em>x</em>”.</p>
+<p><em>P(y | x)</em> = <em>P(y, x) / P(x)</em></p>
+<p>Note: the conditional probability is not defined when <em>P(x)</em> =
+0.</p>
+<h2 id="the-chain-rule-of-conditional-probabilities">3.6 The Chain Rule
+of Conditional Probabilities</h2>
+<p>Using some algebra, we notice that:</p>
+<p><em>P(y, x)</em> = <em>P(y | x) * P(x)</em></p>
+<p>Furthermore, we can generalize, and treat <em>P(y, x)</em> as one
+variable. Thus,</p>
+<p><em>P(z, y, x)</em> = <em>P(z | y, x) * P(y | x) * P(x)</em></p>
+<p>This is useful because in many cases, the conditional probability of
+a variable is much easier to find than the “raw” joint probability. For
+example in language models, the next predicted word is found by taking
+the word with the highest probability of occurring given the current
+phrase. This is easier than finding the entire sentence at once, which
+is analogous to finding the entire joint probability of all its
+constituent words.</p>
+<h2 id="independence-and-conditional-independence">3.7 Independence and
+Conditional Independence</h2>
+<p>Two RV’s are <strong>independent</strong> if they have no effect on
+each other. Thus,</p>
+<p><em>P(x, y) = P(x) * P(y)</em>. Notated as <em>x</em> ⟂
+<em>y</em></p>
+<p>In some cases, <em>x</em> and <em>y</em> may be
+<strong>dependent</strong>, but given a third variable <em>z</em>, they
+“become independent”. This means that <em>x</em> and <em>y</em> are
+<strong>conditionally independent</strong> given <em>z</em>.</p>
+<p><em>P(x, y | z) = P(x | z) * P(y | z)</em>. Notated as <em>x</em> ⟂
+<em>y</em> | <em>z</em></p>
+<h2 id="expectation-variance-and-covariance">3.8 Expectation, Variance
+and Covariance</h2>
+<h3 id="expected-value">Expected Value</h3>
+<p>Let <em>x</em> ~ <em>p(x)</em>, and <em>f(x)</em>. The
+<strong>expected value</strong> of <em>f</em> is: EV [<em>f</em>] =
+integral (<em>p(x)f(x) dx</em>)</p>
+<p>Treating “EV” as a function, we can say it is a “linear
+transformation” of <em>f</em>: EV [ a <em>f(x)</em> + b <em>g(x)</em> ]
+= a EV [<em>f(x)</em>] + b EV [<em>g(x)</em>]</p>
+<h3 id="variance">Variance</h3>
+<p>The <strong>variance</strong> gives a measure of how “spread apart”
+the values of a function of a RV is.</p>
+<p>Let <em>x</em> ~ <em>p(x)</em>, and <em>f(x)</em>. Var(<em>f(x)</em>)
+= EV [ (<em>f(x)</em> - EV [<em>f(x)</em>]) ^ 2].</p>
+<blockquote>
+<p>The intuition behind this is that we are taking the expected value of
+the difference between the value of <em>f</em> and the <strong>expected
+value</strong> of <em>f</em>. Thus, if the <strong>expected
+distance</strong> between <em>f</em> and EV <em>f</em> is high, the
+values of <em>f</em> are highly “spread apart”.</p>
+<p>The reason we square the difference between <em>f</em> and EV
+<em>f</em> is because we need all the values to be positive,
+<strong>BUT</strong> taking the absolute value has some weird
+mathematical consequences.</p>
+</blockquote>
+<p>Now, taking the square root of the variance gives the
+<strong>standard deviation</strong> σ. We have a distinct name of this
+value because it is used a lot.</p>
+<h3 id="covariance">Covariance</h3>
+<p>The <strong>covariance</strong> of two values measures how the
+difference of one variable <em>x</em> from EV <em>x</em> affects the
+difference of another variable <em>y</em> from EV <em>y</em>. (idc if
+this definition is “wrong”, it makes sense to me).</p>
+<p>Cov(<em>f(x)</em>, <em>g(x)</em>) = EV [(<em>f(x)</em> - EV
+[<em>f(x)</em>])(<em>g(x)</em> - EV [<em>g(x)</em>])]</p>
+<p>This measure is affected by the <em>scale</em> of <em>f</em> and
+<em>g</em>. We can “normalize” out this affect by dividing by the
+standard deviations of <em>f</em> and <em>g</em> and get the
+<strong>correlation</strong> of <em>f</em> and <em>g</em>.</p>
+<p>Corr(f, g) = Cov(f, g) / (σf * σg)</p>
+<p>This gives a “pure” measure of the correlation (lol) of two
+variables.</p>
+<h3 id="relationship-between-covariancecorrelation-and-independence">Relationship
+between Covariance/Correlation and Independence</h3>
+<p>Covariance and independence are related because two independent
+variables <strong>must</strong> have a covariance of 0, but a covariance
+of 0 <strong>does not mean</strong> that the two variables are
+independent.</p>
+<p>This is because covariance is a <strong>purely linear</strong>
+measurement, and variables can still be dependent via a
+<strong>nonlinear relation</strong>.</p>
+<p>This notion can also be applied to correlation and independence.</p>
+<h3 id="covariance-matrix">Covariance Matrix</h3>
+<p>Let <strong><em>x</em></strong> be a random <strong>vector</strong>
+with <em>n</em> entries, such that each entry is a random variable
+<em>xi</em>.</p>
+<p>An <em>n</em> x <em>n</em> <strong>covariance matrix</strong> can be
+defined as: Cov(<strong><em>x</em></strong>)<em>i, j</em> = Cov(<em>xi,
+xj</em>)</p>
+<p>Notice that the diagonal of this matrix is:
+Cov(<strong><em>x</em></strong>)<em>i, i</em> = Cov(<em>xi, xi</em>) =
+Var(<em>xi</em>)</p>
 <hr />
-<p>
-<a href="/index.html">home</a>
- | 
-<a href="/contact.html">contact</a>
- | 
-<a href="/blogs/index.html">blogs</a>
-
-</p></main></body></html>
+<p><a href="/index.html">home</a> | <a href="/contact.html">contact</a>
+| <a href="/blogs/index.html">blogs</a></p>
+</body>
+</html>
