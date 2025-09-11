@@ -7,6 +7,6 @@ export default function(eleventyConfig) {
   eleventyConfig.addPlugin(latex);
 
   eleventyConfig.setInputDirectory("src");
-  eleventyConfig.setOutputDirectory("dist");
+  eleventyConfig.setOutputDirectory("build");
   eleventyConfig.addPassthroughCopy("src/style.css");
 };

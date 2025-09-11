@@ -1,4 +1,10 @@
 {
+  "scripts": {
+    "dev": "bun run eleventy --serve",
+    "build": "bun run eleventy",
+    "predeploy": "bun run build",
+    "deploy": "gh-pages -d build"
+  },
   "dependencies": {
     "@11ty/eleventy": "^3.1.2",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
