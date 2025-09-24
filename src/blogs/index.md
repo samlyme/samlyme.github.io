@@ -14,7 +14,7 @@ My writings.
 {%- endfor -%}
 </ul>
 
-## Math and ML
+## Math 
 
 <ul>
 {%- for post in collections.math -%}
