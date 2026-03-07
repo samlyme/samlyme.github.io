@@ -1,13 +1,21 @@
 {
+  "name": "samlyme.github.io",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
   "scripts": {
-    "dev": "bun run eleventy --serve",
-    "build": "bun run eleventy",
-    "predeploy": "bun run build",
-    "deploy": "gh-pages -d build"
+    "build": "bun src/index.ts",
+    "dev": "bunx serve build"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/js-yaml": "^4.0.9"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
   },
   "dependencies": {
-    "@11ty/eleventy": "^3.1.2",
-    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
-    "eleventy-plugin-mathjax": "^2.0.4"
+    "js-yaml": "^4.1.1",
+    "zod": "^4.3.6"
   }
 }
