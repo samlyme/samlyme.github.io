@@ -92,7 +92,7 @@ function splitFrontmatter(text: string): {
 }
 
 function parseMarkdown(text: string): HTML {
-  return Bun.markdown.html(text) as HTML;
+  return Bun.markdown.html(text, { latexMath: true }) as HTML;
 }
 
 function renderHtml(frontmatter: Frontmatter, content: HTML): HTML {
