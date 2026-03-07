@@ -6,18 +6,10 @@ title: Blogs
 
 My writings.
 
-## Computer Science
-
-<ul>
-{%- for post in collections.cs -%}
-  <li><a href="{{ post.url }}">{{ post.data.title }}</a></li>
-{%- endfor -%}
-</ul>
-
-## Math 
-
-<ul>
-{%- for post in collections.math -%}
-  <li><a href="{{ post.url }}">{{ post.data.title }}</a></li>
-{%- endfor -%}
-</ul>
+ - [blogs](blogs)
+ - [contact](contact)
+ - [Imperative vs. Declarative Code](./Imperative%20vs.%20Declarative%20Code.html)
+ - [Basic Probability](Basic Probability)
+ - [Information Theory](Information Theory)
+ - [Union Find Algorithm](Union Find Algorithm)
+ - [Proof by Induction](Proof by Induction)

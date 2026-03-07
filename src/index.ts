@@ -1,9 +1,10 @@
 import * as yaml from "js-yaml";
 import z from "zod";
-import { readdir, mkdir } from "node:fs/promises";
-import { join } from "node:path";
+import { readdir, stat } from "node:fs/promises";
+import { join, parse as pathParse, basename } from "node:path";
+import { mkdir } from "node:fs/promises";
 
-type HTML = string;
+type HTML = string & { __brand: "html" };
 
 function mainTemplate(title: string, content: HTML): HTML {
   return `
@@ -30,7 +31,7 @@ function mainTemplate(title: string, content: HTML): HTML {
     </footer>
 </body>
 </html>
-    `;
+    ` as HTML;
 }
 
 function blogTemplate(title: string, content: HTML): HTML {
@@ -61,7 +62,7 @@ function blogTemplate(title: string, content: HTML): HTML {
     </footer>
 </body>
 </html>
-    `;
+    ` as HTML;
 }
 
 const Layout = z.enum(["blog", "main"]);
@@ -76,21 +77,25 @@ type Frontmatter = z.infer<typeof Frontmatter>;
 
 
 
-function parseMarkdown(text: string): {
+function splitFrontmatter(text: string): {
   frontmatter: Frontmatter;
-  content: HTML;
+  content: string;
 } {
   const lines = text.split("---").slice(1);
   // console.log(lines);
   const yamlText = lines[0]!;
   const frontmatter = Frontmatter.parse(yaml.load(yamlText));
 
-  const content = Bun.markdown.html(lines[1]!);
+  const content = lines[1]!;
 
   return { frontmatter, content };
 }
 
-function render(frontmatter: Frontmatter, content: string): HTML {
+function parseMarkdown(text: string): HTML {
+  return Bun.markdown.html(text) as HTML;
+}
+
+function renderHtml(frontmatter: Frontmatter, content: HTML): HTML {
   const { layout, title } = frontmatter;
   switch (layout) {
     case "main":
@@ -102,54 +107,133 @@ function render(frontmatter: Frontmatter, content: string): HTML {
   }
 }
 
-async function mirrorAndProcess(
-  currentInputDir: string,
-  currentOutputDir: string,
-) {
-  // 1. Ensure the target output directory exists before we try to put anything in it
-  await mkdir(currentOutputDir, { recursive: true });
+interface LeafNode {
+  kind: "leaf";
+  name: string;
+  data: {
+    frontmatter: Frontmatter;
+    content: string;
+  };
+}
+interface BranchNode {
+  kind: "branch";
+  name: string;
+  index: LeafNode; // must be the index.md!
+  children: (LeafNode | BranchNode)[];
+}
+type Node = LeafNode | BranchNode;
+export async function parse(targetPath: string): Promise<LeafNode | BranchNode> {
+  const fileStat = await stat(targetPath);
 
-  // 2. Read everything inside the current input directory
-  // { withFileTypes: true } gives us Dirent objects, making it easy to check if it's a file or folder
-  const entries = await readdir(currentInputDir, { withFileTypes: true });
+  if (fileStat.isDirectory()) {
+    const entries = await readdir(targetPath, { withFileTypes: true });
 
-  for (const entry of entries) {
-    // Construct the full paths for both the input and the future output
-    const inputPath = join(currentInputDir, entry.name);
-    const outputEntryName = entry.isDirectory() ? entry.name : entry.name.substring(0, entry.name.lastIndexOf(".")) + ".html";
-    const outputPath = join(currentOutputDir, outputEntryName);
+    const childrenNodes = await Promise.all(
+      entries.map(entry => parse(join(targetPath, entry.name)))
+    );
 
-    if (entry.isDirectory()) {
-      // 3. If it's a folder, dive into it recursively!
-      await mirrorAndProcess(inputPath, outputPath);
-    } else if (entry.isFile()) {
-      // 4. If it's a file, process it and save it to the new location
-      console.log(`Processing: ${inputPath} -> ${outputPath}`);
+    const indexPosition = childrenNodes.findIndex(child => child.name === "index");
+    
+    if (indexPosition === -1) {
+      throw new Error(`index.md not found for directory: ${targetPath}`);
+    }
 
-      const file = Bun.file(inputPath);
-      const text = await file.text();
-      const { frontmatter, content } = parseMarkdown(text);
+    const [indexNode] = childrenNodes.splice(indexPosition, 1);
 
-      const html = render(frontmatter, content);
+    return {
+      kind: "branch",
+      name: basename(targetPath),
+      index: indexNode as LeafNode, 
+      children: childrenNodes,
+    };
+  }
 
-      const htmlBuild = Bun.file(outputPath);
-      await Bun.write(htmlBuild, html);
+  const pathInfo = pathParse(targetPath);
+  
+  return {
+    kind: "leaf",
+    name: pathInfo.name, // "about.md" becomes "about"
+    data: splitFrontmatter(await Bun.file(targetPath).text()),
+  };
+}
+
+function indexNavSection(branch: BranchNode) {
+  const all = branch.children.map(elem => ` - [${elem.name}](${elem.name})`);
+  return all.join("\n");
+}
+
+interface HTMLLeaf {
+  kind: "file";
+  name: string;
+  data: HTML;
+}
+interface HTMLBranchNode {
+  kind: "dir";
+  name: string;
+  data: (HTMLLeaf | HTMLBranchNode)[];
+}
+type HTMLNode = HTMLLeaf | HTMLBranchNode;
+function parseTree(root: Node): HTMLNode {
+  const name = root.name;
+  if (root.kind === "branch") {
+    const navSection = indexNavSection(root);
+    console.log(navSection);
+    
+    const innerHtml = parseMarkdown(root.index.data.content + navSection);
+    const html = renderHtml(root.index.data.frontmatter, innerHtml);
+
+    const indexLeaf: HTMLLeaf = {
+      kind: "file",
+      name: "index",
+      data: html,
+    }
+    
+    const childNodes = root.children.map(parseTree);
+
+    return {
+      kind: "dir",
+      name,
+      data: [indexLeaf, ...childNodes],
+    }
+  } else {
+    const { frontmatter, content } = root.data
+    const html = renderHtml(frontmatter, parseMarkdown(content));
+
+    return {
+      kind: "file",
+      name,
+      data: html,
     }
   }
 }
 
+function outputHtmlTree(root: HTMLNode, path: string) {
+  if (root.kind === "dir") {
+    const newPath = join(path, root.name);
+    mkdir(newPath, {recursive: true});
+    root.data.map(elem => outputHtmlTree(elem, newPath));
+  } else {
+    const out = Bun.file(join(path, root.name + ".html"));
+    Bun.write(out, root.data);
+  }
+}
+
+
+
+const contentTree = await parse("content");
+
+const htmlTree = parseTree(contentTree);
+// console.log(contentTree);
+// console.log(htmlTree);
+
+if (htmlTree.kind !== "dir") throw new Error("the root should be the content node. Must be a dir!");
+
+htmlTree.data.map(elem => outputHtmlTree(elem, "build"));
 
 const css = Bun.file("src/style.css");
 const cssBuild = Bun.file("build/style.css");
 await Bun.write(cssBuild, css);
 
-await mirrorAndProcess("content", "build");
+// await traverseTree("content", "build");
 
-
-// // const distPromise = [];
-// await Bun.build({
-//   entrypoints: ["./build/index.html"],
-//   compile: true,
-//   target: "browser",
-//   outdir: "./dist",
-// });
+// console.log(path.parse("content/index.md"));
