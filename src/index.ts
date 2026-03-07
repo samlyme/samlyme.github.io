@@ -120,7 +120,7 @@ export async function parse(
 
 function indexNavSection(branch: BranchNode) {
   const all = branch.children.map(
-    (elem) => ` - [${elem.name + (elem.kind === "branch" ? "/" : "")}](./${encodeURIComponent(elem.name)}/)`,
+    (elem) => ` - [${elem.name + (elem.kind === "branch" ? "/" : "")}](./${encodeURIComponent(elem.name) + (elem.kind === "branch" ? "/" : "")}/)`,
   );
   return "\n\n --- \n *Child pages:* \n" + all.join("\n");
 }
