@@ -7,85 +7,18 @@ import Bun from "bun";
 
 type HTML = string & { __brand: "html" };
 
-function mainTemplate(title: string, content: HTML): HTML {
-  return `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sam Ly - ${title}</title>
-    <link rel="stylesheet" href="/style.css">
-    <script>
-MathJax = {
-  tex: {
-    inlineMath: {'[+]': [['$', '$']]}
-  },
-  svg: {
-    fontCache: 'global'
-  }
-};
-</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
-</head>
-<body>
-    <main>
-        ${content}
-    </main>
-
-    <hr>
-    <footer>
-        <a href="/">home</a> | <a href="/contact">contact</a> | <a href="/blogs/">blogs</a>
-    </footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-</body>
-</html>
-    ` as HTML;
+async function mainTemplate(title: string, content: HTML): Promise<HTML> {
+  const raw = await Bun.file("src/templates/main.html").text();
+  return raw
+    .replaceAll("{{ title }}", title)
+    .replaceAll("{{ content }}", content) as HTML;
 }
 
-function blogTemplate(title: string, content: HTML): HTML {
-  return `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sam Ly - ${title}</title>
-    <link rel="stylesheet" href="/style.css">
-    <link
-			href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css"
-			rel="stylesheet"
-		/>
-    <script>
-MathJax = {
-  tex: {
-    inlineMath: {'[+]': [['$', '$']]}
-  },
-  svg: {
-    fontCache: 'global'
-  }
-};
-</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
-</head>
-<body>
-    <header>
-        <h1>${title}</h1>
-    </header>
-    <main>
-        ${content}
-    </main>
-
-    <hr>
-    <footer>
-        <a href="/">home</a> | <a href="/contact">contact</a> | <a href="/blogs/">blogs</a>
-    </footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-</body>
-</html>
-    ` as HTML;
+async function blogTemplate(title: string, content: HTML): Promise<HTML> {
+  const raw = await Bun.file("src/templates/blog.html").text();
+  return raw
+    .replaceAll("{{ title }}", title)
+    .replaceAll("{{ content }}", content) as HTML;
 }
 
 const Layout = z.enum(["blog", "main"]);
@@ -116,13 +49,16 @@ function parseMarkdown(text: string): HTML {
   return Bun.markdown.html(text, { latexMath: true }) as HTML;
 }
 
-function renderHtml(frontmatter: Frontmatter, content: HTML): HTML {
+async function renderHtml(
+  frontmatter: Frontmatter,
+  content: HTML,
+): Promise<HTML> {
   const { layout, title } = frontmatter;
   switch (layout) {
     case "main":
-      return mainTemplate(title, content);
+      return await mainTemplate(title, content);
     case "blog":
-      return blogTemplate(title, content);
+      return await blogTemplate(title, content);
     default:
       throw new Error("Unknown Layout!");
   }
@@ -200,13 +136,13 @@ interface HTMLBranchNode {
   data: (HTMLLeaf | HTMLBranchNode)[];
 }
 type HTMLNode = HTMLLeaf | HTMLBranchNode;
-function parseTree(root: Node): HTMLNode {
+async function parseTree(root: Node): Promise<HTMLNode> {
   const name = root.name;
   if (root.kind === "branch") {
     const navSection = indexNavSection(root);
 
     const innerHtml = parseMarkdown(root.index.data.content + navSection);
-    const html = renderHtml(root.index.data.frontmatter, innerHtml);
+    const html = await renderHtml(root.index.data.frontmatter, innerHtml);
 
     const indexLeaf: HTMLLeaf = {
       kind: "file",
@@ -214,7 +150,7 @@ function parseTree(root: Node): HTMLNode {
       data: html,
     };
 
-    const childNodes = root.children.map(parseTree);
+    const childNodes = await Promise.all(root.children.map(parseTree));
 
     return {
       kind: "dir",
@@ -223,7 +159,7 @@ function parseTree(root: Node): HTMLNode {
     };
   } else {
     const { frontmatter, content } = root.data;
-    const html = renderHtml(frontmatter, parseMarkdown(content));
+    const html = await renderHtml(frontmatter, parseMarkdown(content));
 
     return {
       kind: "file",
@@ -246,7 +182,7 @@ function outputHtmlTree(root: HTMLNode, path: string) {
 
 const contentTree = await parse("content");
 
-const htmlTree = parseTree(contentTree);
+const htmlTree = await parseTree(contentTree);
 // console.log(contentTree);
 // console.log(htmlTree);
 

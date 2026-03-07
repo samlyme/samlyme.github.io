@@ -1,28 +1,26 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8"> 
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sam Ly - Basic Probability</title>
     <link rel="stylesheet" href="/style.css">
-    <link
-			href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css"
-			rel="stylesheet"
-		/>
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
     <script>
-MathJax = {
-  tex: {
-    inlineMath: {'[+]': [['$', '$']]}
-  },
-  svg: {
-    fontCache: 'global'
-  }
-};
-</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+        MathJax = {
+            tex: {
+                inlineMath: { '[+]': [['$', '$']] }
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 </head>
+
 <body>
     <header>
         <h1>Basic Probability</h1>
@@ -55,7 +53,7 @@ MathJax = {
 <h3>Discrete RV</h3>
 <p>A description of how probable each outcome of a random variable is. The probability distribution of a discrete RV is typically called the <strong>probability mass function</strong> (PMF), which takes in a value (outcome of the RV) and returns a value between 0 and 1, the probability of that outcome happening. The</p>
 <p>Notation: $P(X = x)$ is interpreted as the probability of the random variable x takes on the specific value $X$. (weird ik).</p>
-<p>Notation: $X \sim P(x)$ is interpreted as &quot;x follows the distribution $P(x)$&quot;.</p>
+<p>Notation: $X \sim P(x)$ is interpreted as &quot;x follows the distribution $P(x){{ content }}quot;.</p>
 <p>It is not useful to get too caught up in the notation of these functions.</p>
 <p>For a function $P$ to be considered a PMF of the RV $x$, it must have the following properties:</p>
 <ul>
@@ -77,35 +75,35 @@ MathJax = {
 <p>Now that we have a joint probability distribution $p(x, y)$, we can <em>integrate out</em> one of the variables to get the <strong>marginal probability</strong> of one of the variables.</p>
 <p>For example, $p(x) = \int{p(x, y) dy}$</p>
 <h2>3.5 Conditional Probability</h2>
-<p>$P( y \mid x)$ is interpreted as &quot;the probability of $y$ given a specific value of $X$&quot;.</p>
-<p>$$P( y \mid x) = \frac{P(y, x)}{P(x)}$$</p>
+<p>$P( y \mid x)$ is interpreted as &quot;the probability of $y$ given a specific value of $X{{ content }}quot;.</p>
+<p>$P( y \mid x) = \frac{P(y, x)}{P(x)}$</p>
 <p>Note: the conditional probability is not defined when $P(x) = 0$.</p>
 <h2>3.6 The Chain Rule of Conditional Probabilities</h2>
 <p>Using some algebra, we notice that:</p>
-<p>$$P(y, x) = P(y \mid x) * P(x)$$</p>
+<p>$P(y, x) = P(y \mid x) * P(x)$</p>
 <p>Furthermore, we can generalize, and treat $P(y, x)$ as one variable. Thus,</p>
-<p>$$P(z, y, x) = P(z \mid y, x) * P(y \mid x) * P(x)$$</p>
+<p>$P(z, y, x) = P(z \mid y, x) * P(y \mid x) * P(x)$</p>
 <p>This is useful because in many cases, the conditional probability of a variable is much easier to find than the &quot;raw&quot; joint probability. For example in language models, the next predicted word is found by taking the word with the highest probability of occurring given the current phrase. This is easier than finding the entire sentence at once, which is analogous to finding the entire joint probability of all its constituent words.</p>
 <h2>3.7 Independence and Conditional Independence</h2>
 <p>Two RV's are <strong>independent</strong> if they have no effect on each other. Thus,</p>
-<p>$$P(x, y) = P(x) * P(y)$$</p>
+<p>$P(x, y) = P(x) * P(y)$</p>
 <p>Notated as $x \perp y$</p>
 <p>In some cases, $x$ and $y$ may be <strong>dependent</strong>, but given a third variable $z$, 
 they &quot;become independent&quot;. This means that $x$ and $y$ are <strong>conditionally independent</strong> given $z$.</p>
-<p>$$P(x, y \mid z) = P(x \mid z) * P(y \mid z)$$</p>
+<p>$P(x, y \mid z) = P(x \mid z) * P(y \mid z)$</p>
 <p>Notated as $x \perp y \mid z$</p>
 <h2>3.8 Expectation, Variance and Covariance</h2>
 <h3>Expected Value</h3>
 <p>Let $X \sim P(x)$, and $f(x)$ be an integratable function of $x$.
 The <strong>expected value</strong> of $f$ is:</p>
-<p>$$\mathbb{E} [f] = \int{p(x) f(x)} dx$$</p>
+<p>$\mathbb{E} [f] = \int{p(x) f(x)} dx$</p>
 <p>Treating &quot;EV&quot; as a function, we can say it is a &quot;linear transformation&quot; of $f$:</p>
-<!-- $$ \mathbb{E}[a*f(x) + b*g(x)] = a \mathbb{E}[f(x)] + b \mathbb{E}[g(x)] $$ -->
-<p>$$ \mathbb{E}[{a*f(x) + b * g(x)}] = a * \mathbb{E}[f(x)] + b * \mathbb{E}[g(x)]$$</p>
+<!-- $ \mathbb{E}[a*f(x) + b*g(x)] = a \mathbb{E}[f(x)] + b \mathbb{E}[g(x)] $ -->
+<p>$ \mathbb{E}[{a*f(x) + b * g(x)}] = a * \mathbb{E}[f(x)] + b * \mathbb{E}[g(x)]$</p>
 <h3>Variance</h3>
 <p>The <strong>variance</strong> gives a measure of how &quot;spread apart&quot; the values of a function of a RV is.</p>
 <p>Let $X \sim p(x)$, and $f(x)$.</p>
-<p>$$ \text{Var}(f(x)) = \mathbb{E} [ (f(x) - \mathbb{E} [f(x)]) ^ 2 ] $$</p>
+<p>$ \text{Var}(f(x)) = \mathbb{E} [ (f(x) - \mathbb{E} [f(x)]) ^ 2 ] $</p>
 <blockquote>
 <p>The intuition behind this is that we are taking the expected value of the difference between the value of <em>f</em> and the <strong>expected value</strong> of <em>f</em>. Thus, if the <strong>expected distance</strong> between <em>f</em> and EV <em>f</em> is high, the values of <em>f</em> are highly &quot;spread apart&quot;.</p>
 <p>The reason we square the difference between <em>f</em> and EV <em>f</em> is because we need all the values to be positive, <strong>BUT</strong> taking the absolute value has some weird mathematical consequences.</p>
@@ -115,9 +113,9 @@ The <strong>expected value</strong> of $f$ is:</p>
 <p>The <strong>covariance</strong> of two values measures how the difference of one variable $x$ 
 from $\mathbb{E}[x]$ affects the difference of another variable $y$ from $\mathbb{E}[y]$. (idc if 
 this definition is &quot;wrong&quot;, it makes sense to me).</p>
-<p>$$ \text{Cov}(f(x), g(x)) = \mathbb{E} [(f(x) - \mathbb{E} [f(x)])(g(x) - \mathbb{E} [g(x)])]$$</p>
+<p>$ \text{Cov}(f(x), g(x)) = \mathbb{E} [(f(x) - \mathbb{E} [f(x)])(g(x) - \mathbb{E} [g(x)])]$</p>
 <p>This measure is affected by the <em>scale</em> of <em>f</em> and <em>g</em>. We can &quot;normalize&quot; out this affect by dividing by the standard deviations of <em>f</em> and <em>g</em> and get the <strong>correlation</strong> of <em>f</em> and <em>g</em>.</p>
-<p>$$ \text{Corr}(f, g) = \frac{\text{Cov}(f, g)}{\sigma_f \sigma_g} $$</p>
+<p>$ \text{Corr}(f, g) = \frac{\text{Cov}(f, g)}{\sigma_f \sigma_g} $</p>
 <p>This gives a &quot;pure&quot; measure of the correlation (lol) of two variables.</p>
 <h3>Relationship between Covariance/Correlation and Independence</h3>
 <p>Covariance and independence are related because two independent variables <strong>must</strong> have a covariance of 0, but a covariance of 0 <strong>does not mean</strong> that the two variables are independent.</p>
@@ -126,9 +124,9 @@ this definition is &quot;wrong&quot;, it makes sense to me).</p>
 <h3>Covariance Matrix</h3>
 <p>Let $\mathbf{x}$ be a random <strong>vector</strong> with $n$ entries, such that each entry is a random variable $x_i$.</p>
 <p>An $n \times n$ <strong>covariance matrix</strong> can be defined as:</p>
-<p>$$ \text{Cov}(\mathbf{x})_{i, j} = \text{Cov}(x_i, x_j) $$</p>
+<p>$ \text{Cov}(\mathbf{x})_{i, j} = \text{Cov}(x_i, x_j) $</p>
 <p>Notice that the diagonal of this matrix is:</p>
-<p>$$ \text{Cov}(x)_{i, i} = \text{Cov}(x_i, x_i) = \text{Var}(x_i) $$</p>
+<p>$ \text{Cov}(x)_{i, i} = \text{Cov}(x_i, x_i) = \text{Var}(x_i) $</p>
 
     </main>
 
@@ -136,7 +134,7 @@ this definition is &quot;wrong&quot;, it makes sense to me).</p>
     <footer>
         <a href="/">home</a> | <a href="/contact">contact</a> | <a href="/blogs/">blogs</a>
     </footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 </body>
+
 </html>
-    

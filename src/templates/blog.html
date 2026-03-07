@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sam Ly - Blogs</title>
+    <title>Sam Ly - {{ title }}</title>
     <link rel="stylesheet" href="/style.css">
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
     <script>
         MathJax = {
             tex: {
@@ -21,17 +22,11 @@
 </head>
 
 <body>
+    <header>
+        <h1>{{ title }}</h1>
+    </header>
     <main>
-        <h1>Blogs</h1>
-<p>My writings.</p>
-<ul>
-<li><a href="./Imperative%20vs.%20Declarative%20Code">Imperative vs. Declarative Code</a></li>
-<li><a href="./Basic%20Probability">Basic Probability</a></li>
-<li><a href="./Information%20Theory">Information Theory</a></li>
-<li><a href="./Union%20Find%20Algorithm">Union Find Algorithm</a></li>
-<li><a href="./Proof%20by%20Induction">Proof by Induction</a></li>
-</ul>
-
+        {{ content }}
     </main>
 
     <hr>
