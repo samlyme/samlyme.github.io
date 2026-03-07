@@ -184,7 +184,7 @@ export async function parse(
 
 function indexNavSection(branch: BranchNode) {
   const all = branch.children.map(
-    (elem) => ` - [${elem.name}](./${encodeURIComponent(elem.name)}/)`,
+    (elem) => ` - [${elem.name}](./${encodeURIComponent(elem.name)})`,
   );
   return "\n\n" + all.join("\n");
 }

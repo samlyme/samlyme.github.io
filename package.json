@@ -5,11 +5,13 @@
   "private": true,
   "scripts": {
     "build": "bun src/index.ts",
-    "dev": "bunx serve build"
+    "dev": "bunx serve build",
+    "deploy": "cp CNAME build && bun run gh-pages -d build"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "@types/js-yaml": "^4.0.9"
+    "@types/js-yaml": "^4.0.9",
+    "gh-pages": "^6.3.0"
   },
   "peerDependencies": {
     "typescript": "^5"
