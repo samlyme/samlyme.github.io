@@ -158,7 +158,7 @@ export async function parse(targetPath: string): Promise<LeafNode | BranchNode> 
 }
 
 function indexNavSection(branch: BranchNode) {
-  const all = branch.children.map(elem => ` - [${elem.name}](${elem.name})`);
+  const all = branch.children.map(elem => ` - [${elem.name}](${encodeURIComponent(elem.name)})`);
   return all.join("\n");
 }
 
