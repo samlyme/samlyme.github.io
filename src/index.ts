@@ -38,7 +38,7 @@ function blogTemplate(title: string, content: HTML): HTML {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sam Ly - ${title}</title>
     <link rel="stylesheet" href="/style.css">
@@ -73,6 +73,8 @@ const Frontmatter = z.object({
   tags: z.optional(z.string()), // could be array of strings
 });
 type Frontmatter = z.infer<typeof Frontmatter>;
+
+
 
 function parseMarkdown(text: string): {
   frontmatter: Frontmatter;
@@ -137,17 +139,17 @@ async function mirrorAndProcess(
 }
 
 
-const css = Bun.file("./style.css");
-const cssBuild = Bun.file("./build/style.css");
+const css = Bun.file("src/style.css");
+const cssBuild = Bun.file("build/style.css");
 await Bun.write(cssBuild, css);
 
-await mirrorAndProcess("./src", "./build");
+await mirrorAndProcess("content", "build");
 
 
-// const distPromise = [];
-await Bun.build({
-  entrypoints: ["./build/index.html"],
-  compile: true,
-  target: "browser",
-  outdir: "./dist",
-});
+// // const distPromise = [];
+// await Bun.build({
+//   entrypoints: ["./build/index.html"],
+//   compile: true,
+//   target: "browser",
+//   outdir: "./dist",
+// });
