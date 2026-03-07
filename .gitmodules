@@ -1,0 +1,3 @@
+[submodule "TeXicode"]
+	path = TeXicode
+	url = git@github.com:dxddxx/TeXicode.git

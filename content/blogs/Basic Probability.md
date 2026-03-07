@@ -18,7 +18,7 @@ I'de thought I had a pretty decent understanding of the applications of probabil
 
 One virtue of uncertain rules and models is what I call the "effort to result ratio" (not a real term, but it helps me reason about this topic). The rule "Most birds fly" is pretty much true. The rule "Birds fly, except for very young birds that have not yet learned to fly, sick or injured birds that have lost the ability to fly, flightless species..." is absolutely true, but it takes a lot more "effort" to define. 
 
-> "\[This rule is\] expensive to develop, maintain and communicate and, after all this effort, is still brittle and prone to failure."
+> "This rule is expensive to develop, maintain and communicate and, after all this effort, is still brittle and prone to failure."
 
 For this reason, developing models isn't always only about the fidelity. Making a good choice often comes down to experience, intuition, and taste.
 
