@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sam Ly - Home</title>
     <link rel="stylesheet" href="/style.css">
-    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet">
+    <link
+			href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css"
+			rel="stylesheet"
+		/>
+    <script>
+MathJax = {
+  tex: {
+    inlineMath: {'[+]': [['$', '$']]}
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
 </head>
 <body>
     <main>
@@ -30,13 +45,18 @@
 <li>Railway VPS</li>
 </ul>
 <p>Currently, I am working as an undergraduate research assistant. I am working on developing a novel <strong>decentralized task allocation algorithm</strong> utilizing <strong>physics informed reinforcement learning</strong> to efficiently generate collision-free task execution plans.</p>
-<p>I also like writing <a href="blogs">blogs</a> about my projects and whatever stuff I find interesting.</p>
+<p>I also like writing <a href="blogs/">blogs</a> about my projects and whatever stuff I find interesting.</p>
+<ul>
+<li><a href="./blogs/">blogs</a></li>
+<li><a href="./contact/">contact</a></li>
+</ul>
 
     </main>
 
     <hr>
     <footer>
-        <a href="/">home</a> | <a href="/contact">contact</a> | <a href="/blogs">blogs</a>
+        <a href="/">home</a> | <a href="/contact">contact</a> | <a href="/blogs/">blogs</a>
     </footer>
 </body>
 </html>
+    
