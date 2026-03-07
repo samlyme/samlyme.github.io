@@ -27,7 +27,7 @@ function mainTemplate(title: string, content: HTML): HTML {
 
     <hr>
     <footer>
-        <a href="/">home</a> | <a href="/contact">contact</a> | <a href="/blogs">blogs</a>
+        <a href="/">home</a> | <a href="/contact">contact</a> | <a href="/blogs/">blogs</a>
     </footer>
 </body>
 </html>
@@ -58,7 +58,7 @@ function blogTemplate(title: string, content: HTML): HTML {
 
     <hr>
     <footer>
-        <a href="/">home</a> | <a href="/contact">contact</a> | <a href="/blogs">blogs</a>
+        <a href="/">home</a> | <a href="/contact">contact</a> | <a href="/blogs/">blogs</a>
     </footer>
 </body>
 </html>
@@ -158,8 +158,8 @@ export async function parse(targetPath: string): Promise<LeafNode | BranchNode> 
 }
 
 function indexNavSection(branch: BranchNode) {
-  const all = branch.children.map(elem => ` - [${elem.name}](${encodeURIComponent(elem.name)})`);
-  return all.join("\n");
+  const all = branch.children.map(elem => ` - [${elem.name}](./${encodeURIComponent(elem.name)}/)`);
+  return "\n\n" + all.join("\n");
 }
 
 interface HTMLLeaf {
