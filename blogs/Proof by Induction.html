@@ -1,28 +1,26 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8"> 
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sam Ly - Intuition for Inductive Proofs</title>
     <link rel="stylesheet" href="/style.css">
-    <link
-			href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css"
-			rel="stylesheet"
-		/>
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
     <script>
-MathJax = {
-  tex: {
-    inlineMath: {'[+]': [['$', '$']]}
-  },
-  svg: {
-    fontCache: 'global'
-  }
-};
-</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+        MathJax = {
+            tex: {
+                inlineMath: { '[+]': [['$', '$']] }
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 </head>
+
 <body>
     <header>
         <h1>Intuition for Inductive Proofs</h1>
@@ -44,9 +42,9 @@ Stack Exchange</a> posts of all time directly references how difficulty proofs b
 <p>Lets say we are trying to prove that the Fibonacci Sequence 
 $F_n = F_{n-1} + F_{n-2}$, $F_0 = F_1 = 1$ is bounded by $2^n$ for all integers $n \ge 0$.</p>
 <p>For the base cases, we see that:
-$$ F_0 = 1 \le 2^0 = 1 $$
-$$ F_1 = 1 \le 2^1 = 2 $$
-$$ F_2 = 2 \le 2^2 = 4 $$</p>
+$ F_0 = 1 \le 2^0 = 1 $
+$ F_1 = 1 \le 2^1 = 2 $
+$ F_2 = 2 \le 2^2 = 4 $</p>
 <blockquote>
 <p>We don't explicitly need this many base cases, but it is helpful to see a more concrete &quot;start&quot; of our proof.</p>
 </blockquote>
@@ -90,7 +88,7 @@ $$ F_2 = 2 \le 2^2 = 4 $$</p>
     <footer>
         <a href="/">home</a> | <a href="/contact">contact</a> | <a href="/blogs/">blogs</a>
     </footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 </body>
+
 </html>
-    
