@@ -191,6 +191,5 @@ if (htmlTree.kind !== "dir")
 
 htmlTree.data.map((elem) => outputHtmlTree(elem, "build"));
 
-const css = Bun.file("src/style.css");
-const cssBuild = Bun.file("build/style.css");
-await Bun.write(cssBuild, css);
+await Bun.write(Bun.file("src/style.css"), Bun.file("build/style.css"));
+await Bun.write(Bun.file("CNAME"), Bun.file("build/CNAME"));
