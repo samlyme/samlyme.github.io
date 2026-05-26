@@ -16,6 +16,94 @@ import type {
   Figure,
 } from "./ast";
 
+const codeCopyStyles = `
+.code-block {
+    width: 52.5%;
+    margin-left: 2.5%;
+}
+
+.code-block-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.15rem;
+}
+
+.code-copy-button {
+    border: 1px solid var(--hljs-border, #d8d0b8);
+    border-radius: 2px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-size: 0.7rem;
+    line-height: 1;
+    padding: 0.2rem 0.35rem;
+}
+
+.code-copy-button:hover,
+.code-copy-button:focus {
+    background: var(--hljs-background, #f7f4e8);
+}
+
+.code-block pre {
+    margin-top: 0;
+}
+
+.code-block pre > code {
+    box-sizing: border-box;
+    width: 100%;
+    margin-left: 0;
+}
+
+@media (max-width: 760px) {
+    .code-block {
+        width: 97%;
+    }
+}
+`.trim();
+
+const codeCopyScript = `
+document.addEventListener("click", async (event) => {
+  const target = event.target;
+  if (!(target instanceof Element)) return;
+
+  const button = target.closest("[data-copy-code]");
+  if (!(button instanceof HTMLButtonElement)) return;
+
+  const code = button.closest(".code-block")?.querySelector("pre > code");
+  if (!code) return;
+
+  try {
+    const text = code.textContent || "";
+
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
+      textarea.style.top = "-9999px";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      textarea.remove();
+    }
+
+    button.textContent = "copied";
+    setTimeout(() => {
+      button.textContent = "copy";
+    }, 1200);
+  } catch {
+    button.textContent = "error";
+    setTimeout(() => {
+      button.textContent = "copy";
+    }, 1200);
+  }
+});
+`.trim();
+
 export function renderArticle(article: Article): string {
   return `
 <!DOCTYPE html>
@@ -26,9 +114,15 @@ export function renderArticle(article: Article): string {
   <title>${article.title}</title>
   <link rel="stylesheet" href="tufte.css"/>
   <link rel="stylesheet" href="hljs-tufte.css">
+  <style>
+${codeCopyStyles}
+  </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
 
   <script>hljs.highlightAll();</script>
+  <script>
+${codeCopyScript}
+  </script>
 </head>
 <body>
   <h1>${article.title}</h1>
@@ -99,7 +193,19 @@ const renderCodeBlock = (codeBlock: CodeBlock): Content => {
   const attr = codeBlock.language
     ? { class: `language-${codeBlock.language}` }
     : undefined;
-  return tag("pre")(tag("code", attr)(sanitizeText(codeBlock.content)));
+  return tag("div", { class: "code-block" })(
+    concat(
+      tag("div", { class: "code-block-header" })(
+        tag("button", {
+          type: "button",
+          class: "code-copy-button",
+          "data-copy-code": "true",
+          "aria-label": "Copy code",
+        })("copy" as Content),
+      ),
+      tag("pre")(tag("code", attr)(sanitizeText(codeBlock.content))),
+    ),
+  );
 };
 const renderBlockQuote = (blockQuote: BlockQuote): Content =>
   tag("blockquote")(
