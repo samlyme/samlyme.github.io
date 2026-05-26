@@ -44,24 +44,22 @@ export function markdownToArticle(source: string): Article {
   const md = new MarkdownIt({ html: false })
     .use(MarkdownItFootNote)
     .disable(["table", "code", "strikethrough"]);
+
   const tokens = md.parse(body, {});
+  // console.log(JSON.stringify(tokens));
   const tokenTypes = new Set();
-  const inlineChildrenTypes = new Set();
+  const clean = [];
   for (const token of tokens) {
     tokenTypes.add(token.type);
-    if (token.type.startsWith("footnote")) {
-      console.log(token);
-
-      // for (const child of token.children || []) {
-      //   inlineChildrenTypes.add(child.type);
-      //   // if (child.type === "link_open" || child.type === "link_close") {
-      //   //   console.log(child);
-      //   // }
-      // }
-    }
+    clean.push({
+      type: token.type,
+      content: token.content,
+      children: token.children,
+    });
   }
+  // console.log(JSON.stringify(clean));
+
   console.log(tokenTypes);
-  console.log(inlineChildrenTypes);
 
   return article;
 }

@@ -10,4 +10,4 @@ const article = markdownToArticle(source);
 
 // await Bun.write(outputPath, html);
 
-console.log(`Rendered ${inputPath} -> ${outputPath}`);
+// console.log(`Rendered ${inputPath} -> ${outputPath}`);
