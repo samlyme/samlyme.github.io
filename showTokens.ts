@@ -14,7 +14,7 @@ import type {
 import { sanitizeText } from "./render";
 import yaml from "YAML";
 
-const inputPath = Bun.argv[2] ?? "demo.md";
+const inputPath = Bun.argv[2] ?? "example.md";
 
 const source = await Bun.file(inputPath).text();
 const splits = source.split("---");
@@ -27,18 +27,10 @@ const { title, subtitle } = yaml.parse(frontMatter);
 if (typeof title !== "string") throw new Error("Invalid title");
 if (typeof subtitle !== "string") throw new Error("Invalid subtitle");
 
-const article: Article = {
-  title: sanitizeText(title),
-  subtitle: sanitizeText(subtitle),
-  sections: [],
-};
-
-// tables aren't in tufte-css, and I always use fenced code blocks.
-const md = new MarkdownIt({ html: false })
-  .use(MarkdownItFootNote)
-  .disable(["table", "code", "strikethrough"]);
+const md = new MarkdownIt({ html: false }).disable([
+  "table",
+  "code",
+  "strikethrough",
+]);
 
 const tokens = md.parse(body, {});
-console.log(JSON.stringify(tokens));
-
-// const html = renderArticle(article);

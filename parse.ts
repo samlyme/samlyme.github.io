@@ -195,7 +195,6 @@ function parseBlock(cursor: TokenCursor, newthought: Text): Block {
           }
         }
       }
-      console.log(JSON.stringify(blockQuote));
 
       return blockQuote;
     }
@@ -218,9 +217,15 @@ function parseBlock(cursor: TokenCursor, newthought: Text): Block {
       return { type: "list", listType: "ordered", items: items };
     }
 
+    case "fence": {
+      return {
+        type: "codeBlock",
+        language: open.info,
+        content: open.content,
+      };
+    }
     // TODO: handle these.
     case "hr":
-    case "fence":
     case "footnote_open":
     case "footnote_close":
     case "footnote_block_open":

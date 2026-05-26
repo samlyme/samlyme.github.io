@@ -25,6 +25,10 @@ export function renderArticle(article: Article): string {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${article.title}</title>
   <link rel="stylesheet" href="tufte.css"/>
+  <link rel="stylesheet" href="hljs-tufte.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+
+  <script>hljs.highlightAll();</script>
 </head>
 <body>
   <h1>${article.title}</h1>

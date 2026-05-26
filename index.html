@@ -6,6 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Imperative vs. Declarative Code</title>
   <link rel="stylesheet" href="tufte.css"/>
+  <link rel="stylesheet" href="hljs-tufte.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+
+  <script>hljs.highlightAll();</script>
 </head>
 <body>
   <h1>Imperative vs. Declarative Code</h1>
@@ -17,6 +21,14 @@
  
  Blockquote example. yay.</p></p>
 <footer > sam ly</footer></blockquote>
+<pre ><code class="language-js">// this is a fenced code block.
+addEventListener(&#39;load&#39;, () =&gt; {
+  const code = document.querySelector(&#39;#code&#39;);
+  const worker = new Worker(&#39;worker.js&#39;);
+  worker.onmessage = (event) =&gt; { code.innerHTML = event.data; }
+  worker.postMessage(code.textContent);
+});
+</code></pre>
 </section>
   
 </body>
