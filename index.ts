@@ -1,4 +1,4 @@
-import type { Article, TextChunk, Content, Text, SideNote } from "./ast";
+import type { Article, TextChunk, Content, Text, Note } from "./ast";
 import { renderArticle } from "./render";
 // maybe theres a better way to model this,
 // Sanitized text! HTML is escaped.
@@ -30,8 +30,13 @@ const chunk = (content: string, style: ChunkStyle = {}): TextChunk => ({
   ...style,
 });
 
-const sideNote = (id: string, ...content: Text): SideNote => ({
-  type: "sideNote",
+const note = (
+  variant: Note["variant"],
+  id: string,
+  ...content: Text
+): Note => ({
+  type: "note",
+  variant,
   id,
   content,
 });
@@ -69,7 +74,9 @@ export const article: Article = {
             chunk(
               "dolor sit amet, consectetur adipiscing elit. Integer nec odio praesent libero sed cursus ante dapibus diam. ",
             ),
-            sideNote(
+            chunk("codeeee", { code: true }),
+            note(
+              "side",
               "opening-note",
               chunk(
                 "A sidenote is part of the inline text stream, with its own nested text content.",
@@ -122,6 +129,15 @@ export const article: Article = {
             chunk("Nam nec ante", {
               link: "https://example.com/lorem-ipsum",
             }),
+            note(
+              "margin",
+              "margin-note",
+              chunk("A margin note uses the same inline note node with "),
+              chunk("variant", { code: true }),
+              chunk(" set to "),
+              chunk("margin", { code: true }),
+              chunk("."),
+            ),
             chunk(" sed lacinia urna non tincidunt mattis tortor neque."),
           ),
         },

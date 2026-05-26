@@ -11,7 +11,7 @@ import type {
   List,
   Paragraph,
   Section,
-  SideNote,
+  Note,
   Text,
   InlineItem,
 } from "./ast";
@@ -105,8 +105,8 @@ const renderInlineItem = (inlineItem: InlineItem): Content => {
   switch (inlineItem.type) {
     case "textChunk":
       return renderChunk(inlineItem);
-    case "sideNote":
-      return renderSideNote(inlineItem);
+    case "note":
+      return renderNote(inlineItem);
   }
 };
 const renderChunk = (chunk: TextChunk): Content => {
@@ -117,12 +117,12 @@ const renderChunk = (chunk: TextChunk): Content => {
   if (chunk.link) tag("a", { href: chunk.link })(out);
   return out;
 };
-const renderSideNote = (sideNote: SideNote): Content =>
+const renderNote = (sideNote: Note): Content =>
   concat(
     tag("label", {
       for: sideNote.id,
-      class: "margin-toggle sidenote-number",
-    })("" as Content),
+      class: `margin-toggle ${sideNote.variant === "side" ? "sidenote-number" : ""}`,
+    })((sideNote.variant === "side" ? "" : "&#8853;") as Content),
 
     tag("input", {
       type: "checkbox",
@@ -130,7 +130,9 @@ const renderSideNote = (sideNote: SideNote): Content =>
       class: "margin-toggle",
     })("" as Content),
 
-    tag("span", { class: "sidenote" })(renderText(sideNote.content)),
+    tag("span", { class: sideNote.variant + "note" })(
+      renderText(sideNote.content),
+    ),
   );
 
 // HTML helpers

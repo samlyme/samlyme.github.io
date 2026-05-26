@@ -50,7 +50,7 @@ export interface BlockQuote {
 }
 
 export type Text = InlineItem[];
-export type InlineItem = TextChunk | SideNote;
+export type InlineItem = TextChunk | Note;
 
 export interface TextChunk {
   type: "textChunk";
@@ -61,8 +61,9 @@ export interface TextChunk {
   link?: string;
 }
 
-export interface SideNote {
-  type: "sideNote";
+export interface Note {
+  type: "note";
+  variant: "side" | "margin";
   id: string;
   content: Text;
 }
