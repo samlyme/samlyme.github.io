@@ -189,12 +189,13 @@ function parseBlock(cursor: TokenCursor, newthought: Text): Block {
           if (lastListItem.length === 1) {
             const lastBlock = lastListItem[0]!;
             if (lastBlock.type == "paragraph") {
-              footer = lastBlock.text;
+              footer.push(...lastBlock.text);
               blocks.pop();
             }
           }
         }
       }
+      console.log(JSON.stringify(blockQuote));
 
       return blockQuote;
     }
