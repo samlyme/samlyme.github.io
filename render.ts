@@ -85,8 +85,12 @@ const renderList = (list: List): Content => {
   const tagName = list.listType == "ordered" ? "ol" : "ul";
   return tag(tagName)(concat(...list.items.map(renderText).map(tag("li"))));
 };
-const renderCodeBlock = (codeBlock: CodeBlock): Content =>
-  tag("pre")(tag("code")(codeBlock.content as Content)); // TODO: implement language selection
+const renderCodeBlock = (codeBlock: CodeBlock): Content => {
+  const attr = codeBlock.language
+    ? { class: `language-${codeBlock.language}` }
+    : undefined;
+  return tag("pre")(tag("code", attr)(sanitizeText(codeBlock.content)));
+};
 const renderBlockQuote = (blockQuote: BlockQuote): Content =>
   tag("blockquote")(
     concat(
@@ -160,7 +164,7 @@ const renderNote = (sideNote: Note): Content =>
 const newthought = (content: Content) =>
   tag("span", { class: "newthought" })(content);
 
-type Attributes = Record<string, string>; // UNSAFE!
+type Attributes = Record<string, string>;
 const empty = "" as Content;
 const tag =
   (type: string, attr?: Attributes) =>
@@ -168,10 +172,28 @@ const tag =
     `<${type} ${
       attr
         ? Object.entries(attr)
-            .map(([k, v]) => `${k}=\"${v}\"`)
+            .map(([k, v]) => `${k}=\"${sanitizeAttribute(v)}\"`)
             .join(" ")
         : ""
     }>${content}</${type}>` as Content;
+function sanitizeAttribute(unsafeString: string): string {
+  return unsafeString.replace(/[&<>"']/g, (match) => {
+    switch (match) {
+      case "&":
+        return "&amp;";
+      case "<":
+        return "&lt;";
+      case ">":
+        return "&gt;";
+      case '"':
+        return "&quot;";
+      case "'":
+        return "&#39;";
+      default:
+        return match;
+    }
+  });
+}
 // Sanitized text! HTML is escaped.
 // I do not allow for inline html unless explicitly in a directive!
 export function sanitizeText(unsafeString: string): Content {

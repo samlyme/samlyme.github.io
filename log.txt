@@ -1,0 +1,279 @@
+Token {
+  [0mtype[2m:[0m [0m[32m[0m[32m"footnote_block_open"[0m[0m[0m[2m,[0m
+  [0mtag[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mattrs[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mmap[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mnesting[2m:[0m [0m[33m1[0m[0m[2m,[0m
+  [0mlevel[2m:[0m [0m[33m0[0m[0m[2m,[0m
+  [0mchildren[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mcontent[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmarkup[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0minfo[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmeta[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mblock[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mhidden[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mattrIndex[2m:[0m [36m[Function: attrIndex][0m[0m[2m,[0m
+  [0mattrPush[2m:[0m [36m[Function: attrPush][0m[0m[2m,[0m
+  [0mattrSet[2m:[0m [36m[Function: attrSet][0m[0m[2m,[0m
+  [0mattrGet[2m:[0m [36m[Function: attrGet][0m[0m[2m,[0m
+  [0mattrJoin[2m:[0m [36m[Function: attrJoin][0m[0m[2m,[0m
+}
+Token {
+  [0mtype[2m:[0m [0m[32m[0m[32m"footnote_open"[0m[0m[0m[2m,[0m
+  [0mtag[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mattrs[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mmap[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mnesting[2m:[0m [0m[33m1[0m[0m[2m,[0m
+  [0mlevel[2m:[0m [0m[33m0[0m[0m[2m,[0m
+  [0mchildren[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mcontent[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmarkup[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0minfo[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmeta[2m:[0m {
+    [0mid[2m:[0m [0m[33m0[0m[0m[2m,[0m
+    [0mlabel[2m:[0m [0m[32m[0m[32m"first"[0m[0m[0m[2m,[0m
+  }[0m[2m,[0m
+  [0mblock[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mhidden[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mattrIndex[2m:[0m [36m[Function: attrIndex][0m[0m[2m,[0m
+  [0mattrPush[2m:[0m [36m[Function: attrPush][0m[0m[2m,[0m
+  [0mattrSet[2m:[0m [36m[Function: attrSet][0m[0m[2m,[0m
+  [0mattrGet[2m:[0m [36m[Function: attrGet][0m[0m[2m,[0m
+  [0mattrJoin[2m:[0m [36m[Function: attrJoin][0m[0m[2m,[0m
+}
+Token {
+  [0mtype[2m:[0m [0m[32m[0m[32m"footnote_anchor"[0m[0m[0m[2m,[0m
+  [0mtag[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mattrs[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mmap[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mnesting[2m:[0m [0m[33m0[0m[0m[2m,[0m
+  [0mlevel[2m:[0m [0m[33m0[0m[0m[2m,[0m
+  [0mchildren[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mcontent[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmarkup[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0minfo[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmeta[2m:[0m {
+    [0mid[2m:[0m [0m[33m0[0m[0m[2m,[0m
+    [0msubId[2m:[0m [0m[33m0[0m[0m[2m,[0m
+    [0mlabel[2m:[0m [0m[32m[0m[32m"first"[0m[0m[0m[2m,[0m
+  }[0m[2m,[0m
+  [0mblock[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mhidden[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mattrIndex[2m:[0m [36m[Function: attrIndex][0m[0m[2m,[0m
+  [0mattrPush[2m:[0m [36m[Function: attrPush][0m[0m[2m,[0m
+  [0mattrSet[2m:[0m [36m[Function: attrSet][0m[0m[2m,[0m
+  [0mattrGet[2m:[0m [36m[Function: attrGet][0m[0m[2m,[0m
+  [0mattrJoin[2m:[0m [36m[Function: attrJoin][0m[0m[2m,[0m
+}
+Token {
+  [0mtype[2m:[0m [0m[32m[0m[32m"footnote_close"[0m[0m[0m[2m,[0m
+  [0mtag[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mattrs[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mmap[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mnesting[2m:[0m [0m[33m-1[0m[0m[2m,[0m
+  [0mlevel[2m:[0m [0m[33m0[0m[0m[2m,[0m
+  [0mchildren[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mcontent[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmarkup[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0minfo[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmeta[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mblock[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mhidden[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mattrIndex[2m:[0m [36m[Function: attrIndex][0m[0m[2m,[0m
+  [0mattrPush[2m:[0m [36m[Function: attrPush][0m[0m[2m,[0m
+  [0mattrSet[2m:[0m [36m[Function: attrSet][0m[0m[2m,[0m
+  [0mattrGet[2m:[0m [36m[Function: attrGet][0m[0m[2m,[0m
+  [0mattrJoin[2m:[0m [36m[Function: attrJoin][0m[0m[2m,[0m
+}
+Token {
+  [0mtype[2m:[0m [0m[32m[0m[32m"footnote_open"[0m[0m[0m[2m,[0m
+  [0mtag[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mattrs[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mmap[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mnesting[2m:[0m [0m[33m1[0m[0m[2m,[0m
+  [0mlevel[2m:[0m [0m[33m0[0m[0m[2m,[0m
+  [0mchildren[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mcontent[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmarkup[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0minfo[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmeta[2m:[0m {
+    [0mid[2m:[0m [0m[33m1[0m[0m[2m,[0m
+    [0mlabel[2m:[0m [0m[32m[0m[32m"second"[0m[0m[0m[2m,[0m
+  }[0m[2m,[0m
+  [0mblock[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mhidden[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mattrIndex[2m:[0m [36m[Function: attrIndex][0m[0m[2m,[0m
+  [0mattrPush[2m:[0m [36m[Function: attrPush][0m[0m[2m,[0m
+  [0mattrSet[2m:[0m [36m[Function: attrSet][0m[0m[2m,[0m
+  [0mattrGet[2m:[0m [36m[Function: attrGet][0m[0m[2m,[0m
+  [0mattrJoin[2m:[0m [36m[Function: attrJoin][0m[0m[2m,[0m
+}
+Token {
+  [0mtype[2m:[0m [0m[32m[0m[32m"footnote_anchor"[0m[0m[0m[2m,[0m
+  [0mtag[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mattrs[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mmap[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mnesting[2m:[0m [0m[33m0[0m[0m[2m,[0m
+  [0mlevel[2m:[0m [0m[33m0[0m[0m[2m,[0m
+  [0mchildren[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mcontent[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmarkup[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0minfo[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmeta[2m:[0m {
+    [0mid[2m:[0m [0m[33m1[0m[0m[2m,[0m
+    [0msubId[2m:[0m [0m[33m0[0m[0m[2m,[0m
+    [0mlabel[2m:[0m [0m[32m[0m[32m"second"[0m[0m[0m[2m,[0m
+  }[0m[2m,[0m
+  [0mblock[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mhidden[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mattrIndex[2m:[0m [36m[Function: attrIndex][0m[0m[2m,[0m
+  [0mattrPush[2m:[0m [36m[Function: attrPush][0m[0m[2m,[0m
+  [0mattrSet[2m:[0m [36m[Function: attrSet][0m[0m[2m,[0m
+  [0mattrGet[2m:[0m [36m[Function: attrGet][0m[0m[2m,[0m
+  [0mattrJoin[2m:[0m [36m[Function: attrJoin][0m[0m[2m,[0m
+}
+Token {
+  [0mtype[2m:[0m [0m[32m[0m[32m"footnote_anchor"[0m[0m[0m[2m,[0m
+  [0mtag[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mattrs[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mmap[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mnesting[2m:[0m [0m[33m0[0m[0m[2m,[0m
+  [0mlevel[2m:[0m [0m[33m0[0m[0m[2m,[0m
+  [0mchildren[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mcontent[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmarkup[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0minfo[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmeta[2m:[0m {
+    [0mid[2m:[0m [0m[33m1[0m[0m[2m,[0m
+    [0msubId[2m:[0m [0m[33m1[0m[0m[2m,[0m
+    [0mlabel[2m:[0m [0m[32m[0m[32m"second"[0m[0m[0m[2m,[0m
+  }[0m[2m,[0m
+  [0mblock[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mhidden[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mattrIndex[2m:[0m [36m[Function: attrIndex][0m[0m[2m,[0m
+  [0mattrPush[2m:[0m [36m[Function: attrPush][0m[0m[2m,[0m
+  [0mattrSet[2m:[0m [36m[Function: attrSet][0m[0m[2m,[0m
+  [0mattrGet[2m:[0m [36m[Function: attrGet][0m[0m[2m,[0m
+  [0mattrJoin[2m:[0m [36m[Function: attrJoin][0m[0m[2m,[0m
+}
+Token {
+  [0mtype[2m:[0m [0m[32m[0m[32m"footnote_close"[0m[0m[0m[2m,[0m
+  [0mtag[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mattrs[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mmap[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mnesting[2m:[0m [0m[33m-1[0m[0m[2m,[0m
+  [0mlevel[2m:[0m [0m[33m0[0m[0m[2m,[0m
+  [0mchildren[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mcontent[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmarkup[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0minfo[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmeta[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mblock[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mhidden[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mattrIndex[2m:[0m [36m[Function: attrIndex][0m[0m[2m,[0m
+  [0mattrPush[2m:[0m [36m[Function: attrPush][0m[0m[2m,[0m
+  [0mattrSet[2m:[0m [36m[Function: attrSet][0m[0m[2m,[0m
+  [0mattrGet[2m:[0m [36m[Function: attrGet][0m[0m[2m,[0m
+  [0mattrJoin[2m:[0m [36m[Function: attrJoin][0m[0m[2m,[0m
+}
+Token {
+  [0mtype[2m:[0m [0m[32m[0m[32m"footnote_open"[0m[0m[0m[2m,[0m
+  [0mtag[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mattrs[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mmap[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mnesting[2m:[0m [0m[33m1[0m[0m[2m,[0m
+  [0mlevel[2m:[0m [0m[33m0[0m[0m[2m,[0m
+  [0mchildren[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mcontent[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmarkup[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0minfo[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmeta[2m:[0m {
+    [0mid[2m:[0m [0m[33m2[0m[0m[2m,[0m
+    [0mlabel[2m:[0m [0m[2mundefined[0m[0m[2m,[0m
+  }[0m[2m,[0m
+  [0mblock[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mhidden[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mattrIndex[2m:[0m [36m[Function: attrIndex][0m[0m[2m,[0m
+  [0mattrPush[2m:[0m [36m[Function: attrPush][0m[0m[2m,[0m
+  [0mattrSet[2m:[0m [36m[Function: attrSet][0m[0m[2m,[0m
+  [0mattrGet[2m:[0m [36m[Function: attrGet][0m[0m[2m,[0m
+  [0mattrJoin[2m:[0m [36m[Function: attrJoin][0m[0m[2m,[0m
+}
+Token {
+  [0mtype[2m:[0m [0m[32m[0m[32m"footnote_anchor"[0m[0m[0m[2m,[0m
+  [0mtag[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mattrs[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mmap[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mnesting[2m:[0m [0m[33m0[0m[0m[2m,[0m
+  [0mlevel[2m:[0m [0m[33m0[0m[0m[2m,[0m
+  [0mchildren[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mcontent[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmarkup[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0minfo[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmeta[2m:[0m {
+    [0mid[2m:[0m [0m[33m2[0m[0m[2m,[0m
+    [0msubId[2m:[0m [0m[33m0[0m[0m[2m,[0m
+    [0mlabel[2m:[0m [0m[2mundefined[0m[0m[2m,[0m
+  }[0m[2m,[0m
+  [0mblock[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mhidden[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mattrIndex[2m:[0m [36m[Function: attrIndex][0m[0m[2m,[0m
+  [0mattrPush[2m:[0m [36m[Function: attrPush][0m[0m[2m,[0m
+  [0mattrSet[2m:[0m [36m[Function: attrSet][0m[0m[2m,[0m
+  [0mattrGet[2m:[0m [36m[Function: attrGet][0m[0m[2m,[0m
+  [0mattrJoin[2m:[0m [36m[Function: attrJoin][0m[0m[2m,[0m
+}
+Token {
+  [0mtype[2m:[0m [0m[32m[0m[32m"footnote_close"[0m[0m[0m[2m,[0m
+  [0mtag[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mattrs[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mmap[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mnesting[2m:[0m [0m[33m-1[0m[0m[2m,[0m
+  [0mlevel[2m:[0m [0m[33m0[0m[0m[2m,[0m
+  [0mchildren[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mcontent[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmarkup[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0minfo[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmeta[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mblock[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mhidden[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mattrIndex[2m:[0m [36m[Function: attrIndex][0m[0m[2m,[0m
+  [0mattrPush[2m:[0m [36m[Function: attrPush][0m[0m[2m,[0m
+  [0mattrSet[2m:[0m [36m[Function: attrSet][0m[0m[2m,[0m
+  [0mattrGet[2m:[0m [36m[Function: attrGet][0m[0m[2m,[0m
+  [0mattrJoin[2m:[0m [36m[Function: attrJoin][0m[0m[2m,[0m
+}
+Token {
+  [0mtype[2m:[0m [0m[32m[0m[32m"footnote_block_close"[0m[0m[0m[2m,[0m
+  [0mtag[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mattrs[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mmap[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mnesting[2m:[0m [0m[33m-1[0m[0m[2m,[0m
+  [0mlevel[2m:[0m [0m[33m0[0m[0m[2m,[0m
+  [0mchildren[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mcontent[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmarkup[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0minfo[2m:[0m [0m[32m""[0m[0m[2m,[0m
+  [0mmeta[2m:[0m [0m[33mnull[0m[0m[2m,[0m
+  [0mblock[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mhidden[2m:[0m [0m[33mfalse[0m[0m[2m,[0m
+  [0mattrIndex[2m:[0m [36m[Function: attrIndex][0m[0m[2m,[0m
+  [0mattrPush[2m:[0m [36m[Function: attrPush][0m[0m[2m,[0m
+  [0mattrSet[2m:[0m [36m[Function: attrSet][0m[0m[2m,[0m
+  [0mattrGet[2m:[0m [36m[Function: attrGet][0m[0m[2m,[0m
+  [0mattrJoin[2m:[0m [36m[Function: attrJoin][0m[0m[2m,[0m
+}
+Set(10) {
+  [0m[32m"heading_open"[0m[0m[2m,[0m
+  [0m[32m"inline"[0m[0m[2m,[0m
+  [0m[32m"heading_close"[0m[0m[2m,[0m
+  [0m[32m"paragraph_open"[0m[0m[2m,[0m
+  [0m[32m"paragraph_close"[0m[0m[2m,[0m
+  [0m[32m"footnote_block_open"[0m[0m[2m,[0m
+  [0m[32m"footnote_open"[0m[0m[2m,[0m
+  [0m[32m"footnote_anchor"[0m[0m[2m,[0m
+  [0m[32m"footnote_close"[0m[0m[2m,[0m
+  [0m[32m"footnote_block_close"[0m[0m[2m,[0m
+}
+Set {}
+Rendered example.md -> index.html
