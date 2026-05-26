@@ -16,8 +16,8 @@ import yaml from "YAML";
 
 class TokenCursor {
   constructor(
-    private tokens: Token[],
-    private pos = 0,
+    public tokens: Token[],
+    public pos = 0,
   ) {}
 
   peek(): Token | undefined {
@@ -34,7 +34,9 @@ class TokenCursor {
   expect(type: TokenType): Token {
     const token = this.consume();
     if (token.type !== type) {
-      throw new Error(`Expected ${type}, got ${token.type}`);
+      throw new Error(
+        `Expected ${type}, got ${token.type}, at pos: ${this.pos - 1}`,
+      );
     }
     return token;
   }
@@ -98,8 +100,9 @@ export function markdownToArticle(source: string): Article {
   };
 
   // tables aren't in tufte-css, and I always use fenced code blocks.
-  const md = new MarkdownIt({ html: false })
-    .use(MarkdownItFootNote)
+  // ignore footnotes for now!
+  const md = new MarkdownIt({ html: false, linkify: true })
+    // .use(MarkdownItFootNote)
     .disable(["table", "code", "strikethrough"]);
 
   const tokens = md.parse(body, {});
@@ -116,8 +119,26 @@ export function markdownToArticle(source: string): Article {
 
 function parseSection(cursor: TokenCursor): Section {
   const blocks: Block[] = [];
-  let newthought: Text = [];
 
+  const currType: TokenType = cursor.peek()!.type as TokenType;
+  // This prevents an infinite loop where we fail to advance the cursor.
+  // This is because sections "start" at whatever block, but "end" when the
+  // next header is opened.
+  if (currType == "heading_open") {
+    ``;
+    blocks.push(parseBlock(cursor, []));
+  }
+  while (
+    cursor.peek() !== undefined &&
+    cursor.peek()!.type !== "heading_open"
+  ) {
+    blocks.push(parseBlock(cursor, []));
+  }
+
+  return { blocks };
+}
+
+function parseBlock(cursor: TokenCursor, newthought: Text): Block {
   const open = cursor.consume();
   switch (open.type as TokenType) {
     // these 3 should be mutually exclusive.
@@ -128,57 +149,100 @@ function parseSection(cursor: TokenCursor): Section {
       if (headingLevel >= 3) {
         newthought.push(...text); // handled by paragraph.
       } else {
-        blocks.push({
+        return {
           type: "heading",
           level: headingLevel === 2 ? "subsection" : "section",
           text,
-        });
+        };
       }
-      break;
+      return parseBlock(cursor, newthought); // uhhhh
     }
     case "paragraph_open": {
       const text = parseInlineChildren(cursor.expect("inline"));
       const close = cursor.expect("paragraph_close");
-      blocks.push({
+      return {
         type: "paragraph",
         newthought,
         text,
-      });
-      newthought = []; // no ball knowledge here :(
-      break;
+      };
     }
     case "blockquote_open": {
-      // uh oh, block quotes can be nested!
-      // also, they begin with a paragraph.
-      const text = parseInlineChildren(cursor.expect("inline"));
-      const close = cursor.expect("blockquote_close");
-      break;
+      const blocks: Block[] = [];
+      let footer: Text = [];
+      const blockQuote: BlockQuote = { type: "blockQuote", blocks, footer };
+      // const text = parseInlineChildren(cursor.expect("inline"));
+      while (cursor.peek()?.type !== "blockquote_close") {
+        blocks.push(parseBlock(cursor, newthought));
+      }
+      cursor.expect("blockquote_close");
+
+      if (blocks.length >= 2) {
+        const lastBlock = blocks.at(-1)!;
+        if (
+          lastBlock.type === "list" &&
+          lastBlock.listType === "unordered" &&
+          lastBlock.items.length === 1
+        ) {
+          // If the last item in a blockquote is an "unordered list"
+          // Yeah this looks genuinely cursed lol.
+          const lastListItem = lastBlock.items[0]!;
+          if (lastListItem.length === 1) {
+            const lastBlock = lastListItem[0]!;
+            if (lastBlock.type == "paragraph") {
+              footer = lastBlock.text;
+              blocks.pop();
+            }
+          }
+        }
+      }
+
+      return blockQuote;
     }
 
     // Lists are special
-    case "fence": {
-      break; // idk
-    }
     case "bullet_list_open": {
-      const middle = cursor.expect("inline");
-      const close = cursor.expect("bullet_list_close");
-      break;
+      const items: Block[][] = [];
+      while (cursor.peek()?.type !== "bullet_list_close") {
+        items.push(parseListItem(cursor));
+      }
+      cursor.expect("bullet_list_close");
+      return { type: "list", listType: "unordered", items: items };
     }
     case "ordered_list_open": {
-      const middle = cursor.expect("inline");
-      const close = cursor.expect("ordered_list_close");
-      break;
+      const items: Block[][] = [];
+      while (cursor.peek()?.type !== "ordered_list_close") {
+        items.push(parseListItem(cursor));
+      }
+      cursor.expect("ordered_list_close");
+      return { type: "list", listType: "ordered", items: items };
     }
+
+    // TODO: handle these.
+    case "hr":
+    case "fence":
+    case "footnote_open":
+    case "footnote_close":
+    case "footnote_block_open":
+    case "footnote_block_close":
+    case "footnote_anchor":
+      console.warn(`${open.type} is not yet supported.`);
+      return { type: "paragraph", text: [] };
     default: // any closing tags here are invalid.
+      console.log(`At: ${cursor.pos}, ${open.type} `);
       throw new Error("Invalid parser state.");
   }
-
-  return { blocks };
 }
 
-// function parseBlock(block: Token): Block {
-//   swtich (block.type as TokenType)
-// }
+function parseListItem(cursor: TokenCursor): Block[] {
+  const blocks: Block[] = [];
+  cursor.expect("list_item_open");
+  while (cursor.peek()?.type !== "list_item_close") {
+    blocks.push(parseBlock(cursor, [])); // mischievous state thing.
+  }
+  cursor.expect("list_item_close");
+
+  return blocks;
+}
 
 function parseInlineChildren(inline: Token): Text {
   const text: Text = [];
@@ -189,12 +253,14 @@ function parseInlineChildren(inline: Token): Text {
   let italic = false;
   let code = false;
   let link = undefined; // may be a tough one!
+  let softbreak = false;
   while (childCursor.peek() !== undefined) {
     const curr = childCursor.consume();
     switch (curr.type as InlineChildrenTokenType) {
       case "text":
       case "softbreak":
-        break; // do nothing lol
+        softbreak = true;
+        break;
       case "strong_open":
         bold = true;
         break;
@@ -218,13 +284,14 @@ function parseInlineChildren(inline: Token): Text {
     }
     text.push({
       type: "textChunk",
-      content: sanitizeText(curr.content),
+      content: sanitizeText((softbreak ? " " : "") + curr.content),
       bold,
       italic,
       code,
       link,
     });
     if (code) code = false; // Janky trick because code inline tokens are the content.
+    if (softbreak) softbreak = false;
   }
 
   return text;

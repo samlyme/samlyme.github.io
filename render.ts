@@ -83,7 +83,13 @@ const renderParagraph = (paragraph: Paragraph): Content => {
 };
 const renderList = (list: List): Content => {
   const tagName = list.listType == "ordered" ? "ol" : "ul";
-  return tag(tagName)(concat(...list.items.map(renderText).map(tag("li"))));
+  return tag(tagName)(
+    concat(
+      ...list.items
+        .map((item) => concat(...item.map(renderBlock)))
+        .map(tag("li")),
+    ), // I don't think i will ever understand this again.
+  );
 };
 const renderCodeBlock = (codeBlock: CodeBlock): Content => {
   const attr = codeBlock.language

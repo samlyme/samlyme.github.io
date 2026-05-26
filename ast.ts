@@ -28,10 +28,11 @@ export interface CodeBlock {
   content: string; // can be arbitrary since it is escaped.
 }
 
+// Although not recommended, for sake of completeness, list items are Block[].
 export interface List {
   type: "list";
   listType: "ordered" | "unordered";
-  items: Text[];
+  items: Block[][]; // 1st dim is list item, each item is a Block[]
 }
 
 export interface Heading {
