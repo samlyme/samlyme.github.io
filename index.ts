@@ -1,4 +1,4 @@
-import type { Article, Chunk, Content, Text } from "./ast";
+import type { Article, TextChunk, Content, Text, SideNote } from "./ast";
 import { renderArticle } from "./render";
 // maybe theres a better way to model this,
 // Sanitized text! HTML is escaped.
@@ -22,14 +22,21 @@ export function sanitizeText(unsafeString: string): Content {
   }) as Content;
 }
 
-type ChunkStyle = Omit<Chunk, "content">;
+type ChunkStyle = Omit<TextChunk, "type" | "content">;
 
-const chunk = (content: string, style: ChunkStyle = {}): Chunk => ({
+const chunk = (content: string, style: ChunkStyle = {}): TextChunk => ({
+  type: "textChunk",
   content: sanitizeText(content),
   ...style,
 });
 
-const text = (...chunks: Chunk[]): Text => chunks;
+const sideNote = (id: string, ...content: Text): SideNote => ({
+  type: "sideNote",
+  id,
+  content,
+});
+
+const text = (...items: Text): Text => items;
 
 export const article: Article = {
   title: sanitizeText("A Reasonable Dummy Article"),
@@ -61,6 +68,12 @@ export const article: Article = {
           text: text(
             chunk(
               "dolor sit amet, consectetur adipiscing elit. Integer nec odio praesent libero sed cursus ante dapibus diam. ",
+            ),
+            sideNote(
+              "opening-note",
+              chunk(
+                "A sidenote is part of the inline text stream, with its own nested text content.",
+              ),
             ),
             chunk("Sed nisi", { bold: true }),
             chunk(

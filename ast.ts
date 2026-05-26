@@ -49,13 +49,21 @@ export interface BlockQuote {
   footer: Text;
 }
 
-export type Text = Chunk[];
+export type Text = InlineItem[];
+export type InlineItem = TextChunk | SideNote;
 
-export interface Chunk {
+export interface TextChunk {
+  type: "textChunk";
   content: Content;
   bold?: boolean;
   italic?: boolean;
   code?: boolean;
   link?: string;
+}
+
+export interface SideNote {
+  type: "sideNote";
+  id: string;
+  content: Text;
 }
 export type Content = string & { __brand: "SanitizedString" };

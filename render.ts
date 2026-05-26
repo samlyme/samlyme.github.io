@@ -1,8 +1,9 @@
+import type { ImportsNotUsedAsValues } from "typescript";
 import type {
   Article,
   Block,
   BlockQuote,
-  Chunk,
+  TextChunk,
   CodeBlock,
   Content,
   Epigraph,
@@ -10,7 +11,9 @@ import type {
   List,
   Paragraph,
   Section,
+  SideNote,
   Text,
+  InlineItem,
 } from "./ast";
 
 export function renderArticle(article: Article): string {
@@ -94,13 +97,19 @@ const renderEpigraph = ({ blockQuote }: Epigraph): Content =>
       tag("footer")(renderText(blockQuote.footer)),
     ),
   );
-
 const concat = (...content: Content[]): Content =>
   content.join("\n") as Content;
-
 const renderText = (text: Text): Content =>
-  text.map(renderChunk).join() as Content;
-const renderChunk = (chunk: Chunk): Content => {
+  text.map(renderInlineItem).join() as Content;
+const renderInlineItem = (inlineItem: InlineItem): Content => {
+  switch (inlineItem.type) {
+    case "textChunk":
+      return renderChunk(inlineItem);
+    case "sideNote":
+      return renderSideNote(inlineItem);
+  }
+};
+const renderChunk = (chunk: TextChunk): Content => {
   let out = chunk.content;
   if (chunk.bold) tag("b")(out);
   if (chunk.italic) tag("i")(out);
@@ -108,6 +117,21 @@ const renderChunk = (chunk: Chunk): Content => {
   if (chunk.link) tag("a", { href: chunk.link })(out);
   return out;
 };
+const renderSideNote = (sideNote: SideNote): Content =>
+  concat(
+    tag("label", {
+      for: sideNote.id,
+      class: "margin-toggle sidenote-number",
+    })("" as Content),
+
+    tag("input", {
+      type: "checkbox",
+      id: sideNote.id,
+      class: "margin-toggle",
+    })("" as Content),
+
+    tag("span", { class: "sidenote" })(renderText(sideNote.content)),
+  );
 
 // HTML helpers
 const newthought = (content: Content) =>
