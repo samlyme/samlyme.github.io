@@ -10,7 +10,6 @@
   <style>
 .code-block {
     width: 52.5%;
-    margin-left: 2.5%;
 }
 
 .code-block-header {
@@ -103,19 +102,314 @@ document.addEventListener("click", async (event) => {
   
   
 <section>
-  <blockquote ><p ><p ><span class="newthought"></span>
+  <h2 > h1 Heading 8-)</h2>
+</section>
+  
+
+<section>
+  <h3 > h2 Heading</h3>
+</section>
+  
+
+<section>
+  <h3 > Horizontal Rules</h3>
+<p ><span class="newthought"></span>
  
- Blockquote example. yay.</p></p>
-<footer > sam ly</footer></blockquote>
+</p>
+<p ><span class="newthought"></span>
+ 
+</p>
+<p ><span class="newthought"></span>
+ 
+</p>
+</section>
+  
+
+<section>
+  <h3 > Typographic replacements</h3>
+<p ><span class="newthought"></span>
+ 
+ Enable typographer option to see result.</p>
+<p ><span class="newthought"></span>
+ 
+ (c) (C) (r) (R) (tm) (TM) (p) (P) +-</p>
+<p ><span class="newthought"></span>
+ 
+ test.. test... test..... test?..... test!....</p>
+<p ><span class="newthought"></span>
+ 
+ !!!!!! ???? ,,  -- ---</p>
+<p ><span class="newthought"></span>
+ 
+ &quot;Smartypants, double quotes&quot; and &#39;single quotes&#39;</p>
+</section>
+  
+
+<section>
+  <h3 > Emphasis</h3>
+<p ><span class="newthought"></span>
+ 
+ <b ></b><b > This is bold text</b> </p>
+<p ><span class="newthought"></span>
+ 
+ <b ></b><b > This is bold text</b> </p>
+<p ><span class="newthought"></span>
+ 
+<i ></i><i > This is italic text</i></p>
+<p ><span class="newthought"></span>
+ 
+<i ></i><i > This is italic text</i></p>
+<p ><span class="newthought"></span>
+ 
+ ~~Strikethrough~~</p>
+</section>
+  
+
+<section>
+  <h3 > Blockquotes</h3>
+<blockquote ><p ><p ><span class="newthought"></span>
+ 
+ Blockquotes can also have attributions! Like so:</p></p>
+<footer > by sam</footer></blockquote>
+</section>
+  
+
+<section>
+  <h3 > Lists</h3>
+<p ><span class="newthought"></span>
+ 
+ Unordered</p>
+<ul ><li ><p ><span class="newthought"></span>
+ 
+ Create a list by starting a line with <code >+</code> , <code >-</code> , or <code >*</code></p></li>
+<li ><p ><span class="newthought"></span>
+ 
+ Sub-lists are made by indenting 2 spaces:</p>
+<ul ><li ><p ><span class="newthought"></span>
+ 
+ Marker character change forces new list start:</p>
+<ul ><li ><p ><span class="newthought"></span>
+ 
+ Ac tristique libero volutpat at</p></li></ul>
+<ul ><li ><p ><span class="newthought"></span>
+ 
+ Facilisis in pretium nisl aliquet</p></li></ul>
+<ul ><li ><p ><span class="newthought"></span>
+ 
+ Nulla volutpat aliquam velit</p></li></ul></li></ul></li>
+<li ><p ><span class="newthought"></span>
+ 
+ Very easy!</p></li></ul>
+<p ><span class="newthought"></span>
+ 
+ Ordered</p>
+<ol ><li ><p ><span class="newthought"></span>
+ 
+ Lorem ipsum dolor sit amet</p></li>
+<li ><p ><span class="newthought"></span>
+ 
+ Consectetur adipiscing elit</p></li>
+<li ><p ><span class="newthought"></span>
+ 
+ Integer molestie lorem at massa</p></li>
+<li ><p ><span class="newthought"></span>
+ 
+ You can use sequential numbers...</p></li>
+<li ><p ><span class="newthought"></span>
+ 
+ ...or keep all the numbers as <code >1.</code></p></li></ol>
+<p ><span class="newthought"></span>
+ 
+ Start numbering with offset:</p>
+<ol ><li ><p ><span class="newthought"></span>
+ 
+ foo</p></li>
+<li ><p ><span class="newthought"></span>
+ 
+ bar</p></li></ol>
+</section>
+  
+
+<section>
+  <h3 > Code</h3>
+<p ><span class="newthought"></span>
+ 
+ Inline <code >code</code></p>
+<p ><span class="newthought"></span>
+ 
+ Indented code</p>
+<p ><span class="newthought"></span>
+ 
+ // Some comments  line 1 of code  line 2 of code  line 3 of code</p>
+<p ><span class="newthought"></span>
+ 
+ Block code &quot;fences&quot;</p>
 <div class="code-block"><div class="code-block-header"><button type="button" class="code-copy-button" data-copy-code="true" aria-label="Copy code">copy</button></div>
-<pre ><code class="language-js">// this is a fenced code block.
-addEventListener(&#39;load&#39;, () =&gt; {
-  const code = document.querySelector(&#39;#code&#39;);
-  const worker = new Worker(&#39;worker.js&#39;);
-  worker.onmessage = (event) =&gt; { code.innerHTML = event.data; }
-  worker.postMessage(code.textContent);
-});
+<pre ><code >Sample text here...
 </code></pre></div>
+<p ><span class="newthought"></span>
+ 
+ Syntax highlighting</p>
+<div class="code-block"><div class="code-block-header"><button type="button" class="code-copy-button" data-copy-code="true" aria-label="Copy code">copy</button></div>
+<pre ><code class="language- js">var foo = function (bar) {
+  return bar++;
+};
+
+console.log(foo(5));
+</code></pre></div>
+</section>
+  
+
+<section>
+  <h3 > Links</h3>
+<p ><span class="newthought"></span>
+ 
+<a href="http://dev.nodeca.com"></a><a href="http://dev.nodeca.com"> link text</a></p>
+<p ><span class="newthought"></span>
+ 
+<a href="http://nodeca.github.io/pica/demo/"></a><a href="http://nodeca.github.io/pica/demo/"> link with title</a></p>
+<p ><span class="newthought"></span>
+ 
+ Autoconverted link <a href="https://github.com/nodeca/pica"></a><a href="https://github.com/nodeca/pica"> https://github.com/nodeca/pica</a>  (enable linkify to see)</p>
+</section>
+  
+
+<section>
+  <h3 > Images</h3>
+<p ><span class="newthought"></span>
+ 
+Minion Stormtroopocat</p>
+<p ><span class="newthought"></span>
+ 
+ Like links, Images also have a footnote style syntax</p>
+<p ><span class="newthought"></span>
+ 
+Alt text</p>
+<p ><span class="newthought"></span>
+ 
+ With a reference later in the document defining the URL location:</p>
+</section>
+  
+
+<section>
+  <h3 > Plugins</h3>
+<p ><span class="newthought"></span>
+ 
+ The killer feature of <code >markdown-it</code>  is very effective support of <a href="https://www.npmjs.org/browse/keyword/markdown-it-plugin"></a><a href="https://www.npmjs.org/browse/keyword/markdown-it-plugin"> syntax plugins</a> .</p>
+</section>
+  
+
+<section>
+  <blockquote ><p ><p ><span class="newthought"><a href="https://github.com/markdown-it/markdown-it-emoji"></a><a href="https://github.com/markdown-it/markdown-it-emoji"> Emojies</a></span>
+ 
+ Classic markup: :wink: :cry: :laughing: :yum:</p>
+<p ><span class="newthought"><a href="https://github.com/markdown-it/markdown-it-emoji"></a><a href="https://github.com/markdown-it/markdown-it-emoji"> Emojies</a></span>
+ 
+ Shortcuts (emoticons): :-) :-( 8-) ;)</p></p>
+<footer ></footer></blockquote>
+<p ><span class="newthought"></span>
+ 
+ see <a href="https://github.com/markdown-it/markdown-it-emoji#change-output"></a><a href="https://github.com/markdown-it/markdown-it-emoji#change-output"> how to change output</a>  with twemoji.</p>
+</section>
+  
+
+<section>
+  <ul ><li ><p ><span class="newthought"></span>
+ 
+ 19^th^</p></li>
+<li ><p ><span class="newthought"></span>
+ 
+ H~2~O</p></li></ul>
+</section>
+  
+
+<section>
+  <p ><span class="newthought"><a href="https://github.com/markdown-it/markdown-it-ins"></a><a href="https://github.com/markdown-it/markdown-it-ins"> &lt;ins&gt;</a></span>
+ 
+ ++Inserted text++</p>
+</section>
+  
+
+<section>
+  <p ><span class="newthought"><a href="https://github.com/markdown-it/markdown-it-mark"></a><a href="https://github.com/markdown-it/markdown-it-mark"> &lt;mark&gt;</a></span>
+ 
+ ==Marked text==</p>
+</section>
+  
+
+<section>
+  <p ><span class="newthought"><a href="https://github.com/markdown-it/markdown-it-footnote"></a><a href="https://github.com/markdown-it/markdown-it-footnote"> Footnotes</a></span>
+ 
+ Footnote 1 link[^first].</p>
+<p ><span class="newthought"></span>
+ 
+ Footnote 2 link[^second].</p>
+<p ><span class="newthought"></span>
+ 
+ Inline footnote^[Text of inline footnote] definition.</p>
+<p ><span class="newthought"></span>
+ 
+ Duplicated footnote reference[^second].</p>
+<p ><span class="newthought"></span>
+ 
+ [^first]: Footnote <b ></b><b > can have markup</b> </p>
+<p ><span class="newthought"></span>
+ 
+ and multiple paragraphs.</p>
+<p ><span class="newthought"></span>
+ 
+ [^second]: Footnote text.</p>
+</section>
+  
+
+<section>
+  <p ><span class="newthought"><a href="https://github.com/markdown-it/markdown-it-deflist"></a><a href="https://github.com/markdown-it/markdown-it-deflist"> Definition lists</a></span>
+ 
+ Term 1</p>
+<p ><span class="newthought"></span>
+ 
+ :   Definition 1  with lazy continuation.</p>
+<p ><span class="newthought"></span>
+ 
+ Term 2 with <i ></i><i > inline markup</i></p>
+<p ><span class="newthought"></span>
+ 
+ :   Definition 2</p>
+<p ><span class="newthought"></span>
+ 
+ { some code, part of Definition 2 }</p>
+<p ><span class="newthought"></span>
+ 
+ Third paragraph of definition 2.</p>
+<p ><span class="newthought"></span>
+ 
+<i ></i><i > Compact style:</i></p>
+<p ><span class="newthought"></span>
+ 
+ Term 1  ~ Definition 1</p>
+<p ><span class="newthought"></span>
+ 
+ Term 2  ~ Definition 2a  ~ Definition 2b</p>
+</section>
+  
+
+<section>
+  <p ><span class="newthought"><a href="https://github.com/markdown-it/markdown-it-abbr"></a><a href="https://github.com/markdown-it/markdown-it-abbr"> Abbreviations</a></span>
+ 
+ This is HTML abbreviation example.</p>
+<p ><span class="newthought"></span>
+ 
+ It converts &quot;HTML&quot;, but keep intact partial entries like &quot;xxxHTMLyyy&quot; and so on.</p>
+<p ><span class="newthought"></span>
+ 
+ *[HTML]: Hyper Text Markup Language</p>
+</section>
+  
+
+<section>
+  <p ><span class="newthought"><a href="https://github.com/markdown-it/markdown-it-container"></a><a href="https://github.com/markdown-it/markdown-it-container"> Custom containers</a></span>
+ 
+ ::: warning <i ></i><i > here be dragons</i>  :::</p>
 </section>
   
 </body>

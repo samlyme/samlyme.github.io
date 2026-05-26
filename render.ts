@@ -19,7 +19,6 @@ import type {
 const codeCopyStyles = `
 .code-block {
     width: 52.5%;
-    margin-left: 2.5%;
 }
 
 .code-block-header {
