@@ -1,26 +1,6 @@
 import type { Article, TextChunk, Content, Text, Note } from "./ast";
-import { renderArticle } from "./render";
+import { renderArticle, sanitizeText } from "./render";
 // maybe theres a better way to model this,
-// Sanitized text! HTML is escaped.
-// I do not allow for inline html unless explicitly in a directive!
-export function sanitizeText(unsafeString: string): Content {
-  return unsafeString.replace(/[&<>"']/g, (match) => {
-    switch (match) {
-      case "&":
-        return "&amp;";
-      case "<":
-        return "&lt;";
-      case ">":
-        return "&gt;";
-      case '"':
-        return "&quot;";
-      case "'":
-        return "&#39;"; // &#39; is safer than &apos; for older browsers
-      default:
-        return match;
-    }
-  }) as Content;
-}
 
 type ChunkStyle = Omit<TextChunk, "type" | "content">;
 

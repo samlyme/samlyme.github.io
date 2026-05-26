@@ -1,4 +1,3 @@
-import type { ImportsNotUsedAsValues } from "typescript";
 import type {
   Article,
   Block,
@@ -75,7 +74,9 @@ const renderParagraph = (paragraph: Paragraph): Content => {
   if (paragraph.newthought) {
     nt = renderText(paragraph.newthought);
   }
-  return tag("p")((newthought(nt) + renderText(paragraph.text)) as Content);
+  return tag("p")(
+    concat(newthought(nt), " " as Content, renderText(paragraph.text)),
+  );
 };
 const renderList = (list: List): Content => {
   const tagName = list.listType == "ordered" ? "ol" : "ul";
@@ -148,3 +149,24 @@ const tag = (type: string, attr?: Attributes) => (content: Content) =>
           .join(" ")
       : ""
   }>${content}</${type}>` as Content;
+
+// Sanitized text! HTML is escaped.
+// I do not allow for inline html unless explicitly in a directive!
+export function sanitizeText(unsafeString: string): Content {
+  return unsafeString.replace(/[&<>"']/g, (match) => {
+    switch (match) {
+      case "&":
+        return "&amp;";
+      case "<":
+        return "&lt;";
+      case ">":
+        return "&gt;";
+      case '"':
+        return "&quot;";
+      case "'":
+        return "&#39;"; // &#39; is safer than &apos; for older browsers
+      default:
+        return match;
+    }
+  }) as Content;
+}
