@@ -1,16 +1,6 @@
 import MarkdownIt from "markdown-it";
-import MarkdownItFootNote from "markdown-it-footnote";
 import type Token from "markdown-it/lib/token.mjs";
-import type {
-  Article,
-  Block,
-  BlockQuote,
-  Content,
-  Heading,
-  List,
-  Section,
-  Text,
-} from "./ast";
+import type { Article, Block, BlockQuote, Section, Text } from "./ast";
 import { sanitizeText } from "./render";
 import yaml from "YAML";
 
@@ -61,12 +51,7 @@ type TokenType =
   | "bullet_list_close"
   | "ordered_list_open"
   | "ordered_list_close"
-  | "fence"
-  | "footnote_block_open"
-  | "footnote_open"
-  | "footnote_anchor"
-  | "footnote_close"
-  | "footnote_block_close";
+  | "fence";
 
 type InlineChildrenTokenType =
   | "text"
@@ -101,9 +86,11 @@ export function markdownToArticle(source: string): Article {
 
   // tables aren't in tufte-css, and I always use fenced code blocks.
   // ignore footnotes for now!
-  const md = new MarkdownIt({ html: false, linkify: true })
-    // .use(MarkdownItFootNote)
-    .disable(["table", "code", "strikethrough"]);
+  const md = new MarkdownIt({ html: false, linkify: true }).disable([
+    "table",
+    "code",
+    "strikethrough",
+  ]);
 
   const tokens = md.parse(body, {});
 
@@ -229,13 +216,6 @@ function parseBlock(cursor: TokenCursor, newthought: Text): Block {
       return {
         type: "horizontalRule",
       };
-    case "footnote_open":
-    case "footnote_close":
-    case "footnote_block_open":
-    case "footnote_block_close":
-    case "footnote_anchor":
-      console.warn(`${open.type} is not yet supported.`);
-      return { type: "paragraph", text: [] };
     default: // any closing tags here are invalid.
       console.log(`At: ${cursor.pos}, ${open.type} `);
       throw new Error("Invalid parser state.");
@@ -305,5 +285,3 @@ function parseInlineChildren(inline: Token): Text {
 
   return text;
 }
-
-// rather than rawdogging the indices, make a class. (my mortal enemy).

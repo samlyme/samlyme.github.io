@@ -11,9 +11,7 @@
   },
   "dependencies": {
     "@types/markdown-it": "^14.1.2",
-    "@types/markdown-it-footnote": "^3.0.4",
     "markdown-it": "^14.2.0",
-    "markdown-it-footnote": "^4.0.0",
     "yaml": "^2.9.0"
   }
 }
