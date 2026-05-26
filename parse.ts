@@ -226,6 +226,9 @@ function parseBlock(cursor: TokenCursor, newthought: Text): Block {
     }
     // TODO: handle these.
     case "hr":
+      return {
+        type: "horizontalRule",
+      };
     case "footnote_open":
     case "footnote_close":
     case "footnote_block_open":

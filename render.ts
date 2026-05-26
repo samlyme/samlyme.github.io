@@ -157,6 +157,8 @@ function renderBlock(block: Block): Content {
       return renderEpigraph(block);
     case "figure":
       return renderFigure(block);
+    case "horizontalRule":
+      return tag("hr")();
   }
 }
 

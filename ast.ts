@@ -14,6 +14,7 @@ export type Block =
   | List
   | CodeBlock
   | BlockQuote
+  | HorizontalRule
   | Epigraph
   | Figure;
 
@@ -49,6 +50,10 @@ export interface BlockQuote {
   type: "blockQuote";
   blocks: Block[]; // this is the only recursive.
   footer: Text;
+}
+
+export interface HorizontalRule {
+  type: "horizontalRule";
 }
 
 export interface Figure {
