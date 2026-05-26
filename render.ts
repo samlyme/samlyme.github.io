@@ -100,7 +100,7 @@ const renderEpigraph = ({ blockQuote }: Epigraph): Content =>
 const concat = (...content: Content[]): Content =>
   content.join("\n") as Content;
 const renderText = (text: Text): Content =>
-  text.map(renderInlineItem).join() as Content;
+  text.map(renderInlineItem).join("") as Content;
 const renderInlineItem = (inlineItem: InlineItem): Content => {
   switch (inlineItem.type) {
     case "textChunk":
@@ -111,10 +111,10 @@ const renderInlineItem = (inlineItem: InlineItem): Content => {
 };
 const renderChunk = (chunk: TextChunk): Content => {
   let out = chunk.content;
-  if (chunk.bold) tag("b")(out);
-  if (chunk.italic) tag("i")(out);
-  if (chunk.code) tag("code")(out); // Potential bug.
-  if (chunk.link) tag("a", { href: chunk.link })(out);
+  if (chunk.bold) out = tag("b")(out);
+  if (chunk.italic) out = tag("i")(out);
+  if (chunk.code) out = tag("code")(out); // Potential bug.
+  if (chunk.link) out = tag("a", { href: chunk.link })(out);
   return out;
 };
 const renderNote = (sideNote: Note): Content =>
@@ -141,4 +141,10 @@ const newthought = (content: Content) =>
 
 type Attributes = Record<string, string>; // UNSAFE!
 const tag = (type: string, attr?: Attributes) => (content: Content) =>
-  `<${type}${attr ? Object.entries(attr).map(([k, v]) => ` ${k}=\"${v}\"`) : " "}>${content}</${type}>` as Content;
+  `<${type} ${
+    attr
+      ? Object.entries(attr)
+          .map(([k, v]) => `${k}=\"${v}\"`)
+          .join(" ")
+      : ""
+  }>${content}</${type}>` as Content;
