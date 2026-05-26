@@ -112,10 +112,8 @@ const renderFigure = (figure: Figure): Content => {
     attr,
   )(
     concat(
-      tag("img", { src: figure.image.src, alt: figure.image.alt })(
-        "" as Content,
-      ),
-      figure.note ? renderNote(figure.note) : ("" as Content),
+      tag("img", { src: figure.image.src, alt: figure.image.alt })(),
+      figure.note ? renderNote(figure.note) : empty,
     ),
   );
 };
@@ -163,14 +161,17 @@ const newthought = (content: Content) =>
   tag("span", { class: "newthought" })(content);
 
 type Attributes = Record<string, string>; // UNSAFE!
-const tag = (type: string, attr?: Attributes) => (content: Content) =>
-  `<${type} ${
-    attr
-      ? Object.entries(attr)
-          .map(([k, v]) => `${k}=\"${v}\"`)
-          .join(" ")
-      : ""
-  }>${content}</${type}>` as Content;
+const empty = "" as Content;
+const tag =
+  (type: string, attr?: Attributes) =>
+  (content: Content = empty) =>
+    `<${type} ${
+      attr
+        ? Object.entries(attr)
+            .map(([k, v]) => `${k}=\"${v}\"`)
+            .join(" ")
+        : ""
+    }>${content}</${type}>` as Content;
 // Sanitized text! HTML is escaped.
 // I do not allow for inline html unless explicitly in a directive!
 export function sanitizeText(unsafeString: string): Content {
