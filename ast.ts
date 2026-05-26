@@ -14,7 +14,8 @@ export type Block =
   | List
   | CodeBlock
   | BlockQuote
-  | Epigraph;
+  | Epigraph
+  | Figure;
 
 export interface Paragraph {
   type: "paragraph";
@@ -47,6 +48,17 @@ export interface BlockQuote {
   type: "blockQuote";
   content: Text;
   footer: Text;
+}
+
+export interface Figure {
+  type: "figure";
+  variant: "standard" | "fullwidth" | "iframe-wrapper";
+  // this is intentionally overfit. not for general use anyway!
+  image: {
+    src: string;
+    alt: string;
+  };
+  note?: Note; // works as a label.
 }
 
 export type Text = InlineItem[];

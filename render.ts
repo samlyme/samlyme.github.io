@@ -13,6 +13,7 @@ import type {
   Note,
   Text,
   InlineItem,
+  Figure,
 } from "./ast";
 
 export function renderArticle(article: Article): string {
@@ -57,6 +58,8 @@ function renderBlock(block: Block): Content {
       return renderBlockQuote(block);
     case "epigraph":
       return renderEpigraph(block);
+    case "figure":
+      return renderFigure(block);
   }
 }
 
@@ -98,6 +101,25 @@ const renderEpigraph = ({ blockQuote }: Epigraph): Content =>
       tag("footer")(renderText(blockQuote.footer)),
     ),
   );
+const renderFigure = (figure: Figure): Content => {
+  let attr = undefined; // match from rust would go so hard!!!!
+  if (figure.variant !== "standard") {
+    attr = { class: figure.variant };
+  }
+
+  return tag(
+    "figure",
+    attr,
+  )(
+    concat(
+      tag("img", { src: figure.image.src, alt: figure.image.alt })(
+        "" as Content,
+      ),
+      figure.note ? renderNote(figure.note) : ("" as Content),
+    ),
+  );
+};
+
 const concat = (...content: Content[]): Content =>
   content.join("\n") as Content;
 const renderText = (text: Text): Content =>
@@ -123,7 +145,7 @@ const renderNote = (sideNote: Note): Content =>
     tag("label", {
       for: sideNote.id,
       class: `margin-toggle ${sideNote.variant === "side" ? "sidenote-number" : ""}`,
-    })((sideNote.variant === "side" ? "" : "&#8853;") as Content),
+    })((sideNote.variant === "side" ? "" : "&#9758;") as Content),
 
     tag("input", {
       type: "checkbox",
@@ -149,7 +171,6 @@ const tag = (type: string, attr?: Attributes) => (content: Content) =>
           .join(" ")
       : ""
   }>${content}</${type}>` as Content;
-
 // Sanitized text! HTML is escaped.
 // I do not allow for inline html unless explicitly in a directive!
 export function sanitizeText(unsafeString: string): Content {

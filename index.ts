@@ -79,6 +79,21 @@ export const article: Article = {
           ),
         },
         {
+          type: "figure",
+          variant: "standard",
+          image: {
+            src: "img.png",
+            alt: "A sample figure for the dummy article",
+          },
+          note: note(
+            "margin",
+            "opening-figure",
+            chunk(
+              "A standard figure placed in the flow of the article, using the local image asset.",
+            ),
+          ),
+        },
+        {
           type: "list",
           listType: "unordered",
           items: [
@@ -119,6 +134,21 @@ export const article: Article = {
               chunk("."),
             ),
             chunk(" sed lacinia urna non tincidunt mattis tortor neque."),
+          ),
+        },
+        {
+          type: "figure",
+          variant: "fullwidth",
+          image: {
+            src: "img.png",
+            alt: "The same sample image shown as a full-width figure",
+          },
+          note: note(
+            "margin",
+            "demonstration-fullwidth-figure",
+            chunk(
+              "The same image can also be rendered as a full-width figure when the surrounding argument needs more visual room.",
+            ),
           ),
         },
         {
