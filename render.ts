@@ -94,14 +94,16 @@ const renderCodeBlock = (codeBlock: CodeBlock): Content => {
 const renderBlockQuote = (blockQuote: BlockQuote): Content =>
   tag("blockquote")(
     concat(
-      tag("p")(renderText(blockQuote.content)),
+      // could be evil, idk
+      tag("p")(concat(...blockQuote.blocks.map(renderBlock))),
       tag("footer")(renderText(blockQuote.footer)),
     ),
   );
 const renderEpigraph = ({ blockQuote }: Epigraph): Content =>
   tag("blockquote")(
     concat(
-      tag("i")(tag("p")(renderText(blockQuote.content))),
+      // could be evil, idk
+      tag("i")(tag("p")(concat(...blockQuote.blocks.map(renderBlock)))),
       tag("footer")(renderText(blockQuote.footer)),
     ),
   );

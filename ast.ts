@@ -46,7 +46,7 @@ export interface Epigraph {
 }
 export interface BlockQuote {
   type: "blockQuote";
-  content: Text;
+  blocks: Block[]; // this is the only recursive.
   footer: Text;
 }
 
