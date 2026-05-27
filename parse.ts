@@ -108,7 +108,6 @@ export function markdownToArticle(source: string): Article {
     .disable(["table", "code", "strikethrough"]);
 
   const tokens = md.parse(body, {});
-  console.log(JSON.stringify(tokens));
 
   let footnoteBlockStart = undefined;
   // before doing anything, chop off the footnote block.
@@ -198,6 +197,8 @@ function parseBlock(cursor: TokenCursor, newthought: Text): Block[] {
         cursor.footnoteRecord,
       );
       const close = cursor.expect("paragraph_close");
+      if (text.length === 0 && newthought.length === 0) return blocks;
+
       return [
         ...blocks,
         {
@@ -381,14 +382,16 @@ function parseInlineChildren(
 
         break;
     }
-    text.push({
-      type: "textChunk",
-      content: sanitizeText((softbreak ? " " : "") + curr.content),
-      bold,
-      italic,
-      code,
-      link,
-    });
+    if (curr.content || softbreak) {
+      text.push({
+        type: "textChunk",
+        content: sanitizeText((softbreak ? " " : "") + curr.content),
+        bold,
+        italic,
+        code,
+        link,
+      });
+    }
     if (code) code = false; // Janky trick because code inline tokens are the content.
     if (softbreak) softbreak = false;
   }

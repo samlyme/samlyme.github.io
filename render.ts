@@ -104,6 +104,19 @@ document.addEventListener("click", async (event) => {
 });
 `.trim();
 
+const mathJaxConfigScript = String.raw`
+window.MathJax = {
+  tex: {
+    inlineMath: [["$", "$"], ["\\(", "\\)"]],
+    displayMath: [["$$", "$$"], ["\\[", "\\]"]],
+    processEscapes: true
+  },
+  options: {
+    skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"]
+  }
+};
+`.trim();
+
 export function renderArticle(article: Article): string {
   return `
 <!DOCTYPE html>
@@ -119,6 +132,9 @@ ${codeCopyStyles}
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
   <script>hljs.highlightAll();</script>
+  <script>
+${mathJaxConfigScript}
+  </script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
   <script>
 ${codeCopyScript}

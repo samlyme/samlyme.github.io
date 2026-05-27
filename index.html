@@ -53,6 +53,18 @@
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
   <script>hljs.highlightAll();</script>
+  <script>
+window.MathJax = {
+  tex: {
+    inlineMath: [["$", "$"], ["\\(", "\\)"]],
+    displayMath: [["$$", "$$"], ["\\[", "\\]"]],
+    processEscapes: true
+  },
+  options: {
+    skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"]
+  }
+};
+  </script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
   <script>
 document.addEventListener("click", async (event) => {
@@ -105,7 +117,7 @@ document.addEventListener("click", async (event) => {
   <h2 >Intro</h2>
 <p ><span class="newthought"></span>
  
-Proof by induction is just one of those topics in math that is fundamentally difficult and unintuitive. As a matter of fact, the top <a href="https://matheducators.stackexchange.com/questions/10021/why-are-induction-proofs-so-challenging-for-students"></a><a href="https://matheducators.stackexchange.com/questions/10021/why-are-induction-proofs-so-challenging-for-students">Mathematics Educators</a><a href="https://matheducators.stackexchange.com/questions/10021/why-are-induction-proofs-so-challenging-for-students"> </a><a href="https://matheducators.stackexchange.com/questions/10021/why-are-induction-proofs-so-challenging-for-students">Stack Exchange</a> posts of all time directly references how difficulty proofs by induction are for students.</p>
+Proof by induction is just one of those topics in math that is fundamentally difficult and unintuitive. As a matter of fact, the top <a href="https://matheducators.stackexchange.com/questions/10021/why-are-induction-proofs-so-challenging-for-students">Mathematics Educators</a><a href="https://matheducators.stackexchange.com/questions/10021/why-are-induction-proofs-so-challenging-for-students"> </a><a href="https://matheducators.stackexchange.com/questions/10021/why-are-induction-proofs-so-challenging-for-students">Stack Exchange</a> posts of all time directly references how difficulty proofs by induction are for students.</p>
 <p ><span class="newthought"></span>
  
 As a current student, it took me 2 separate courses to fully grasp inductive proofs. My first time seeing proof by induction was in my Freshman year for my Discrete Structures class, then 2 years later (now) seeing it again in my Intro to Proofs class I am taking for a Mathematics minor. I was able to understand the concept well enough my first time to pass my exams, but not well enough to really &quot;get&quot; it.</p>
@@ -122,7 +134,7 @@ The way induction is typically explained goes like this:</p>
 Start with a base case that you explicitly show is true.</p></li>
 <li ><p ><span class="newthought"></span>
  
-Then build an inductive hypothesis which you <i ></i><i >assume</i> to be true.</p></li>
+Then build an inductive hypothesis which you <i >assume</i> to be true.</p></li>
 <li ><p ><span class="newthought"></span>
  
 Using this inductive hypothesis, you can show that whatever you were trying to prove is true in general.</p></li></ol>
@@ -183,7 +195,7 @@ Isn&#39;t this a circular proof? We made a MASSIVE assumption saying that whatev
   <h2 >A better intuition.</h2>
 <p ><span class="newthought"></span>
  
-The problem with this standard explanation is that it doesn&#39;t get into the crux of why this works <i ></i><i >at all</i>. At first glance, proof by induction really does seem circular, so what gives?</p>
+The problem with this standard explanation is that it doesn&#39;t get into the crux of why this works <i >at all</i>. At first glance, proof by induction really does seem circular, so what gives?</p>
 </section>
   
 
@@ -194,16 +206,16 @@ The problem with this standard explanation is that it doesn&#39;t get into the c
 Imagine you have an infinite sequence of &quot;questions&quot; $Q = [q_0, q_1, q_2, ...]$. You somehow need to answer all of the questions. We can&#39;t answer all the questions individually, because that would take an infinite amount of time.</p>
 <p ><span class="newthought"></span>
  
-However, we find some clever trick that says &quot;if we know that $q_k$ is true, then $q_{k+1}$ is also true&quot;. In other words, $q_k$ <b ></b><b >implies</b> $q_{k+1}$ for <b ></b><b >all</b> $k$.</p>
+However, we find some clever trick that says &quot;if we know that $q_k$ is true, then $q_{k+1}$ is also true&quot;. In other words, $q_k$ <b >implies</b> $q_{k+1}$ for <b >all</b> $k$.</p>
 <p ><span class="newthought"></span>
  
 If we then find out that $q_0$ is true, would that be enough to say that all of the questions in $Q$ is true?</p>
 <p ><span class="newthought"></span>
  
-The answer is <b ></b><b >yes</b>, because if $q_0$ is true, then $q_1$ is true. Then, if $q_1$ is true, so is $q_2$. Then, if $q_2$ is true, so is $q_3$, and so on.</p>
+The answer is <b >yes</b>, because if $q_0$ is true, then $q_1$ is true. Then, if $q_1$ is true, so is $q_2$. Then, if $q_2$ is true, so is $q_3$, and so on.</p>
 <p ><span class="newthought"></span>
  
-<i ></i><i >This</i> is really what we are saying when we say &quot;proof by induction&quot;. We are asking the question, does Question $k$ imply Question $k+1$.</p>
+<i >This</i> is really what we are saying when we say &quot;proof by induction&quot;. We are asking the question, does Question $k$ imply Question $k+1$.</p>
 </section>
   
 
