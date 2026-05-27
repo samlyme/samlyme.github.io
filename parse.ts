@@ -348,8 +348,12 @@ function parseInlineChildren(
 
       case "footnote_ref":
         const id = curr.meta["id"] as number;
-        text.push(footnoteRecord[id]!);
-        console.log(footnoteRecord[id]!.content);
+        const note = footnoteRecord[id];
+        if (note === undefined) throw new Error("Invalid footnote_ref id.");
+        if (!note.used) text.push(note);
+        else console.warn("Duplicate footnote references are not rendered.");
+
+        note.used = true;
 
         break;
     }
@@ -368,7 +372,7 @@ function parseInlineChildren(
   return [text, residueBlocks];
 }
 
-type FootnoteRecord = Record<number, Note>;
+type FootnoteRecord = Record<number, Note & { used: boolean }>;
 
 // A behavioral quirk of my implementation is that footnotes (sidenotes)
 // can not be referenced by multiple places in the doc. Need to override how
@@ -392,6 +396,7 @@ function parseFootnoteBlock(cursor: TokenCursor): FootnoteRecord {
       variant: "side", // TODO: encode margin notes somehow. Useful for images.
       id: `${label}-${id}`,
       content: flattenNote(blocks),
+      used: false,
     };
     cursor.expect("footnote_close");
   }
