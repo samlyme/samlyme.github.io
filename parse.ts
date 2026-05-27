@@ -1,6 +1,6 @@
 import MarkdownIt from "markdown-it";
 import type Token from "markdown-it/lib/token.mjs";
-import type { Article, Block, BlockQuote, Section, Text } from "./ast";
+import type { Article, Block, BlockQuote, Figure, Section, Text } from "./ast";
 import { sanitizeText } from "./render";
 import yaml from "YAML";
 
@@ -113,45 +113,51 @@ function parseSection(cursor: TokenCursor): Section {
   // next header is opened.
   if (currType == "heading_open") {
     ``;
-    blocks.push(parseBlock(cursor, []));
+    blocks.push(...parseBlock(cursor, []));
   }
   while (
     cursor.peek() !== undefined &&
     cursor.peek()!.type !== "heading_open"
   ) {
-    blocks.push(parseBlock(cursor, []));
+    blocks.push(...parseBlock(cursor, []));
   }
 
   return { blocks };
 }
 
-function parseBlock(cursor: TokenCursor, newthought: Text): Block {
+function parseBlock(cursor: TokenCursor, newthought: Text): Block[] {
   const open = cursor.consume();
   switch (open.type as TokenType) {
     // these 3 should be mutually exclusive.
     case "heading_open": {
-      const text = parseInlineChildren(cursor.expect("inline"));
+      const [text, blocks] = parseInlineChildren(cursor.expect("inline"));
       const close = cursor.expect("heading_close");
       const headingLevel = open.markup.length; // janky way to get heading level.
       if (headingLevel >= 3) {
         newthought.push(...text); // handled by paragraph.
       } else {
-        return {
-          type: "heading",
-          level: headingLevel === 2 ? "subsection" : "section",
-          text,
-        };
+        return [
+          ...blocks,
+          {
+            type: "heading",
+            level: headingLevel === 2 ? "subsection" : "section",
+            text,
+          },
+        ];
       }
       return parseBlock(cursor, newthought); // uhhhh
     }
     case "paragraph_open": {
-      const text = parseInlineChildren(cursor.expect("inline"));
+      const [text, blocks] = parseInlineChildren(cursor.expect("inline"));
       const close = cursor.expect("paragraph_close");
-      return {
-        type: "paragraph",
-        newthought,
-        text,
-      };
+      return [
+        ...blocks,
+        {
+          type: "paragraph",
+          newthought,
+          text,
+        },
+      ];
     }
     case "blockquote_open": {
       const blocks: Block[] = [];
@@ -159,7 +165,7 @@ function parseBlock(cursor: TokenCursor, newthought: Text): Block {
       const blockQuote: BlockQuote = { type: "blockQuote", blocks, footer };
       // const text = parseInlineChildren(cursor.expect("inline"));
       while (cursor.peek()?.type !== "blockquote_close") {
-        blocks.push(parseBlock(cursor, newthought));
+        blocks.push(...parseBlock(cursor, newthought));
       }
       cursor.expect("blockquote_close");
 
@@ -183,7 +189,7 @@ function parseBlock(cursor: TokenCursor, newthought: Text): Block {
         }
       }
 
-      return blockQuote;
+      return [blockQuote];
     }
 
     // Lists are special
@@ -193,7 +199,7 @@ function parseBlock(cursor: TokenCursor, newthought: Text): Block {
         items.push(parseListItem(cursor));
       }
       cursor.expect("bullet_list_close");
-      return { type: "list", listType: "unordered", items: items };
+      return [{ type: "list", listType: "unordered", items: items }];
     }
     case "ordered_list_open": {
       const items: Block[][] = [];
@@ -201,21 +207,25 @@ function parseBlock(cursor: TokenCursor, newthought: Text): Block {
         items.push(parseListItem(cursor));
       }
       cursor.expect("ordered_list_close");
-      return { type: "list", listType: "ordered", items: items };
+      return [{ type: "list", listType: "ordered", items: items }];
     }
 
     case "fence": {
-      return {
-        type: "codeBlock",
-        language: open.info,
-        content: open.content,
-      };
+      return [
+        {
+          type: "codeBlock",
+          language: open.info,
+          content: open.content,
+        },
+      ];
     }
     // TODO: handle these.
     case "hr":
-      return {
-        type: "horizontalRule",
-      };
+      return [
+        {
+          type: "horizontalRule",
+        },
+      ];
     default: // any closing tags here are invalid.
       console.log(`At: ${cursor.pos}, ${open.type} `);
       throw new Error("Invalid parser state.");
@@ -226,15 +236,16 @@ function parseListItem(cursor: TokenCursor): Block[] {
   const blocks: Block[] = [];
   cursor.expect("list_item_open");
   while (cursor.peek()?.type !== "list_item_close") {
-    blocks.push(parseBlock(cursor, [])); // mischievous state thing.
+    blocks.push(...parseBlock(cursor, [])); // mischievous state thing.
   }
   cursor.expect("list_item_close");
 
   return blocks;
 }
 
-function parseInlineChildren(inline: Token): Text {
+function parseInlineChildren(inline: Token): [Text, Block[]] {
   const text: Text = [];
+  const residueBlocks: Block[] = [];
   if (!inline.children) throw new Error("inline has no children"); // fuck it, could be bug here.
 
   const childCursor = new TokenCursor(inline.children);
@@ -247,8 +258,6 @@ function parseInlineChildren(inline: Token): Text {
     const curr = childCursor.consume();
     switch (curr.type as InlineChildrenTokenType) {
       case "text":
-      case "softbreak":
-        softbreak = true;
         break;
       case "strong_open":
         bold = true;
@@ -262,6 +271,9 @@ function parseInlineChildren(inline: Token): Text {
       case "em_close":
         italic = false;
         break;
+      case "s_open":
+      case "s_close":
+        break;
       case "code_inline":
         code = true;
         break;
@@ -270,6 +282,31 @@ function parseInlineChildren(inline: Token): Text {
         break;
       case "link_close":
         link = undefined;
+        break;
+      case "image": {
+        // for me, I need images to be block elements. Thus, I need some way
+        // to propagate this back up.
+        console.log(curr);
+        const src = curr.attrGet("src") || "";
+        const alt = curr.attrGet("alt") || "";
+        const title = curr.attrGet("title"); // TODO: do something with title.
+        const figure: Figure = {
+          type: "figure",
+          variant: "standard",
+          image: {
+            src,
+            alt,
+          },
+        };
+        residueBlocks.push(figure);
+        // I will make this behave how I like it. The image WILL be a figure,
+        // which is a block element. Thus, I need to bubble this up.
+        break;
+      }
+
+      case "softbreak":
+        softbreak = true;
+        break;
     }
     text.push({
       type: "textChunk",
@@ -283,5 +320,17 @@ function parseInlineChildren(inline: Token): Text {
     if (softbreak) softbreak = false;
   }
 
-  return text;
+  return [text, residueBlocks];
 }
+// | "text"
+// | "strong_open"
+// | "strong_close"
+// | "em_open"
+// | "em_close"
+// | "s_open"
+// | "s_close"
+// | "code_inline"
+// | "link_open"
+// | "link_close"
+// | "image"
+// | "softbreak";
