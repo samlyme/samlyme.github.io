@@ -231,6 +231,9 @@ const renderFigure = (figure: Figure): Content => {
     attr = { class: figure.variant };
   }
 
+  // Notes for figures should't be numbered.
+  if (figure.note) figure.note.variant = "margin";
+
   return tag(
     "figure",
     attr,

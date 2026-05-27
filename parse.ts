@@ -108,6 +108,7 @@ export function markdownToArticle(source: string): Article {
     .disable(["table", "code", "strikethrough"]);
 
   const tokens = md.parse(body, {});
+
   let footnoteBlockStart = undefined;
   // before doing anything, chop off the footnote block.
   for (let i = tokens.length - 1; i >= 0; i--) {
@@ -118,13 +119,21 @@ export function markdownToArticle(source: string): Article {
     }
   }
 
-  const footnoteTokens = tokens
-    .slice(footnoteBlockStart ?? tokens.length)
-    .filter((token) => token.type !== "footnote_anchor");
   // Footnote anchors are not needed in my implementation.
-  if (footnoteBlockStart) tokens.length = footnoteBlockStart;
-  const footnoteCursor = new TokenCursor(footnoteTokens);
-  const footnoteRecord = parseFootnoteBlock(footnoteCursor);
+  let footnoteRecord = {};
+  if (footnoteBlockStart !== undefined) {
+    const footnoteTokens = tokens
+      .slice(footnoteBlockStart)
+      .filter((token) => token.type !== "footnote_anchor");
+    const footnoteCursor = new TokenCursor(footnoteTokens);
+    try {
+      footnoteRecord = parseFootnoteBlock(footnoteCursor);
+    } catch (error) {
+      console.error(error);
+      console.log(JSON.stringify(tokens));
+    }
+    tokens.length = footnoteBlockStart;
+  }
 
   const cursor = new TokenCursor(tokens, 0, footnoteRecord);
   // Top level, everything belongs to a section. Sections are delimited by
@@ -336,6 +345,18 @@ function parseInlineChildren(
             alt,
           },
         };
+        const lookahead = childCursor.peek();
+        if (lookahead && lookahead.type === "footnote_ref") {
+          childCursor.consume();
+          const id = lookahead.meta["id"] as number;
+          const note = footnoteRecord[id];
+          if (note === undefined) throw new Error("Invalid footnote_ref id.");
+
+          if (!note.used) figure.note = note;
+          else console.warn("Duplicate footnote references are not rendered.");
+
+          note.used = true;
+        }
         residueBlocks.push(figure);
         // I will make this behave how I like it. The image WILL be a figure,
         // which is a block element. Thus, I need to bubble this up.
@@ -347,6 +368,8 @@ function parseInlineChildren(
         break;
 
       case "footnote_ref":
+        console.log("footnote_ref encounter");
+
         const id = curr.meta["id"] as number;
         const note = footnoteRecord[id];
         if (note === undefined) throw new Error("Invalid footnote_ref id.");
@@ -368,6 +391,7 @@ function parseInlineChildren(
     if (code) code = false; // Janky trick because code inline tokens are the content.
     if (softbreak) softbreak = false;
   }
+  console.log(JSON.stringify({ text }));
 
   return [text, residueBlocks];
 }
