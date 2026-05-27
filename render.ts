@@ -118,8 +118,8 @@ export function renderArticle(article: Article): string {
 ${codeCopyStyles}
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
-
   <script>hljs.highlightAll();</script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
   <script>
 ${codeCopyScript}
   </script>
