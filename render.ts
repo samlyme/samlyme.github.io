@@ -241,6 +241,7 @@ const renderFigure = (figure: Figure): Content => {
     concat(
       tag("img", figure.image)(),
       figure.note ? renderNote(figure.note) : empty,
+      renderText(figure.text),
     ),
   );
 };

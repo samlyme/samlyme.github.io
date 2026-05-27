@@ -7,7 +7,7 @@ const outputPath = Bun.argv[3] ?? "index.html";
 const source = await Bun.file(inputPath).text();
 const article = markdownToArticle(source);
 
-console.log(JSON.stringify(article));
+// console.log(JSON.stringify(article));
 
 const html = renderArticle(article);
 await Bun.write(outputPath, html);

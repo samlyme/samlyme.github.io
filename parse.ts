@@ -108,6 +108,7 @@ export function markdownToArticle(source: string): Article {
     .disable(["table", "code", "strikethrough"]);
 
   const tokens = md.parse(body, {});
+  console.log(JSON.stringify(tokens));
 
   let footnoteBlockStart = undefined;
   // before doing anything, chop off the footnote block.
@@ -336,10 +337,11 @@ function parseInlineChildren(
       case "image": {
         const src = curr.attrGet("src") || "";
         const alt = curr.attrGet("alt") || "";
-        const title = curr.attrGet("title"); // TODO: do something with title.
+
         const figure: Figure = {
           type: "figure",
           variant: "standard",
+          text: parseInlineChildren(curr, footnoteRecord)[0],
           image: {
             src,
             alt,
@@ -358,9 +360,10 @@ function parseInlineChildren(
           note.used = true;
         }
         residueBlocks.push(figure);
-        // I will make this behave how I like it. The image WILL be a figure,
-        // which is a block element. Thus, I need to bubble this up.
-        break;
+
+        // this is critical. If not, the leftover content from
+        // the image text will leak out.
+        continue;
       }
 
       case "softbreak":
@@ -368,8 +371,6 @@ function parseInlineChildren(
         break;
 
       case "footnote_ref":
-        console.log("footnote_ref encounter");
-
         const id = curr.meta["id"] as number;
         const note = footnoteRecord[id];
         if (note === undefined) throw new Error("Invalid footnote_ref id.");
@@ -391,7 +392,6 @@ function parseInlineChildren(
     if (code) code = false; // Janky trick because code inline tokens are the content.
     if (softbreak) softbreak = false;
   }
-  console.log(JSON.stringify({ text }));
 
   return [text, residueBlocks];
 }

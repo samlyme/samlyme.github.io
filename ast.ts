@@ -59,6 +59,7 @@ export interface HorizontalRule {
 export interface Figure {
   type: "figure";
   variant: "standard" | "fullwidth" | "iframe-wrapper";
+  text: Text;
   // this is intentionally overfit. not for general use anyway!
   image: {
     src: string;
