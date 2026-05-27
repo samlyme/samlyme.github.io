@@ -241,9 +241,8 @@ const renderFigure = (figure: Figure): Content => {
     ),
   );
 };
-const renderMarginFigure = (marginFigure: MarginFigure) => {
-  return tag("figure")(tag("img", marginFigure.image)());
-};
+const renderMarginFigure = (marginFigure: MarginFigure) =>
+  tag("figure")(tag("img", marginFigure.image)());
 
 const concat = (...content: Content[]): Content =>
   content.join("\n") as Content;
