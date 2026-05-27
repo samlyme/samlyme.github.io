@@ -1,4 +1,5 @@
 import MarkdownIt from "markdown-it";
+import MarkdownItFootnotes from "markdown-it-footnote";
 import type Token from "markdown-it/lib/token.mjs";
 import type { Article, Block, BlockQuote, Figure, Section, Text } from "./ast";
 import { sanitizeText } from "./render";
@@ -51,7 +52,11 @@ type TokenType =
   | "bullet_list_close"
   | "ordered_list_open"
   | "ordered_list_close"
-  | "fence";
+  | "fence"
+  | "footnote_block_open"
+  | "footnote_block_close"
+  | "footnote_open"
+  | "footnote_close";
 
 type InlineChildrenTokenType =
   | "text"
@@ -65,7 +70,8 @@ type InlineChildrenTokenType =
   | "link_open"
   | "link_close"
   | "image"
-  | "softbreak";
+  | "softbreak"
+  | "footnote_ref";
 
 export function markdownToArticle(source: string): Article {
   const splits = source.split("---");
@@ -86,13 +92,24 @@ export function markdownToArticle(source: string): Article {
 
   // tables aren't in tufte-css, and I always use fenced code blocks.
   // ignore footnotes for now!
-  const md = new MarkdownIt({ html: false, linkify: true }).disable([
-    "table",
-    "code",
-    "strikethrough",
-  ]);
+  const md = new MarkdownIt({ html: false, linkify: true })
+    .disable(["table", "code", "strikethrough"])
+    .use(MarkdownItFootnotes);
 
   const tokens = md.parse(body, {});
+  let footnoteBlockStart = undefined;
+  // before doing anything, chop off the footnote block.
+  for (let i = tokens.length - 1; i >= 0; i--) {
+    const token = tokens[i];
+    if (token!.type === "footnote_block_open") {
+      footnoteBlockStart = i;
+      break;
+    }
+  }
+
+  const footnoteTokens = tokens.slice(footnoteBlockStart ?? tokens.length);
+  if (footnoteBlockStart) tokens.length = footnoteBlockStart;
+  console.log(`footnoteTokens: ${footnoteTokens.length}`);
 
   const cursor = new TokenCursor(tokens);
   // Top level, everything belongs to a section. Sections are delimited by
@@ -284,9 +301,6 @@ function parseInlineChildren(inline: Token): [Text, Block[]] {
         link = undefined;
         break;
       case "image": {
-        // for me, I need images to be block elements. Thus, I need some way
-        // to propagate this back up.
-        console.log(curr);
         const src = curr.attrGet("src") || "";
         const alt = curr.attrGet("alt") || "";
         const title = curr.attrGet("title"); // TODO: do something with title.
@@ -322,15 +336,3 @@ function parseInlineChildren(inline: Token): [Text, Block[]] {
 
   return [text, residueBlocks];
 }
-// | "text"
-// | "strong_open"
-// | "strong_close"
-// | "em_open"
-// | "em_close"
-// | "s_open"
-// | "s_close"
-// | "code_inline"
-// | "link_open"
-// | "link_close"
-// | "image"
-// | "softbreak";
