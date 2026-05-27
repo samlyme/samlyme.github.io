@@ -14,6 +14,7 @@ import type {
   Text,
   InlineItem,
   Figure,
+  MarginFigure,
 } from "./ast";
 
 const codeCopyStyles = `
@@ -235,10 +236,13 @@ const renderFigure = (figure: Figure): Content => {
     attr,
   )(
     concat(
-      tag("img", { src: figure.image.src, alt: figure.image.alt })(),
+      tag("img", figure.image)(),
       figure.note ? renderNote(figure.note) : empty,
     ),
   );
+};
+const renderMarginFigure = (marginFigure: MarginFigure) => {
+  return tag("figure")(tag("img", marginFigure.image)());
 };
 
 const concat = (...content: Content[]): Content =>
@@ -279,7 +283,7 @@ const renderNote = (sideNote: Note): Content =>
         ...sideNote.content.map((content) =>
           content.type === "textChunk"
             ? renderChunk(content)
-            : renderFigure(content),
+            : renderMarginFigure(content),
         ),
       ),
     ),

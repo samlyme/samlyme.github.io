@@ -416,7 +416,11 @@ function flattenNote(blocks: Block[]): NoteContent[] {
   for (const block of blocks) {
     switch (block.type) {
       case "figure":
-        out.push(block);
+        const { image, note } = block;
+        out.push({ type: "marginFigure", image });
+        if (note) {
+          out.push(...note.content.filter((item) => item.type === "textChunk"));
+        }
         break;
       case "paragraph":
         if (block.newthought) {

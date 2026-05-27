@@ -18,8 +18,6 @@ export type Block =
   | Epigraph
   | Figure;
 
-export type NoteContent = TextChunk | Figure;
-
 export interface Paragraph {
   type: "paragraph";
   newthought?: Text;
@@ -69,6 +67,15 @@ export interface Figure {
   note?: Note; // works as a label.
 }
 
+// This version can NOT have anything but an image.
+export interface MarginFigure {
+  type: "marginFigure";
+  image: {
+    src: string;
+    alt: string;
+  };
+}
+
 export type Text = InlineItem[];
 export type InlineItem = TextChunk | Note;
 
@@ -87,4 +94,5 @@ export interface Note {
   id: string;
   content: NoteContent[];
 }
+export type NoteContent = TextChunk | MarginFigure;
 export type Content = string & { __brand: "SanitizedString" };
