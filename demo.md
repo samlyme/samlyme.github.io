@@ -119,9 +119,12 @@ Inline footnote^[Text of inline footnote] definition.
 
 Duplicated footnote reference[^second].
 
-[^first]: Footnote **can have markup**
+[^first]: Footnote **can have markup**,
 
     and multiple paragraphs.
+
+#### What about
+other styles?
 
 [^second]: Footnote text.
 

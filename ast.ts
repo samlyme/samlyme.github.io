@@ -18,6 +18,8 @@ export type Block =
   | Epigraph
   | Figure;
 
+export type NoteContent = TextChunk | Figure;
+
 export interface Paragraph {
   type: "paragraph";
   newthought?: Text;
@@ -83,6 +85,6 @@ export interface Note {
   type: "note";
   variant: "side" | "margin";
   id: string;
-  content: Text;
+  content: NoteContent[];
 }
 export type Content = string & { __brand: "SanitizedString" };

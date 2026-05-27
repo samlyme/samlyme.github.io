@@ -1,7 +1,17 @@
 import MarkdownIt from "markdown-it";
 import MarkdownItFootnotes from "markdown-it-footnote";
 import type Token from "markdown-it/lib/token.mjs";
-import type { Article, Block, BlockQuote, Figure, Section, Text } from "./ast";
+import type {
+  Article,
+  Block,
+  BlockQuote,
+  Content,
+  Figure,
+  Note,
+  NoteContent,
+  Section,
+  Text,
+} from "./ast";
 import { sanitizeText } from "./render";
 import yaml from "YAML";
 
@@ -9,6 +19,7 @@ class TokenCursor {
   constructor(
     public tokens: Token[],
     public pos = 0,
+    public footnoteRecord: FootnoteRecord = {},
   ) {}
 
   peek(): Token | undefined {
@@ -93,8 +104,8 @@ export function markdownToArticle(source: string): Article {
   // tables aren't in tufte-css, and I always use fenced code blocks.
   // ignore footnotes for now!
   const md = new MarkdownIt({ html: false, linkify: true })
-    .disable(["table", "code", "strikethrough"])
-    .use(MarkdownItFootnotes);
+    .use(MarkdownItFootnotes)
+    .disable(["table", "code", "strikethrough"]);
 
   const tokens = md.parse(body, {});
   let footnoteBlockStart = undefined;
@@ -107,11 +118,15 @@ export function markdownToArticle(source: string): Article {
     }
   }
 
-  const footnoteTokens = tokens.slice(footnoteBlockStart ?? tokens.length);
+  const footnoteTokens = tokens
+    .slice(footnoteBlockStart ?? tokens.length)
+    .filter((token) => token.type !== "footnote_anchor");
+  // Footnote anchors are not needed in my implementation.
   if (footnoteBlockStart) tokens.length = footnoteBlockStart;
-  console.log(`footnoteTokens: ${footnoteTokens.length}`);
+  const footnoteCursor = new TokenCursor(footnoteTokens);
+  const footnoteRecord = parseFootnoteBlock(footnoteCursor);
 
-  const cursor = new TokenCursor(tokens);
+  const cursor = new TokenCursor(tokens, 0, footnoteRecord);
   // Top level, everything belongs to a section. Sections are delimited by
   // headings.
   while (cursor.peek() !== undefined) {
@@ -147,7 +162,10 @@ function parseBlock(cursor: TokenCursor, newthought: Text): Block[] {
   switch (open.type as TokenType) {
     // these 3 should be mutually exclusive.
     case "heading_open": {
-      const [text, blocks] = parseInlineChildren(cursor.expect("inline"));
+      const [text, blocks] = parseInlineChildren(
+        cursor.expect("inline"),
+        cursor.footnoteRecord,
+      );
       const close = cursor.expect("heading_close");
       const headingLevel = open.markup.length; // janky way to get heading level.
       if (headingLevel >= 3) {
@@ -165,7 +183,10 @@ function parseBlock(cursor: TokenCursor, newthought: Text): Block[] {
       return parseBlock(cursor, newthought); // uhhhh
     }
     case "paragraph_open": {
-      const [text, blocks] = parseInlineChildren(cursor.expect("inline"));
+      const [text, blocks] = parseInlineChildren(
+        cursor.expect("inline"),
+        cursor.footnoteRecord,
+      );
       const close = cursor.expect("paragraph_close");
       return [
         ...blocks,
@@ -260,7 +281,10 @@ function parseListItem(cursor: TokenCursor): Block[] {
   return blocks;
 }
 
-function parseInlineChildren(inline: Token): [Text, Block[]] {
+function parseInlineChildren(
+  inline: Token,
+  footnoteRecord: FootnoteRecord,
+): [Text, Block[]] {
   const text: Text = [];
   const residueBlocks: Block[] = [];
   if (!inline.children) throw new Error("inline has no children"); // fuck it, could be bug here.
@@ -321,6 +345,13 @@ function parseInlineChildren(inline: Token): [Text, Block[]] {
       case "softbreak":
         softbreak = true;
         break;
+
+      case "footnote_ref":
+        const id = curr.meta["id"] as number;
+        text.push(footnoteRecord[id]!);
+        console.log(footnoteRecord[id]!.content);
+
+        break;
     }
     text.push({
       type: "textChunk",
@@ -335,4 +366,76 @@ function parseInlineChildren(inline: Token): [Text, Block[]] {
   }
 
   return [text, residueBlocks];
+}
+
+type FootnoteRecord = Record<number, Note>;
+
+// A behavioral quirk of my implementation is that footnotes (sidenotes)
+// can not be referenced by multiple places in the doc. Need to override how
+// tufte-css works if we want that.
+function parseFootnoteBlock(cursor: TokenCursor): FootnoteRecord {
+  const out: FootnoteRecord = {};
+
+  cursor.expect("footnote_block_open");
+
+  while (cursor.peek()!.type === "footnote_open") {
+    const open = cursor.expect("footnote_open");
+    const id = open.meta["id"];
+
+    const label = open.meta["label"] as string;
+    const blocks: Block[] = [];
+    while (cursor.peek()!.type !== "footnote_close") {
+      blocks.push(...parseBlock(cursor, []));
+    }
+    out[id] = {
+      type: "note",
+      variant: "side", // TODO: encode margin notes somehow. Useful for images.
+      id: `${label}-${id}`,
+      content: flattenNote(blocks),
+    };
+    cursor.expect("footnote_close");
+  }
+
+  cursor.expect("footnote_block_close");
+
+  return out;
+}
+
+// for CSS reasons, I need to flatten the footnote.
+// Although markdown allows you to have arbitrary blocks in footnote,
+// I will not. I will try my best to coerce the data.
+// Instead, I will have some "whitelisted sidenote items", all others are not
+// allowed.
+function flattenNote(blocks: Block[]): NoteContent[] {
+  const out: NoteContent[] = [];
+  for (const block of blocks) {
+    switch (block.type) {
+      case "figure":
+        out.push(block);
+        break;
+      case "paragraph":
+        if (block.newthought) {
+          out.push(
+            ...block.newthought.filter((item) => item.type === "textChunk"),
+          );
+        }
+        out.push(...block.text.filter((item) => item.type === "textChunk"));
+        break;
+      case "heading":
+        out.push(
+          ...block.text
+            .filter((item) => item.type === "textChunk")
+            .map((textChunk) => {
+              // TODO: probably a better way to do this.
+              if (block.level == "section") textChunk.bold = true;
+              textChunk.italic = true;
+              return textChunk;
+            }),
+        );
+        break;
+      default:
+        throw new Error("Invalid content for sidenote/footnote.");
+    }
+  }
+  return out;
 }

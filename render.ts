@@ -275,7 +275,13 @@ const renderNote = (sideNote: Note): Content =>
     })("" as Content),
 
     tag("span", { class: sideNote.variant + "note" })(
-      renderText(sideNote.content),
+      concat(
+        ...sideNote.content.map((content) =>
+          content.type === "textChunk"
+            ? renderChunk(content)
+            : renderFigure(content),
+        ),
+      ),
     ),
   );
 
