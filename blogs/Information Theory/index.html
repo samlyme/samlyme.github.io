@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
-  <link rel="stylesheet" href="tufte.css" />
-  <link rel="stylesheet" href="hljs-tufte.css">
-  <link rel="stylesheet" href="nav.css" />
+  <title>Information Theory</title>
+  <link rel="stylesheet" href="../../tufte.css" />
+  <link rel="stylesheet" href="../../hljs-tufte.css">
+  <link rel="stylesheet" href="../../nav.css" />
   <style>
     .code-block {
       width: 52.5%;
@@ -122,23 +122,53 @@
 </header>
 
 
-  <h1>Home</h1>
+  <h1>Information Theory</h1>
   <p class="subtitle"></p>
 
   
 <section>
-  <h2 >Sam Ly</h2>
+  <p ><span class="newthought"></span>
+ 
+<i >Credits: Deep Learning, Ian Goodfellow</i></p>
+<blockquote ><p ><p ><span class="newthought"></span>
+ 
+Learning that an unlikely event has occurred is more informative than learning that a likely event has occurred.</p></p>
+<footer ></footer></blockquote>
+<p ><span class="newthought"></span>
+ 
+Imagine someone told you that the sun rose this morning. This message contains zero information as we consider the event of the sun rising each to have a probability of 1. Now consider that someone else told you that there was a solar eclipse this morning. The event of a solar eclipse is relatively unlikely, thus learning about this event happening is rather informative.</p>
+<p ><span class="newthought"></span>
+ 
+To quantify this, we can use the units of <b >shannons</b> or <b >nats</b>. They measure the same thing, but are scaled by a constant factor.</p>
+<p ><span class="newthought"></span>
+ 
+We define the <b >self-information</b> of an event $x$ as the negative log of the probability of $x$.</p>
+<p ><span class="newthought"></span>
+ 
+$$ I(x) = -P(x) $$</p>
+<p ><span class="newthought"></span>
+ 
+Choosing a log with base 2 gives an result in shannons, and choosing the natural log gives a result in terms of nats.</p>
+<p ><span class="newthought"></span>
+ 
+Now, taking the weighted average of the self-information gives you the <b >Shannon entropy</b>, a measure of the expected amount of uncertainty in an entire probability distribution.</p>
+<p ><span class="newthought"></span>
+ 
+$$ H(x) = E(I(X)) $$</p>
 </section>
   
 
 <section>
-  <h3 >About me</h3>
+  <h3 >Kullback-Leibler divergence</h3>
 <p ><span class="newthought"></span>
  
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+Given two distributions over the same RV $P(x)$ and $Q(x)$, we can measure how different they are via the <b >KL divergence</b>.</p>
 <p ><span class="newthought"></span>
  
-Check out my <a href="/blogs/">blogs</a>! My most recent is <a href="/blogs/Information%20Theory/">blogs/Information Theory</a>.</p>
+$$ D_{KL}(P||Q) = E_{x ~ P}[\text{log} P(X) - \text{log} Q(x)$$</p>
+<p ><span class="newthought"></span>
+ 
+The KL divergence is not a true distance measure as $ D_{KL}(P \parallel Q) \neq D_{KL}(Q \parallel P)$.</p>
 </section>
   
 </body>

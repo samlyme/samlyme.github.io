@@ -1,0 +1,128 @@
+@charset "UTF-8";
+
+:root {
+    --hljs-background: #f7f4e8;
+    --hljs-border: #d8d0b8;
+    --hljs-text: #1b1b18;
+    --hljs-muted: #777060;
+    --hljs-red: #8f2f2f;
+    --hljs-green: #2f6f4e;
+    --hljs-blue: #315f8c;
+    --hljs-purple: #72548f;
+    --hljs-gold: #8a6316;
+    --hljs-mark: #eee3b5;
+    --hljs-addition-background: #e5efd8;
+    --hljs-deletion-background: #f1ddd6;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --hljs-background: #1d1d19;
+        --hljs-border: #3a382d;
+        --hljs-text: #e4e0d2;
+        --hljs-muted: #a9a28f;
+        --hljs-red: #d88a7d;
+        --hljs-green: #96c795;
+        --hljs-blue: #93b7d7;
+        --hljs-purple: #c3a7d8;
+        --hljs-gold: #d9b66f;
+        --hljs-mark: #3b3522;
+        --hljs-addition-background: #243424;
+        --hljs-deletion-background: #3a2623;
+    }
+}
+
+.hljs {
+    background: var(--hljs-background);
+    border: 1px solid var(--hljs-border);
+    color: var(--hljs-text);
+    box-sizing: border-box;
+    padding: 0.85rem 1rem;
+}
+
+.hljs-comment,
+.hljs-quote {
+    color: var(--hljs-muted);
+    font-style: italic;
+}
+
+.hljs-doctag,
+.hljs-keyword,
+.hljs-meta .hljs-keyword,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable.language_ {
+    color: var(--hljs-red);
+}
+
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.class_.inherited__,
+.hljs-title.function_ {
+    color: var(--hljs-blue);
+}
+
+.hljs-attr,
+.hljs-attribute,
+.hljs-literal,
+.hljs-meta,
+.hljs-number,
+.hljs-operator,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-id,
+.hljs-variable {
+    color: var(--hljs-purple);
+}
+
+.hljs-regexp,
+.hljs-string,
+.hljs-symbol {
+    color: var(--hljs-green);
+}
+
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-name,
+.hljs-selector-pseudo,
+.hljs-selector-tag {
+    color: var(--hljs-gold);
+}
+
+.hljs-addition {
+    background-color: var(--hljs-addition-background);
+    color: var(--hljs-green);
+}
+
+.hljs-deletion {
+    background-color: var(--hljs-deletion-background);
+    color: var(--hljs-red);
+}
+
+.hljs-emphasis {
+    font-style: italic;
+}
+
+.hljs-strong {
+    font-weight: bold;
+}
+
+.hljs-link {
+    text-decoration: underline;
+}
+
+.hljs-subst {
+    color: var(--hljs-text);
+}
+
+.hljs-section,
+.hljs-bullet {
+    color: var(--hljs-gold);
+    font-weight: bold;
+}
+
+.hljs-code,
+.hljs-formula {
+    background: var(--hljs-mark);
+}
