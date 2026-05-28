@@ -19,7 +19,6 @@ class TokenCursor {
   constructor(
     public tokens: Token[],
     public pos = 0,
-    public footnoteRecord: FootnoteRecord = {},
   ) {}
 
   peek(): Token | undefined {
@@ -107,6 +106,20 @@ export function markdownToArticle(source: string): Article {
 
   const tokens = md.parse(body, {});
 
+  const footnoteRecord = consumeFootnoteTokens(tokens);
+
+  const cursor = new TokenCursor(tokens);
+  // Top level, everything belongs to a section. Sections are delimited by
+  // headings.
+  while (cursor.peek() !== undefined) {
+    article.sections.push(parseSection(cursor, footnoteRecord));
+  }
+
+  return article;
+}
+
+// Mutates tokens, and returns the FootnoteRecord.
+function consumeFootnoteTokens(tokens: Token[]): FootnoteRecord {
   let footnoteBlockStart = undefined;
   // before doing anything, chop off the footnote block.
   for (let i = tokens.length - 1; i >= 0; i--) {
@@ -117,30 +130,14 @@ export function markdownToArticle(source: string): Article {
     }
   }
 
-  // Footnote anchors are not needed in my implementation.
-  let footnoteRecord = {};
-  if (footnoteBlockStart !== undefined) {
-    const footnoteTokens = tokens
-      .slice(footnoteBlockStart)
-      .filter((token) => token.type !== "footnote_anchor");
-    const footnoteCursor = new TokenCursor(footnoteTokens);
-    try {
-      footnoteRecord = parseFootnoteBlock(footnoteCursor);
-    } catch (error) {
-      console.error(error);
-      console.log(JSON.stringify(tokens));
-    }
-    tokens.length = footnoteBlockStart;
-  }
+  if (footnoteBlockStart === undefined) return {};
 
-  const cursor = new TokenCursor(tokens, 0, footnoteRecord);
-  // Top level, everything belongs to a section. Sections are delimited by
-  // headings.
-  while (cursor.peek() !== undefined) {
-    article.sections.push(parseSection(cursor));
-  }
-
-  return article;
+  tokens.length = footnoteBlockStart;
+  const footnoteTokens = tokens
+    .slice(footnoteBlockStart)
+    .filter((token) => token.type !== "footnote_anchor");
+  const footnoteCursor = new TokenCursor(footnoteTokens);
+  return parseFootnoteBlock(footnoteCursor);
 }
 
 type Frontmatter = Omit<Article, "sections">;
@@ -152,7 +149,10 @@ function parseFrontmatter(source: string): Frontmatter {
   return { title: sanitizeText(title), subtitle: sanitizeText(subtitle) };
 }
 
-function parseSection(cursor: TokenCursor): Section {
+function parseSection(
+  cursor: TokenCursor,
+  footnoteRecord: FootnoteRecord,
+): Section {
   const blocks: Block[] = [];
 
   const currType: TokenType = cursor.peek()!.type as TokenType;
@@ -161,26 +161,30 @@ function parseSection(cursor: TokenCursor): Section {
   // next header is opened.
   if (currType == "heading_open") {
     ``;
-    blocks.push(...parseBlock(cursor, []));
+    blocks.push(...parseBlock(cursor, [], footnoteRecord));
   }
   while (
     cursor.peek() !== undefined &&
     cursor.peek()!.type !== "heading_open"
   ) {
-    blocks.push(...parseBlock(cursor, []));
+    blocks.push(...parseBlock(cursor, [], footnoteRecord));
   }
 
   return { blocks };
 }
 
-function parseBlock(cursor: TokenCursor, newthought: Text): Block[] {
+function parseBlock(
+  cursor: TokenCursor,
+  newthought: Text,
+  footnoteRecord: FootnoteRecord,
+): Block[] {
   const open = cursor.consume();
   switch (open.type as TokenType) {
     // these 3 should be mutually exclusive.
     case "heading_open": {
       const [text, blocks] = parseInlineChildren(
         cursor.expect("inline"),
-        cursor.footnoteRecord,
+        footnoteRecord,
       );
       const close = cursor.expect("heading_close");
       const headingLevel = open.markup.length; // janky way to get heading level.
@@ -196,12 +200,12 @@ function parseBlock(cursor: TokenCursor, newthought: Text): Block[] {
           },
         ];
       }
-      return parseBlock(cursor, newthought); // uhhhh
+      return parseBlock(cursor, newthought, footnoteRecord); // uhhhh
     }
     case "paragraph_open": {
       const [text, blocks] = parseInlineChildren(
         cursor.expect("inline"),
-        cursor.footnoteRecord,
+        footnoteRecord,
       );
       const close = cursor.expect("paragraph_close");
       if (text.length === 0 && newthought.length === 0) return blocks;
@@ -221,7 +225,7 @@ function parseBlock(cursor: TokenCursor, newthought: Text): Block[] {
       const blockQuote: BlockQuote = { type: "blockQuote", blocks, footer };
       // const text = parseInlineChildren(cursor.expect("inline"));
       while (cursor.peek()?.type !== "blockquote_close") {
-        blocks.push(...parseBlock(cursor, newthought));
+        blocks.push(...parseBlock(cursor, newthought, footnoteRecord));
       }
       cursor.expect("blockquote_close");
 
@@ -252,7 +256,7 @@ function parseBlock(cursor: TokenCursor, newthought: Text): Block[] {
     case "bullet_list_open": {
       const items: Block[][] = [];
       while (cursor.peek()?.type !== "bullet_list_close") {
-        items.push(parseListItem(cursor));
+        items.push(parseListItem(cursor, footnoteRecord));
       }
       cursor.expect("bullet_list_close");
       return [{ type: "list", listType: "unordered", items: items }];
@@ -260,7 +264,7 @@ function parseBlock(cursor: TokenCursor, newthought: Text): Block[] {
     case "ordered_list_open": {
       const items: Block[][] = [];
       while (cursor.peek()?.type !== "ordered_list_close") {
-        items.push(parseListItem(cursor));
+        items.push(parseListItem(cursor, footnoteRecord));
       }
       cursor.expect("ordered_list_close");
       return [{ type: "list", listType: "ordered", items: items }];
@@ -288,11 +292,14 @@ function parseBlock(cursor: TokenCursor, newthought: Text): Block[] {
   }
 }
 
-function parseListItem(cursor: TokenCursor): Block[] {
+function parseListItem(
+  cursor: TokenCursor,
+  footnoteRecord: FootnoteRecord,
+): Block[] {
   const blocks: Block[] = [];
   cursor.expect("list_item_open");
   while (cursor.peek()?.type !== "list_item_close") {
-    blocks.push(...parseBlock(cursor, [])); // mischievous state thing.
+    blocks.push(...parseBlock(cursor, [], footnoteRecord)); // mischievous state thing.
   }
   cursor.expect("list_item_close");
 
@@ -423,11 +430,13 @@ function parseFootnoteBlock(cursor: TokenCursor): FootnoteRecord {
     const label = open.meta["label"] as string;
     const blocks: Block[] = [];
     while (cursor.peek()!.type !== "footnote_close") {
-      blocks.push(...parseBlock(cursor, []));
+      // I don't know what happens if you use footnotes in footnote definitions.
+      // I don't want to know....
+      blocks.push(...parseBlock(cursor, [], {}));
     }
     out[id] = {
       type: "note",
-      variant: "side", // TODO: encode margin notes somehow. Useful for images.
+      variant: "side",
       id: `${label}-${id}`,
       content: flattenNote(blocks),
       used: false,
