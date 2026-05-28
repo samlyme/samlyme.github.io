@@ -91,13 +91,11 @@ export function markdownToArticle(source: string): Article {
   const frontMatter = splits[1]!;
   const body = splits.slice(2).join("---");
 
-  const { title, subtitle } = yaml.parse(frontMatter);
-  if (typeof title !== "string") throw new Error("Invalid title");
-  if (typeof subtitle !== "string") throw new Error("Invalid subtitle");
+  const { title, subtitle } = parseFrontmatter(frontMatter);
 
   const article: Article = {
-    title: sanitizeText(title),
-    subtitle: sanitizeText(subtitle),
+    title,
+    subtitle,
     sections: [],
   };
 
@@ -143,6 +141,15 @@ export function markdownToArticle(source: string): Article {
   }
 
   return article;
+}
+
+type Frontmatter = Omit<Article, "sections">;
+function parseFrontmatter(source: string): Frontmatter {
+  const { title, subtitle } = yaml.parse(source);
+  if (typeof title !== "string" || typeof subtitle !== "string")
+    throw new Error("Invalid frontmatter.");
+
+  return { title: sanitizeText(title), subtitle: sanitizeText(subtitle) };
 }
 
 function parseSection(cursor: TokenCursor): Section {
