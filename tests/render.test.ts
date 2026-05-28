@@ -44,6 +44,13 @@ test("configures MathJax before loading it", () => {
   );
 });
 
+test("renders the shared header before article content", () => {
+  const html = renderArticle(articleWithMath);
+
+  expect(html).toContain('<nav class="nav">');
+  expect(html.indexOf("<header>")).toBeLessThan(html.indexOf("<h1>Math</h1>"));
+});
+
 test("leaves tex delimiters in article text for browser-side MathJax", () => {
   const html = renderArticle(articleWithMath);
 

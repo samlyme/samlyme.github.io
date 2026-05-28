@@ -33,7 +33,7 @@ const parseWikilink: RuleInline = (state, silent) => {
   const parts = parseWikilinkParts(state.src, start + 2, max);
   if (!parts) return false;
 
-  const href = state.md.normalizeLink(parts.target);
+  const href = prettyPageUrl(state.md.normalizeLink(parts.target));
   if (!state.md.validateLink(href)) return false;
 
   if (!silent) {
@@ -150,6 +150,23 @@ function trimInlineWhitespace(
 
 function isInlineWhitespace(code: number): boolean {
   return code === 0x20 || code === 0x09;
+}
+
+function prettyPageUrl(href: string): string {
+  if (
+    href.endsWith("/") ||
+    href.startsWith("#") ||
+    /^[a-z][a-z0-9+.-]*:/i.test(href)
+  ) {
+    return href;
+  }
+
+  const pathname = href.split(/[?#]/, 1)[0]!;
+  const filename = pathname.split("/").at(-1) ?? "";
+  if (filename.includes(".")) return href;
+
+  const suffix = href.slice(pathname.length);
+  return `${pathname}/${suffix}`;
 }
 
 export default MarkdownItWikilinks;

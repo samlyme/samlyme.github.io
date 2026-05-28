@@ -32,6 +32,16 @@ test("attaches a footnote immediately after an image to the figure only", () => 
   ]);
 });
 
+test("defaults missing subtitles to empty text", () => {
+  const article = markdownToArticle(`---
+title: Test
+---
+
+Body`);
+
+  expect(article.subtitle).toBe("");
+});
+
 test("keeps ordinary footnote references in paragraph text", () => {
   const article = markdownToArticle(doc("hello[^ref]\n\n[^ref]: side note"));
 
@@ -80,13 +90,13 @@ test("parses wikilinks as ordinary links", () => {
     {
       type: "textChunk",
       content: sanitizeText("Proof by Induction"),
-      link: "Proof%20by%20Induction",
+      link: "Proof%20by%20Induction/",
     },
     { type: "textChunk", content: sanitizeText(" and ") },
     {
       type: "textChunk",
       content: sanitizeText("union-find"),
-      link: "Union%20Find%20Algorithm",
+      link: "Union%20Find%20Algorithm/",
     },
     { type: "textChunk", content: sanitizeText(".") },
   ]);

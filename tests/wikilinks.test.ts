@@ -4,9 +4,18 @@ import MarkdownItWikilinks from "../wikilinks";
 
 const md = new MarkdownIt().use(MarkdownItWikilinks);
 
-test("emits the same token shape as a markdown link", () => {
+test("emits page links as pretty URLs", () => {
   expect(inlineTokenShape("[[Page|Label]]")).toEqual(
-    inlineTokenShape("[Label](Page)"),
+    inlineTokenShape("[Label](Page/)"),
+  );
+});
+
+test("leaves non-page wikilink targets unchanged", () => {
+  expect(inlineTokenShape("[[resume.pdf|Resume]]")).toEqual(
+    inlineTokenShape("[Resume](resume.pdf)"),
+  );
+  expect(inlineTokenShape("[[https://example.com/path|External]]")).toEqual(
+    inlineTokenShape("[External](https://example.com/path)"),
   );
 });
 

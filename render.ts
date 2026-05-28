@@ -18,11 +18,19 @@ import type {
 } from "./ast";
 import { renderArticleTemplate } from "./templates/article";
 
-export function renderArticle(article: Article): string {
+interface RenderArticleOptions {
+  assetPathPrefix?: string;
+}
+
+export function renderArticle(
+  article: Article,
+  options: RenderArticleOptions = {},
+): string {
   return renderArticleTemplate({
     title: article.title,
     subtitle: article.subtitle,
     body: article.sections.map(renderSection).join("\n") as Content,
+    assetPathPrefix: options.assetPathPrefix ?? "",
   });
 }
 

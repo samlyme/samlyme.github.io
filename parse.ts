@@ -144,7 +144,10 @@ function consumeFootnoteTokens(tokens: Token[]): FootnoteRecord {
 
 type Frontmatter = Omit<Article, "sections">;
 function parseFrontmatter(source: string): Frontmatter {
-  const { title, subtitle } = yaml.parse(source);
+  const frontmatter = yaml.parse(source);
+  const title = frontmatter?.title;
+  const subtitle = frontmatter?.subtitle ?? "";
+
   if (typeof title !== "string" || typeof subtitle !== "string")
     throw new Error("Invalid frontmatter.");
 
