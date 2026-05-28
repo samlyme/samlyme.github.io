@@ -227,6 +227,7 @@ function parseBlock(
       );
       const close = cursor.expect("heading_close");
       const headingLevel = open.markup.length; // janky way to get heading level.
+      // TODO: Make only `#` markup create a new section.
       if (headingLevel >= 3) {
         newthought.push(...text); // handled by paragraph.
       } else {

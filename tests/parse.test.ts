@@ -75,6 +75,50 @@ test("preserves tex delimiters and commands for MathJax", () => {
   });
 });
 
+test("only section headings create article sections", () => {
+  const article = markdownToArticle(
+    doc(`# First
+
+Intro.
+
+## Still First
+
+More.
+
+# Second
+
+Done.`),
+  );
+
+  expect(article.sections).toHaveLength(2);
+  expect(article.sections[0]?.blocks.map((block) => block.type)).toEqual([
+    "heading",
+    "paragraph",
+    "heading",
+    "paragraph",
+  ]);
+  expect(article.sections[1]?.blocks.map((block) => block.type)).toEqual([
+    "heading",
+    "paragraph",
+  ]);
+
+  expect(article.sections[0]?.blocks[0]).toMatchObject({
+    type: "heading",
+    level: "section",
+    text: [{ content: sanitizeText("First") }],
+  });
+  expect(article.sections[0]?.blocks[2]).toMatchObject({
+    type: "heading",
+    level: "subsection",
+    text: [{ content: sanitizeText("Still First") }],
+  });
+  expect(article.sections[1]?.blocks[0]).toMatchObject({
+    type: "heading",
+    level: "section",
+    text: [{ content: sanitizeText("Second") }],
+  });
+});
+
 test("parses wikilinks as ordinary links", () => {
   const article = markdownToArticle(
     doc("Read [[Proof by Induction]] and [[Union Find Algorithm|union-find]]."),
