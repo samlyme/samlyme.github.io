@@ -6,8 +6,6 @@ title: Blogs
 
 My writings.
 
-[[Information Theory]]
-
 :::page_index
 
 :::
