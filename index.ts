@@ -17,34 +17,21 @@ await buildContent();
 
 async function buildContent(): Promise<void> {
   await mkdir(buildDir, { recursive: true });
-  await Bun.write(join(buildDir, ".nojekyll"), "");
-  await copyStaticAssets();
+  // await Bun.write(join(buildDir, ".nojekyll"), ""); // Codex wrote this. not needed.
+  await cp(staticDir, buildDir, { recursive: true, force: true }); // copy static assets
 
   const inputPaths = await findMarkdownFiles(contentDir);
   const headerLinks = await loadHeaderLinks(contentDir);
   const contentRoutes = createContentRouteMap(contentDir, inputPaths);
   await Promise.all(
     inputPaths.map((inputPath) =>
-      renderMarkdownFile(inputPath, headerLinks, contentRoutes),
+      renderMarkdownFile(inputPath, headerLinks, contentRoutes, inputPaths),
     ),
   );
 
   console.log(
     `Rendered ${inputPaths.length} file(s) from ${contentDir} -> ${buildDir}`,
   );
-}
-
-async function copyStaticAssets(): Promise<void> {
-  for (const entry of await readdir(staticDir, { withFileTypes: true })) {
-    const inputPath = join(staticDir, entry.name);
-    const outputPath = join(buildDir, entry.name);
-
-    if (entry.isDirectory()) {
-      await cp(inputPath, outputPath, { recursive: true, force: true });
-    } else if (entry.isFile()) {
-      await Bun.write(outputPath, Bun.file(inputPath));
-    }
-  }
 }
 
 async function findMarkdownFiles(directory: string): Promise<string[]> {
@@ -67,6 +54,7 @@ async function renderMarkdownFile(
   inputPath: string,
   headerLinks: HeaderLink[],
   contentRoutes: ContentRouteMap,
+  inputPaths: string[], // used for building page index.
 ): Promise<void> {
   const source = await Bun.file(inputPath).text();
   const article = markdownToArticle(source, {
@@ -74,6 +62,8 @@ async function renderMarkdownFile(
       contentRoutes,
       relative(contentDir, inputPath),
     ),
+    inputPath,
+    inputPaths,
   });
   const outputPath = outputPathFor(inputPath);
   const html = renderArticle(article, {

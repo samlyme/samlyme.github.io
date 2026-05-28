@@ -16,7 +16,8 @@ export type Block =
   | BlockQuote
   | HorizontalRule
   | Epigraph
-  | Figure;
+  | Figure
+  | PageIndex;
 
 export interface Paragraph {
   type: "paragraph";
@@ -66,6 +67,16 @@ export interface Figure {
     alt: string;
   };
   note?: Note; // works as a label.
+}
+
+export interface PageIndex {
+  type: "pageIndex";
+  items: PageIndexItem[];
+}
+
+export interface PageIndexItem {
+  title: Content;
+  link: string;
 }
 
 // This version can NOT have anything but an image.

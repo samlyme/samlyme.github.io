@@ -15,6 +15,7 @@ import type {
   InlineItem,
   Figure,
   MarginFigure,
+  PageIndex,
 } from "./ast";
 import { renderArticleTemplate } from "./templates/article";
 import type { HeaderLink } from "./templates/header";
@@ -63,6 +64,8 @@ function renderBlock(block: Block): Content {
       return renderFigure(block);
     case "horizontalRule":
       return tag("hr")();
+    case "pageIndex":
+      return renderPageIndex(block);
   }
 }
 
@@ -145,6 +148,15 @@ const renderFigure = (figure: Figure): Content => {
       tag("img", figure.image)(),
       figure.note ? renderNote(figure.note) : empty,
       renderText(figure.text),
+    ),
+  );
+};
+const renderPageIndex = (pageIndex: PageIndex): Content => {
+  return tag("ul")(
+    concat(
+      ...pageIndex.items.map((item) =>
+        tag("li")(tag("a", { href: item.link })(item.title)),
+      ),
     ),
   );
 };
