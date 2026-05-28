@@ -1,7 +1,7 @@
 import MarkdownIt from "markdown-it";
 import MarkdownItFootnotes from "markdown-it-footnote";
 import type Token from "markdown-it/lib/token.mjs";
-import MarkdownItWikilinks from "./wikilinks";
+import MarkdownItWikilinks, { type WikilinksOptions } from "./wikilinks";
 import type {
   Article,
   Block,
@@ -15,6 +15,10 @@ import type {
 } from "./ast";
 import { sanitizeText } from "./render";
 import yaml from "YAML";
+
+interface MarkdownToArticleOptions {
+  resolveWikilink?: WikilinksOptions["resolveHref"];
+}
 
 class TokenCursor {
   constructor(
@@ -84,7 +88,10 @@ type InlineChildrenTokenType =
   | "softbreak"
   | "footnote_ref";
 
-export function markdownToArticle(source: string): Article {
+export function markdownToArticle(
+  source: string,
+  options: MarkdownToArticleOptions = {},
+): Article {
   const splits = source.split("---");
   if (splits.length < 3) throw new Error("Missing frontmatter");
 
@@ -103,7 +110,7 @@ export function markdownToArticle(source: string): Article {
   // ignore footnotes for now!
   const md = new MarkdownIt({ html: false, linkify: true })
     .use(MarkdownItFootnotes)
-    .use(MarkdownItWikilinks)
+    .use(MarkdownItWikilinks, { resolveHref: options.resolveWikilink })
     .disable(["table", "code", "strikethrough"]);
 
   const tokens = md.parse(body, {});

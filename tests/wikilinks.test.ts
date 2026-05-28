@@ -3,6 +3,12 @@ import MarkdownIt from "markdown-it";
 import MarkdownItWikilinks from "../wikilinks";
 
 const md = new MarkdownIt().use(MarkdownItWikilinks);
+const resolvedMd = new MarkdownIt().use(MarkdownItWikilinks, {
+  resolveHref: (target) => {
+    if (target === "blogs/index") return "/blogs/";
+    return undefined;
+  },
+});
 
 test("emits page links as pretty URLs", () => {
   expect(inlineTokenShape("[[Page|Label]]")).toEqual(
@@ -19,6 +25,18 @@ test("leaves non-page wikilink targets unchanged", () => {
   );
 });
 
+test("uses a configured resolver for content links", () => {
+  expect(inlineTokenShape("[[blogs/index|blogs]]", resolvedMd)).toEqual(
+    inlineTokenShape("[blogs](/blogs/)"),
+  );
+});
+
+test("does not invent pretty page urls when a resolver is configured", () => {
+  expect(inlineTokenShape("[[Missing Page|Missing]]", resolvedMd)).toEqual(
+    inlineTokenShape("[Missing](Missing%20Page)"),
+  );
+});
+
 test("emits the same token shape as a markdown image", () => {
   expect(inlineTokenShape("![[image.png]]")).toEqual(
     inlineTokenShape("![](image.png)"),
@@ -28,8 +46,10 @@ test("emits the same token shape as a markdown image", () => {
   );
 });
 
-function inlineTokenShape(source: string) {
-  const inline = md.parse(source, {}).find((token) => token.type === "inline");
+function inlineTokenShape(source: string, parser = md) {
+  const inline = parser
+    .parse(source, {})
+    .find((token) => token.type === "inline");
   if (!inline?.children) throw new Error("Expected inline children.");
 
   return inline.children.map((token) => ({

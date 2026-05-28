@@ -102,6 +102,30 @@ test("parses wikilinks as ordinary links", () => {
   ]);
 });
 
+test("parses wikilinks with a configured resolver", () => {
+  const article = markdownToArticle(doc("Check out [[blogs/index|blogs]]."), {
+    resolveWikilink: (target) => {
+      if (target === "blogs/index") return "/blogs/";
+      return undefined;
+    },
+  });
+
+  const blocks = article.sections[0]?.blocks ?? [];
+  expect(blocks).toHaveLength(1);
+  expect(blocks[0]?.type).toBe("paragraph");
+
+  const paragraph = blocks[0] as Paragraph;
+  expect(paragraph.text).toMatchObject([
+    { type: "textChunk", content: sanitizeText("Check out ") },
+    {
+      type: "textChunk",
+      content: sanitizeText("blogs"),
+      link: "/blogs/",
+    },
+    { type: "textChunk", content: sanitizeText(".") },
+  ]);
+});
+
 test("parses wikilink images as ordinary images", () => {
   const article = markdownToArticle(
     doc("![[image.png]]\n\n![[diagram.png|Image caption]]"),

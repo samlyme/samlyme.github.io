@@ -1,7 +1,11 @@
-import type { PluginSimple } from "markdown-it";
+import type { PluginWithOptions } from "markdown-it";
 import type { RuleInline } from "markdown-it/lib/parser_inline.mjs";
 import type StateInline from "markdown-it/lib/rules_inline/state_inline.mjs";
 import type Token from "markdown-it/lib/token.mjs";
+
+export interface WikilinksOptions {
+  resolveHref?: (target: string) => string | undefined;
+}
 
 type LinkStateInline = StateInline & { linkLevel: number };
 type WikilinkParts = {
@@ -16,53 +20,62 @@ type WikilinkParts = {
 const BANG = 0x21; // !
 const OPEN_BRACKET = 0x5b; // [
 
-const MarkdownItWikilinks: PluginSimple = (md) => {
+const MarkdownItWikilinks: PluginWithOptions<WikilinksOptions> = (
+  md,
+  options = {},
+) => {
   md.inline.ruler.before("image", "wikiimage", parseWikiimage);
-  md.inline.ruler.before("link", "wikilink", parseWikilink);
+  md.inline.ruler.before("link", "wikilink", createParseWikilink(options));
 };
 
-const parseWikilink: RuleInline = (state, silent) => {
-  const start = state.pos;
-  const max = state.posMax;
+function createParseWikilink(options: WikilinksOptions): RuleInline {
+  return (state, silent) => {
+    const start = state.pos;
+    const max = state.posMax;
 
-  if (state.src.charCodeAt(start) !== OPEN_BRACKET) return false;
-  if (start + 1 >= max || state.src.charCodeAt(start + 1) !== OPEN_BRACKET) {
-    return false;
-  }
-
-  const parts = parseWikilinkParts(state.src, start + 2, max);
-  if (!parts) return false;
-
-  const href = prettyPageUrl(state.md.normalizeLink(parts.target));
-  if (!state.md.validateLink(href)) return false;
-
-  if (!silent) {
-    const oldPos = state.pos;
-    const oldMax = state.posMax;
-    const linkState = state as LinkStateInline;
-
-    state.pos = parts.labelStart;
-    state.posMax = parts.labelEnd;
-
-    const open = state.push("link_open", "a", 1);
-    open.attrs = [["href", href]];
-
-    linkState.linkLevel++;
-    try {
-      state.md.inline.tokenize(state);
-    } finally {
-      linkState.linkLevel--;
+    if (state.src.charCodeAt(start) !== OPEN_BRACKET) return false;
+    if (start + 1 >= max || state.src.charCodeAt(start + 1) !== OPEN_BRACKET) {
+      return false;
     }
 
-    state.push("link_close", "a", -1);
+    const parts = parseWikilinkParts(state.src, start + 2, max);
+    if (!parts) return false;
 
-    state.pos = oldPos;
-    state.posMax = oldMax;
-  }
+    const href = resolveHref(
+      state.md.normalizeLink(parts.target),
+      parts,
+      options,
+    );
+    if (!state.md.validateLink(href)) return false;
 
-  state.pos = parts.close + 2;
-  return true;
-};
+    if (!silent) {
+      const oldPos = state.pos;
+      const oldMax = state.posMax;
+      const linkState = state as LinkStateInline;
+
+      state.pos = parts.labelStart;
+      state.posMax = parts.labelEnd;
+
+      const open = state.push("link_open", "a", 1);
+      open.attrs = [["href", href]];
+
+      linkState.linkLevel++;
+      try {
+        state.md.inline.tokenize(state);
+      } finally {
+        linkState.linkLevel--;
+      }
+
+      state.push("link_close", "a", -1);
+
+      state.pos = oldPos;
+      state.posMax = oldMax;
+    }
+
+    state.pos = parts.close + 2;
+    return true;
+  };
+}
 
 const parseWikiimage: RuleInline = (state, silent) => {
   const start = state.pos;
@@ -150,6 +163,19 @@ function trimInlineWhitespace(
 
 function isInlineWhitespace(code: number): boolean {
   return code === 0x20 || code === 0x09;
+}
+
+function resolveHref(
+  normalizedTarget: string,
+  parts: WikilinkParts,
+  options: WikilinksOptions,
+): string {
+  const resolved = options.resolveHref?.(parts.target);
+  if (resolved !== undefined) return resolved;
+
+  return options.resolveHref
+    ? normalizedTarget
+    : prettyPageUrl(normalizedTarget);
 }
 
 function prettyPageUrl(href: string): string {

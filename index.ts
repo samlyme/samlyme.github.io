@@ -1,5 +1,10 @@
 import { cp, mkdir, readdir } from "node:fs/promises";
 import { basename, dirname, extname, join, relative, sep } from "node:path";
+import {
+  createContentLinkResolver,
+  createContentRouteMap,
+  type ContentRouteMap,
+} from "./content-routes";
 import { markdownToArticle } from "./parse";
 import { renderArticle } from "./render";
 import { loadHeaderLinks, type HeaderLink } from "./templates/header";
@@ -17,8 +22,11 @@ async function buildContent(): Promise<void> {
 
   const inputPaths = await findMarkdownFiles(contentDir);
   const headerLinks = await loadHeaderLinks(contentDir);
+  const contentRoutes = createContentRouteMap(contentDir, inputPaths);
   await Promise.all(
-    inputPaths.map((inputPath) => renderMarkdownFile(inputPath, headerLinks)),
+    inputPaths.map((inputPath) =>
+      renderMarkdownFile(inputPath, headerLinks, contentRoutes),
+    ),
   );
 
   console.log(
@@ -58,9 +66,15 @@ async function findMarkdownFiles(directory: string): Promise<string[]> {
 async function renderMarkdownFile(
   inputPath: string,
   headerLinks: HeaderLink[],
+  contentRoutes: ContentRouteMap,
 ): Promise<void> {
   const source = await Bun.file(inputPath).text();
-  const article = markdownToArticle(source);
+  const article = markdownToArticle(source, {
+    resolveWikilink: createContentLinkResolver(
+      contentRoutes,
+      relative(contentDir, inputPath),
+    ),
+  });
   const outputPath = outputPathFor(inputPath);
   const html = renderArticle(article, {
     assetPathPrefix: assetPathPrefixFor(outputPath),
