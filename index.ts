@@ -1,8 +1,10 @@
 import { markdownToArticle } from "./parse";
 import { renderArticle } from "./render";
 
-const inputPath = Bun.argv[2] ?? "example.md";
-const outputPath = Bun.argv[3] ?? "index.html";
+const inputPath = Bun.argv[2];
+const outputPath = Bun.argv[3];
+if (!inputPath || !outputPath)
+  throw new Error("Must provide input and output paths.");
 
 const source = await Bun.file(inputPath).text();
 const article = markdownToArticle(source);

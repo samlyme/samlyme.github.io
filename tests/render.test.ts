@@ -1,6 +1,6 @@
 import { expect, test } from "bun:test";
-import type { Article } from "./ast";
-import { renderArticle, sanitizeText } from "./render";
+import type { Article } from "../ast";
+import { renderArticle, sanitizeText } from "../render";
 
 const articleWithMath: Article = {
   title: sanitizeText("Math"),

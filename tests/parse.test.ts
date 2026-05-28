@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test";
-import { markdownToArticle } from "./parse";
-import type { Figure, Paragraph } from "./ast";
-import { sanitizeText } from "./render";
+import { markdownToArticle } from "../parse";
+import type { Figure, Paragraph } from "../ast";
+import { sanitizeText } from "../render";
 
 const doc = (body: string) => `---
 title: Test
@@ -63,4 +63,52 @@ test("preserves tex delimiters and commands for MathJax", () => {
     type: "textChunk",
     content: sanitizeText("$$x^2$$"),
   });
+});
+
+test("parses wikilinks as ordinary links", () => {
+  const article = markdownToArticle(
+    doc("Read [[Proof by Induction]] and [[Union Find Algorithm|union-find]]."),
+  );
+
+  const blocks = article.sections[0]?.blocks ?? [];
+  expect(blocks).toHaveLength(1);
+  expect(blocks[0]?.type).toBe("paragraph");
+
+  const paragraph = blocks[0] as Paragraph;
+  expect(paragraph.text).toMatchObject([
+    { type: "textChunk", content: sanitizeText("Read ") },
+    {
+      type: "textChunk",
+      content: sanitizeText("Proof by Induction"),
+      link: "Proof%20by%20Induction",
+    },
+    { type: "textChunk", content: sanitizeText(" and ") },
+    {
+      type: "textChunk",
+      content: sanitizeText("union-find"),
+      link: "Union%20Find%20Algorithm",
+    },
+    { type: "textChunk", content: sanitizeText(".") },
+  ]);
+});
+
+test("parses wikilink images as ordinary images", () => {
+  const article = markdownToArticle(
+    doc("![[image.png]]\n\n![[diagram.png|Image caption]]"),
+  );
+
+  const blocks = article.sections[0]?.blocks ?? [];
+  expect(blocks).toHaveLength(2);
+  expect(blocks[0]?.type).toBe("figure");
+  expect(blocks[1]?.type).toBe("figure");
+
+  const plainFigure = blocks[0] as Figure;
+  expect(plainFigure.image).toEqual({ src: "image.png", alt: "" });
+  expect(plainFigure.text).toEqual([]);
+
+  const captionedFigure = blocks[1] as Figure;
+  expect(captionedFigure.image).toEqual({ src: "diagram.png", alt: "" });
+  expect(captionedFigure.text).toMatchObject([
+    { type: "textChunk", content: sanitizeText("Image caption") },
+  ]);
 });

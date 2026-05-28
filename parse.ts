@@ -1,6 +1,7 @@
 import MarkdownIt from "markdown-it";
 import MarkdownItFootnotes from "markdown-it-footnote";
 import type Token from "markdown-it/lib/token.mjs";
+import MarkdownItWikilinks from "./wikilinks";
 import type {
   Article,
   Block,
@@ -102,6 +103,7 @@ export function markdownToArticle(source: string): Article {
   // ignore footnotes for now!
   const md = new MarkdownIt({ html: false, linkify: true })
     .use(MarkdownItFootnotes)
+    .use(MarkdownItWikilinks)
     .disable(["table", "code", "strikethrough"]);
 
   const tokens = md.parse(body, {});
@@ -132,10 +134,10 @@ function consumeFootnoteTokens(tokens: Token[]): FootnoteRecord {
 
   if (footnoteBlockStart === undefined) return {};
 
-  tokens.length = footnoteBlockStart;
   const footnoteTokens = tokens
     .slice(footnoteBlockStart)
     .filter((token) => token.type !== "footnote_anchor");
+  tokens.length = footnoteBlockStart;
   const footnoteCursor = new TokenCursor(footnoteTokens);
   return parseFootnoteBlock(footnoteCursor);
 }
