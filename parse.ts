@@ -8,18 +8,15 @@ import type {
   Article,
   Block,
   BlockQuote,
-  Content,
   Figure,
   Note,
   NoteContent,
-  PageIndex,
   PageIndexItem,
   Section,
   Text,
 } from "./ast";
 import { sanitizeText } from "./render";
 import yaml from "YAML";
-import { isTemplateExpression } from "typescript";
 
 interface MarkdownToArticleOptions {
   resolveWikilink: WikilinksOptions["resolveHref"];
@@ -166,12 +163,14 @@ function consumeFootnoteTokens(
 
   const footnoteTokens = tokens
     .slice(footnoteBlockStart)
-    .filter((token) => token.type !== "footnote_anchor");
+    .filter((token) => token.type !== "footnote_anchor"); // Tufte-css doesn't render footnote_anchors.
   tokens.length = footnoteBlockStart;
   const footnoteCursor = new TokenCursor(footnoteTokens);
   return parseFootnoteBlock(footnoteCursor, context);
 }
 
+// TODO: parse the frontmatter over in `index.ts`, so we get the metadata  of
+// other docs as context. This is useful for rendering the `page_index` element.
 type Frontmatter = Omit<Article, "sections">;
 function parseFrontmatter(source: string): Frontmatter {
   const frontmatter = yaml.parse(source);
@@ -185,12 +184,12 @@ function parseFrontmatter(source: string): Frontmatter {
 }
 
 interface ParserContext {
+  // TODO: add frontmatter data of all other notes to ParserContext.
   footnoteRecord: FootnoteRecord;
   allPaths: string[]; // path to all other markdown files.
   thisPath: string; // path for this file.
 }
 function parseSection(cursor: TokenCursor, context: ParserContext): Section {
-  const { footnoteRecord } = context;
   const blocks: Block[] = [];
 
   const currType: TokenType = cursor.peek()!.type as TokenType;
@@ -198,12 +197,12 @@ function parseSection(cursor: TokenCursor, context: ParserContext): Section {
   // This is because sections "start" at whatever block, but "end" when the
   // next header is opened.
   if (currType == "heading_open") {
-    ``;
     blocks.push(...parseBlock(cursor, [], context));
   }
   while (
     cursor.peek() !== undefined &&
     cursor.peek()!.type !== "heading_open"
+    // TODO: rework this logic to make only `#` headings create new sections.
   ) {
     blocks.push(...parseBlock(cursor, [], context));
   }
