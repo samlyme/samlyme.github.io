@@ -315,12 +315,12 @@ function parseBlock(
         .filter((item) => item.startsWith(parent) && item !== context.thisPath)
         .map((item) => path.basename(item, path.extname(item))) // get just the filename, with no extension.
         .map((item) => ({
-          title: sanitizeText(item),
+          title: sanitizeText(item), // TODO: implement a metadata map.
           link: item + "/",
         }));
-      console.log(siblings);
 
       const blocks: Block[] = [];
+      // TODO: do something graceful with these.
       while (cursor.peek()?.type !== "container_page_index_close") {
         blocks.push(...parseBlock(cursor, newthought, context));
       }
@@ -338,7 +338,6 @@ function parseBlock(
         },
       ];
     }
-    // TODO: handle these.
     case "hr":
       return [
         {
