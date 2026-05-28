@@ -17,9 +17,11 @@ import type {
   MarginFigure,
 } from "./ast";
 import { renderArticleTemplate } from "./templates/article";
+import type { HeaderLink } from "./templates/header";
 
 interface RenderArticleOptions {
   assetPathPrefix?: string;
+  headerLinks?: HeaderLink[];
 }
 
 export function renderArticle(
@@ -31,6 +33,7 @@ export function renderArticle(
     subtitle: article.subtitle,
     body: article.sections.map(renderSection).join("\n") as Content,
     assetPathPrefix: options.assetPathPrefix ?? "",
+    headerLinks: options.headerLinks ?? [],
   });
 }
 

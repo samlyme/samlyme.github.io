@@ -45,9 +45,18 @@ test("configures MathJax before loading it", () => {
 });
 
 test("renders the shared header before article content", () => {
-  const html = renderArticle(articleWithMath);
+  const html = renderArticle(articleWithMath, {
+    headerLinks: [
+      { label: "Home", href: "/" },
+      { label: "About", href: "/about" },
+      { label: "Blogs", href: "/blogs" },
+    ],
+  });
 
   expect(html).toContain('<nav class="nav">');
+  expect(html).toContain('<li><a href="/">Home</a></li>');
+  expect(html).toContain('<li><a href="/about">About</a></li>');
+  expect(html).toContain('<li><a href="/blogs">Blogs</a></li>');
   expect(html.indexOf("<header>")).toBeLessThan(html.indexOf("<h1>Math</h1>"));
 });
 

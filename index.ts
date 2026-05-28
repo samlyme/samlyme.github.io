@@ -2,6 +2,7 @@ import { cp, mkdir, readdir } from "node:fs/promises";
 import { basename, dirname, extname, join, relative, sep } from "node:path";
 import { markdownToArticle } from "./parse";
 import { renderArticle } from "./render";
+import { loadHeaderLinks, type HeaderLink } from "./templates/header";
 
 const contentDir = "content";
 const buildDir = "build";
@@ -15,7 +16,10 @@ async function buildContent(): Promise<void> {
   await copyStaticAssets();
 
   const inputPaths = await findMarkdownFiles(contentDir);
-  await Promise.all(inputPaths.map(renderMarkdownFile));
+  const headerLinks = await loadHeaderLinks(contentDir);
+  await Promise.all(
+    inputPaths.map((inputPath) => renderMarkdownFile(inputPath, headerLinks)),
+  );
 
   console.log(
     `Rendered ${inputPaths.length} file(s) from ${contentDir} -> ${buildDir}`,
@@ -51,12 +55,16 @@ async function findMarkdownFiles(directory: string): Promise<string[]> {
   return files;
 }
 
-async function renderMarkdownFile(inputPath: string): Promise<void> {
+async function renderMarkdownFile(
+  inputPath: string,
+  headerLinks: HeaderLink[],
+): Promise<void> {
   const source = await Bun.file(inputPath).text();
   const article = markdownToArticle(source);
   const outputPath = outputPathFor(inputPath);
   const html = renderArticle(article, {
     assetPathPrefix: assetPathPrefixFor(outputPath),
+    headerLinks,
   });
 
   await mkdir(dirname(outputPath), { recursive: true });

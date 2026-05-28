@@ -1,21 +1,21 @@
 import { readFileSync } from "node:fs";
 import type { Content } from "../ast";
+import { renderHeaderTemplate, type HeaderLink } from "./header";
 
 interface ArticleTemplateData {
   title: Content;
   subtitle: Content;
   body: Content;
   assetPathPrefix: string;
+  headerLinks: HeaderLink[];
 }
 
-type ArticleTemplateKey = keyof ArticleTemplateData | "header";
+type ArticleTemplateKey =
+  | keyof Omit<ArticleTemplateData, "headerLinks">
+  | "header";
 
 const articleTemplate = readFileSync(
   new URL("./article.html", import.meta.url),
-  "utf8",
-);
-const headerTemplate = readFileSync(
-  new URL("./header.html", import.meta.url),
   "utf8",
 );
 
@@ -25,7 +25,7 @@ export function renderArticleTemplate(data: ArticleTemplateData): string {
     subtitle: data.subtitle,
     body: data.body,
     assetPathPrefix: data.assetPathPrefix,
-    header: headerTemplate,
+    header: renderHeaderTemplate({ links: data.headerLinks }),
   };
 
   return articleTemplate.replace(
