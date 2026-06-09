@@ -92,7 +92,16 @@ const renderList = (list: List): Content => {
   return tag(tagName)(
     concat(
       ...list.items
-        .map((item) => concat(...item.map(renderBlock)))
+        .map((item) => {
+          if (item.length == 1 && item[0]!.type == "paragraph") {
+            // If there is only one "paragraph", render its text inline.
+            // NOTE: I acknowledge that this leaves the edge case of "newthoughts".
+            // But I will make the reasonable assumption that future me won't
+            // ever use a newthought in a list item.
+            return concat(...item[0]!.text.map(renderInlineItem));
+          }
+          return concat(...item.map(renderBlock));
+        })
         .map(tag("li")),
     ), // I don't think i will ever understand this again.
   );
