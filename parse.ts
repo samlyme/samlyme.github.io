@@ -19,9 +19,9 @@ import { sanitizeText } from "./render";
 import yaml from "YAML";
 
 interface MarkdownToArticleOptions {
-  resolveWikilink: WikilinksOptions["resolveHref"];
-  inputPath: string; // This article's path
-  inputPaths: string[]; // This entire content's paths.
+  resolveWikilink?: WikilinksOptions["resolveHref"];
+  inputPath?: string; // This article's path
+  inputPaths?: string[]; // This entire content's paths.
 }
 
 class TokenCursor {
@@ -96,7 +96,7 @@ type InlineChildrenTokenType =
 
 export function markdownToArticle(
   source: string,
-  options: MarkdownToArticleOptions,
+  options: MarkdownToArticleOptions = {},
 ): Article {
   const splits = source.split("---");
   if (splits.length < 3) throw new Error("Missing frontmatter");
@@ -124,8 +124,8 @@ export function markdownToArticle(
 
   const footnoteRecord = consumeFootnoteTokens(tokens, {
     footnoteRecord: {}, // cursed, i know.
-    allPaths: options.inputPaths,
-    thisPath: options.inputPath,
+    allPaths: options.inputPaths ?? [],
+    thisPath: options.inputPath ?? "",
   });
 
   const cursor = new TokenCursor(tokens);
@@ -135,8 +135,8 @@ export function markdownToArticle(
     article.sections.push(
       parseSection(cursor, {
         footnoteRecord,
-        allPaths: options.inputPaths,
-        thisPath: options.inputPath,
+        allPaths: options.inputPaths ?? [],
+        thisPath: options.inputPath ?? "",
       }),
     );
   }

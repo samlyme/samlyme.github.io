@@ -8,6 +8,10 @@ export interface HeaderLink {
   href: string;
 }
 
+interface LoadHeaderLinksOptions {
+  ignoredDirectoryNames?: Iterable<string>;
+}
+
 interface HeaderTemplateData {
   links: HeaderLink[];
 }
@@ -17,11 +21,15 @@ const headerTemplate = readFileSync(
   "utf8",
 );
 
-export async function loadHeaderLinks(contentDir: string): Promise<HeaderLink[]> {
+export async function loadHeaderLinks(
+  contentDir: string,
+  options: LoadHeaderLinksOptions = {},
+): Promise<HeaderLink[]> {
   const entries = await readdir(contentDir, { withFileTypes: true });
+  const ignoredDirectoryNames = new Set(options.ignoredDirectoryNames ?? []);
 
   return entries
-    .filter(isTopLevelContentEntry)
+    .filter((entry) => isTopLevelContentEntry(entry, ignoredDirectoryNames))
     .map(headerLinkFor)
     .sort(compareHeaderLinks);
 }
@@ -32,8 +40,14 @@ export function renderHeaderTemplate(data: HeaderTemplateData): string {
   return headerTemplate.replace(/{{\s*links\s*}}/g, links);
 }
 
-function isTopLevelContentEntry(entry: Dirent): boolean {
+function isTopLevelContentEntry(
+  entry: Dirent,
+  ignoredDirectoryNames: ReadonlySet<string>,
+): boolean {
   if (entry.name.startsWith(".")) return false;
+  if (entry.isDirectory() && ignoredDirectoryNames.has(entry.name)) {
+    return false;
+  }
 
   return (
     entry.isDirectory() ||

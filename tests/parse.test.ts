@@ -39,7 +39,7 @@ title: Test
 
 Body`);
 
-  expect(article.subtitle).toBe("");
+  expect(article.subtitle).toBe(sanitizeText(""));
 });
 
 test("keeps ordinary footnote references in paragraph text", () => {
@@ -53,6 +53,28 @@ test("keeps ordinary footnote references in paragraph text", () => {
   expect(paragraph.text.map((item) => item.type)).toEqual([
     "textChunk",
     "note",
+  ]);
+});
+
+test("keeps images in footnote definitions inside the note content", () => {
+  const article = markdownToArticle(doc("hello[^ref]\n\n[^ref]: ![](image.png)"));
+
+  const blocks = article.sections[0]?.blocks ?? [];
+  expect(blocks).toHaveLength(1);
+  expect(blocks[0]?.type).toBe("paragraph");
+
+  const paragraph = blocks[0] as Paragraph;
+  expect(paragraph.text).toMatchObject([
+    { type: "textChunk", content: sanitizeText("hello") },
+    {
+      type: "note",
+      content: [
+        {
+          type: "marginFigure",
+          image: { src: "image.png", alt: "" },
+        },
+      ],
+    },
   ]);
 });
 

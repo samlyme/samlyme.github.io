@@ -3,6 +3,9 @@ layout: blog
 title: Intuition for Inductive Proofs
 tags: math
 ---
+
+![[attachments/Pasted image 20260609004259.png]]
+
 # Intro
 
 Proof by induction is just one of those topics in math that is fundamentally 

@@ -2,9 +2,8 @@
 layout: main
 title: Blogs
 ---
-# Blogs
 
-My writings.
+# My Writings
 
 :::page_index
 

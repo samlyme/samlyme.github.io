@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "build": "rm -rf build && bun run index.ts",
+    "dev": "bun run dev.ts",
     "serve": "python3 -m http.server 8000 --directory build",
     "deploy": "wrangler deploy build"
   },

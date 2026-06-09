@@ -170,7 +170,7 @@ const renderPageIndex = (pageIndex: PageIndex): Content => {
   );
 };
 const renderMarginFigure = (marginFigure: MarginFigure) =>
-  tag("figure")(tag("img", marginFigure.image)());
+  tag("img", marginFigure.image)();
 
 const concat = (...content: Content[]): Content =>
   content.join("\n") as Content;
