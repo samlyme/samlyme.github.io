@@ -29,10 +29,6 @@ For convenience, we will label our *n* nodes *0* to *n-1*. This is so their key 
 used as an index to a basic array. For other key data types, hash maps or whatever else 
 can be used instead. ^[For those curious, this is an **imperative** implementation. To learn more about programming paradigms, visit this article: [[Imperative vs. Declarative Code]].]
 
-[[../index|index]]
-
-![[attachments/Pasted image 20260527162531.png]]
-
 ### Quick-find
 
 This approach is considered to be an **eager** approach for reasons we will see later.
@@ -113,15 +109,11 @@ This runtime is actually worse overall than the Quick-find implementation as bot
 
 **BUT**, this approach leaves more room for improvement. 
 
-### Improvements to Quick-Union
+### Weighted trees
+can provide guarantees of sub-linear runtime for the `root` operation. Before, we arbitrary set the the new of the connected component. We can instead keep track of the size of each subtree and make sure that the larger subtree becomes the new root. This actually **forces** the worst case run time of `root` down to *O(log n)*. The proof and implementation is left as an exercise for the reader.
 
-#### Weighted trees
-
-Before, we arbitrary set the the new of the connected component. We can instead keep track of the size of each subtree and make sure that the larger subtree becomes the new root. This actually **forces** the worst case run time of `root` down to *O(log n)*. The proof and implementation is left as an exercise for the reader.
-
-#### Path compression
-
-When we traverse up the tree via the `root` method, we might as well compress the path of each node for future use. A simple way to do this is set the parent of each node we touch to it's grandparent. This halves the length of the path from each node to it's root.
+### Path compression
+saves repeated work. When we traverse up the tree via the `root` method, we might as well compress the path of each node for future use. A simple way to do this is set the parent of each node we touch to it's grandparent. This halves the length of the path from each node to it's root.
 
 ```java
 private int root(int i) {
@@ -135,7 +127,7 @@ private int root(int i) {
 
 An even more powerful path compression technique is to directly set the parent each node we traverse to the root of its connected component. However, in practice, this optimization doesn't actually do much better compared to the basic path compression.
 
-> Side note: the more powerful path compression is actually a form of dynamic programming!
+> Side note: path compression is a form of dynamic programming!
 
 ```java
 private int root(int p) {
@@ -145,3 +137,7 @@ private int root(int p) {
     return r;
 }
 ```
+
+# Conclusion
+
+I hope you have enjoyed this tour of the Union-Find data structure and algorithm as much as I did writing it. :) - *Sam*
