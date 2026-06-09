@@ -3,7 +3,7 @@ layout: main
 title: Contact
 ---
 
-# Preferred communication channels
+# Let's get in touch!
 
 - email: [contact(at)samly.me]()
 - email: [samly.contact(at)gmail.com]()
