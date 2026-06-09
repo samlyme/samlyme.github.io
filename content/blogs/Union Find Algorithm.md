@@ -3,6 +3,7 @@ layout: blog
 title: Union Find Algorithm
 tags: cs
 ---
+
 *Credits: Princeton's Algorithms, Part I*
 
 Union Find is a classic problem in computer science, which entails forming groups of nodes and determining if two nodes are in the same group.
@@ -24,7 +25,13 @@ A more general term for this problem is the **dynamic connectivity problem**.
 
 ## Implementation
 
-For convenience, we will label our *n* nodes *0* to *n-1*. This is so their key can be used as an index to a basic array. For other key data types, hash maps or whatever else can be used instead.
+For convenience, we will label our *n* nodes *0* to *n-1*. This is so their key can be 
+used as an index to a basic array. For other key data types, hash maps or whatever else 
+can be used instead. ^[For those curious, this is an **imperative** implementation. To learn more about programming paradigms, visit this article: [[Imperative vs. Declarative Code]].]
+
+[[../index|index]]
+
+![[attachments/Pasted image 20260527162531.png]]
 
 ### Quick-find
 

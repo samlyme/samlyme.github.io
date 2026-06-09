@@ -2,6 +2,7 @@
 layout: main
 title: Home
 ---
+
 # Sam Ly
 
 ## About me

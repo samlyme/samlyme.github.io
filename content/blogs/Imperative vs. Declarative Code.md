@@ -11,6 +11,7 @@ If instead, you told the robot "Put a piece of bread on a plate. Spread peanut b
 
 When writing imperative code, you are **instructing** the computer to get it to perform a task, while with declarative code, you are **describing** the task, or in other words, *declaring* the your intent. 
 
+[[Basic Probability]] 
 ## Example
 
 Let's say you have an array of strings in JS, and your goal is to print out all strings to the console.
