@@ -4,8 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "rm -rf build && bun run index.ts",
-    "deploy": "bun run gh-pages -d build"
+    "build": "rm -rf build && bun run index.ts"
   },
   "devDependencies": {
     "@types/bun": "latest"
