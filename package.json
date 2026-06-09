@@ -4,10 +4,13 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "rm -rf build && bun run index.ts"
+    "build": "rm -rf build && bun run index.ts",
+    "serve": "python3 -m http.server 8000 --directory build",
+    "deploy": "wrangler deploy build"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "wrangler": "^4.98.0"
   },
   "peerDependencies": {
     "typescript": "^5"
